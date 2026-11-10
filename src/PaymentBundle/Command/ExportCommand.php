@@ -97,7 +97,7 @@ EOT
                 $invoice->getIpAddress(),
                 $invoice->getCountry(),
                 $invoice->getDate()->format('Y-m-d\TH:i:s'),
-                $invoice->getPaymentInstruction()->getPaymentSystemName()
+                $invoice->getPaymentSystemName()
             ));
         }
 

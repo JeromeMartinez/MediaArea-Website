@@ -14,7 +14,7 @@ use PaymentBundle\Form\ChoosePaymentMethodType;
 use PaymentBundle\Lib\IpToCountry;
 use PaymentBundle\Lib\IpToCurrency;
 use MediaInfoBundle\Lib\DownloadInfo\MediaInfoDownloadInfo;
-use JMS\Payment\CoreBundle\PluginController\PluginControllerInterface;
+use PaymentBundle\Lib\PaymentManager;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -23,12 +23,12 @@ use Doctrine\Persistence\ManagerRegistry;
 class DefaultController extends AbstractController
 {
     private $doctrine;
-    private $ppc;
+    private $payments;
 
-    public function __construct(ManagerRegistry $doctrine, PluginControllerInterface $ppc)
+    public function __construct(ManagerRegistry $doctrine, PaymentManager $payments)
     {
         $this->doctrine = $doctrine;
-        $this->ppc = $ppc;
+        $this->payments = $payments;
     }
 
     #[Route('/{_locale}/MediaInfo', name: 'mi_home', requirements: ['_locale' => '%app.locales%'])]
@@ -93,14 +93,10 @@ class DefaultController extends AbstractController
             $em->persist($order);
             $em->flush();
 
+            // The payment provider sends the user back to this URL
             $returnUrl = $this->generateUrl(
                 'payment_orders_paymentcreate',
                 ['id' => $order->getId()],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
-            $cancerlUrl = $this->generateUrl(
-                'mi_donate',
-                [],
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
         }
@@ -109,30 +105,8 @@ class DefaultController extends AbstractController
 
         $form = $this->createForm(ChoosePaymentMethodType::class, null, [
             'amount' => $amount ?? 1,
-            'currency' => $ipToCurrency->getCurrency(),
-            //'default_method' => 'stripe_credit_card',
             'default_method' => 'paypal_express_checkout',
-            'predefined_data' => [
-                'adyen_credit_card' => [
-                    'return_url' => $returnUrl ?? '',
-                ],
-                'paypal_express_checkout' => [
-                    'return_url' => $returnUrl ?? '',
-                    'cancel_url' => $cancerlUrl ?? '',
-                    'useraction' => 'commit',
-                ],
-            ],
-            'method_options' => [
-                'paypal_express_checkout' => [
-                    'label' => false,
-                ],
-                /*
-                'stripe_credit_card' => [
-                    'data' => ['name' => (null !== $this->getUser()) ? $this->getUser()->getNameForDisplay() : ''],
-                ],
-                */
-            ],
-            'allowed_methods' => ['paypal_express_checkout'/*, 'stripe_credit_card'*/],
+            'allowed_methods' => ['paypal_express_checkout'],
         ]);
 
         $form->add('recaptcha', RecaptchaType::class, [
@@ -153,12 +127,12 @@ class DefaultController extends AbstractController
         $form->handleRequest($request);
 
         if ('POST' === $request->getMethod() && $form->isSubmitted() && $form->isValid()) {
-            $ppc = $this->ppc;
-            $ppc->createPaymentInstruction($instruction = $form->getData());
-
-            $order->setPaymentInstruction($instruction);
-            $em->persist($order);
-            $em->flush();
+            $this->payments->create(
+                $order,
+                $form->get('method')->getData(),
+                $ipToCurrency->getCurrency(),
+                $returnUrl
+            );
 
             return $this->redirect($this->generateUrl('payment_orders_paymentcreate', [
                 'id' => $order->getId(),

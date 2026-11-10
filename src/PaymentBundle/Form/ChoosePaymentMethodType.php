@@ -2,37 +2,39 @@
 
 namespace PaymentBundle\Form;
 
-use JMS\Payment\CoreBundle\Form\ChoosePaymentMethodType as BaseType;
-use JMS\Payment\CoreBundle\PluginController\PluginControllerInterface;
+use PaymentBundle\Lib\IpToCurrency;
+use PaymentBundle\Method\MethodRegistry;
+use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\OptionsResolver\Options;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use PaymentBundle\Lib\IpToCurrency;
 
-class ChoosePaymentMethodType extends BaseType
+/**
+ * Amount and payment method of an order.
+ */
+class ChoosePaymentMethodType extends AbstractType
 {
-    protected $request;
+    private $methods;
+    private $requestStack;
 
-    public function __construct(
-        PluginControllerInterface $pluginController,
-        RequestStack $requestStack,
-        array $paymentMethods
-    ) {
-        parent::__construct($pluginController, $paymentMethods);
-        $this->request = $requestStack->getCurrentRequest();
+    public function __construct(MethodRegistry $methods, RequestStack $requestStack)
+    {
+        $this->methods = $methods;
+        $this->requestStack = $requestStack;
     }
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $ipToCurrency = new IpToCurrency($this->request->getClientIp());
         if ('text' == $options['amount_field_type']) {
             $builder->add('amount', TextType::class, [
                 'mapped' => false,
                 'data' => $options['amount'],
             ]);
         } else {
+            $ipToCurrency = new IpToCurrency($this->requestStack->getCurrentRequest()->getClientIp());
             $builder->add('amount', ChoiceType::class, [
                 'mapped' => false,
                 'choices' => $ipToCurrency->getAmountChoices(),
@@ -40,16 +42,31 @@ class ChoosePaymentMethodType extends BaseType
             ]);
         }
 
-        parent::buildForm($builder, $options);
+        $choices = [];
+        foreach ($options['allowed_methods'] as $name) {
+            $choices[$this->methods->get($name)->getLabel()] = $name;
+        }
+
+        $builder->add('method', ChoiceType::class, [
+            'choices' => $choices,
+            'expanded' => true,
+            'data' => $options['default_method'],
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults(array(
+        $resolver->setDefaults([
             'amount_field_type' => 'list',
-        ));
-        $resolver->addAllowedTypes('amount_field_type', 'string');
-        parent::configureOptions($resolver);
+            'amount' => null,
+            'allowed_methods' => array_keys($this->methods->all()),
+            'default_method' => static function (Options $options) {
+                return $options['allowed_methods'][0] ?? null;
+            },
+        ]);
+
+        $resolver->setAllowedTypes('amount_field_type', 'string');
+        $resolver->setAllowedTypes('allowed_methods', 'array');
     }
 
     public function getBlockPrefix(): string
