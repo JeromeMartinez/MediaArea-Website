@@ -16,24 +16,19 @@ tags: Newsletter
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
                 <table style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <h3 style="display: block;margin: 0;padding: 0;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 20px;font-style: normal;font-weight: normal;line-height: 125%;letter-spacing: normal;text-align: center;color: #000000 !important;"><span style="font-size:26px"><span style="color:#47b749"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><strong>Ahoy from MediaArea!</strong></span></span></span></h3>
-
                         </td>
                     </tr>
                 </tbody></table>
 				<!--[if mso]>
 				</td>
 				<![endif]-->
-
 				<!--[if mso]>
 				</tr>
 				</table>
@@ -67,15 +62,12 @@ tags: Newsletter
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
                 <table style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <h1 class="null" style="text-align: left;display: block;margin: 0;padding: 0;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 60px;font-style: normal;font-weight: normal;line-height: 125%;letter-spacing: -1px;color: #000000 !important;"><span style="color:#3c54a5"><span style="font-size:24px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><strong>Updates</strong></span></span></span></h1>
 <span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">Now you can detect and correct bit flip and incorrect segment sizes with our brand new&nbsp;<strong><a href="https://mediaarea.net/MediaConch/Documentation/Fixity" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">fixer</a>!</strong><br>
 <br>
@@ -96,7 +88,6 @@ And lastly, you can now use, create, and share&nbsp;<strong>public policies</str
 				<!--[if mso]>
 				</td>
 				<![endif]-->
-
 				<!--[if mso]>
 				</tr>
 				</table>
@@ -108,16 +99,10 @@ And lastly, you can now use, create, and share&nbsp;<strong>public policies</str
     <tbody class="mcnImageCardBlockOuter">
         <tr>
             <td class="mcnImageCardBlockInner" style="padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" valign="top">
-
 <table class="mcnImageCardBottomContent" style="background-color: #404040;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
     <tbody><tr>
         <td class="mcnImageCardBottomImageContent" style="padding-top: 0px;padding-right: 0px;padding-bottom: 0;padding-left: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" valign="top" align="left">
-
-
-
             <img alt="" src="https://gallery.mailchimp.com/bddbd93cd9a541f4eee376c49/images/1e1de5a3-5383-4ade-a49f-dd649f37d0ea.png" style="max-width: 1024px;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;vertical-align: bottom;" class="mcnImage" width="564">
-
-
         </td>
     </tr>
     <tr>
@@ -126,10 +111,6 @@ And lastly, you can now use, create, and share&nbsp;<strong>public policies</str
         </td>
     </tr>
 </tbody></table>
-
-
-
-
             </td>
         </tr>
     </tbody>
@@ -141,15 +122,12 @@ And lastly, you can now use, create, and share&nbsp;<strong>public policies</str
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
                 <table style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <h1 class="null" style="text-align: left;display: block;margin: 0;padding: 0;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 60px;font-style: normal;font-weight: normal;line-height: 125%;letter-spacing: -1px;color: #000000 !important;"><strong style="color: #3C54A5;font-family: lucida sans unicode,lucida grande,sans-serif;font-size: 24px;">Team MediaConch in&nbsp;the Wild</strong></h1>
 <br>
 <span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">Jérôme and Guillaume will be sharing our progress at the PREFORMA&nbsp;<a href="http://experienceworkshop.preforma-project.eu/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">Experience Workshop</a>&nbsp;this week on November 23rd at Kulturforum in Berlin. You can still&nbsp;<a href="http://experienceworkshop.preforma-project.eu/registration/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">register here</a> if you are able to attend!&nbsp;<br>
@@ -163,7 +141,6 @@ Dave and Natalie joined forces with the Archivematica team last month for a spec
 				<!--[if mso]>
 				</td>
 				<![endif]-->
-
 				<!--[if mso]>
 				</tr>
 				</table>
@@ -197,24 +174,19 @@ Dave and Natalie joined forces with the Archivematica team last month for a spec
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
                 <table style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <div style="text-align: left;"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:24px"><strong><span style="color:#3c54a5">Latest Downloads</span></strong></span></span></div>
-
                         </td>
                     </tr>
                 </tbody></table>
 				<!--[if mso]>
 				</td>
 				<![endif]-->
-
 				<!--[if mso]>
 				</tr>
 				</table>
@@ -230,15 +202,12 @@ Dave and Natalie joined forces with the Archivematica team last month for a spec
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="300" style="width:300px;">
 				<![endif]-->
                 <table style="max-width: 300px;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">Download MediaConch's <a href="https://mediaarea.net/MediaConch/Download" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">latest&nbsp;release</a>&nbsp;or a <a href="https://mediaarea.net/Download/Snapshots" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">daily build</a>.</span></span>
                         </td>
                     </tr>
@@ -246,15 +215,12 @@ Dave and Natalie joined forces with the Archivematica team last month for a spec
 				<!--[if mso]>
 				</td>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="300" style="width:300px;">
 				<![endif]-->
                 <table style="max-width: 300px;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">MediaConch now supports plugins including <a href="http://verapdf.org/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">VeraPDF</a> and <a href="http://dpfmanager.org/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">DPFManager</a>!</span></span>
                         </td>
                     </tr>
@@ -262,7 +228,6 @@ Dave and Natalie joined forces with the Archivematica team last month for a spec
 				<!--[if mso]>
 				</td>
 				<![endif]-->
-
 				<!--[if mso]>
 				</tr>
 				</table>
@@ -296,37 +261,30 @@ Dave and Natalie joined forces with the Archivematica team last month for a spec
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
                 <table style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <h1 class="null" style="text-align: left;display: block;margin: 0;padding: 0;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 60px;font-style: normal;font-weight: normal;line-height: 125%;letter-spacing: -1px;color: #000000 !important;"><strong><span style="color:#3c54a5"><span style="font-size:24px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">New Release Notes</span></span></span></strong></h1>
 <span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><strong>What’s new in MediaConch 16.10</strong><br>
 <br>
 <strong><span style="color:#Ed2024">GUI/CLI/Server/Online</span></strong></span></span>
-
 <ul>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">Update implementation tests, policies, and displays</span></span></li>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">Handle latest versions of VeraPDF and DPF Manager</span></span></li>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">Several minor fixes</span></span></li>
 </ul>
 <span style="color:#Ed2024"><strong><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">GUI/CLI</span></span></strong></span>
-
 <ul>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">Fixer</span></span></li>
 </ul>
 <span style="color:#Ed2024"><strong><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">Online GUI</span></span></strong></span>
-
 <ul>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><font face="lucida sans unicode, lucida grande, sans-serif"><span style="font-size:14px">Public Policies Page</span></font></li>
 </ul>
 <span style="color:#Ed2024"><strong><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">Server</span></span></strong></span>
-
 <ul>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><font face="lucida sans unicode, lucida grande, sans-serif"><span style="font-size:14px">FFmpeg plugin</span></font></li>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">Watch folder plugin</li>

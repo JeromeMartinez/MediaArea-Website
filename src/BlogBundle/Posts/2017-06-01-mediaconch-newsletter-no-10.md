@@ -16,24 +16,19 @@ tags: Newsletter
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
                 <table style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <h3 style="display: block;margin: 0;padding: 0;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 20px;font-style: normal;font-weight: normal;line-height: 125%;letter-spacing: normal;text-align: center;color: #000000 !important;"><span style="font-size:26px"><span style="color:#47b749"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><strong>Happy Summer from MediaArea!</strong></span></span></span></h3>
-
                         </td>
                     </tr>
                 </tbody></table>
 				<!--[if mso]>
 				</td>
 				<![endif]-->
-
 				<!--[if mso]>
 				</tr>
 				</table>
@@ -67,15 +62,12 @@ tags: Newsletter
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="599" style="width:599px;">
 				<![endif]-->
                 <table style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <h1 class="null" style="text-align: left;display: block;margin: 0;padding: 0;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 60px;font-style: normal;font-weight: normal;line-height: 125%;letter-spacing: -1px;color: #000000 !important;"><span style="color:#3c54a5"><span style="font-size:24px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><strong>Updates</strong></span></span></span></h1>
 <span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">We are pleased to announce the progress we’ve made this year. There are new updates to MediaConch that expand its capabilities, user stories to share, and new events related to implementation checking and the standardization of open audiovisual formats.<br>
 <span style="color:#ed2024">__________________________________________________________________________________</span><br>
@@ -86,7 +78,6 @@ The MediaConch team recently collaborated with <a href="https://viaa.be/en" targ
 <span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">The development of MediaConch has been closely following the work of the <a href="https://datatracker.ietf.org/wg/cellar/charter/&nbsp;" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">IETF CELLAR working group</a> which is creating specifications for EBML, Matroska, FFV1 and FLAC. <a href="https://datatracker.ietf.org/wg/cellar/documents/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">Review the latest versions of those documents</a>.<br>
 <br>
 Some Highlights:</span></span>
-
 <ul>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">MediaConch&nbsp;optimized its FFV1 parser, which will allow upcoming versions to provide more comprehensive implementation checking of FFV1 against its specification.</span></span></li>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">We improved the Matroska checker, particularly to support the CELLAR working group's development&nbsp;of the <a href="https://github.com/Matroska-Org/matroska-specification/blob/master/ebml_matroska.xml" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">EBML Schema</a>, which defines Matroska’s structure in a manner similar to an XML Schema.</span></span></li>
@@ -105,7 +96,6 @@ Some Highlights:</span></span>
 </div>
 <span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">&nbsp;<br>
 Next steps:</span></span>
-
 <ul>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">“FrameMD5” computing in MediaConch, in order to compare resulting file to a source file, pixel per pixel, after a conversion to Matroska/FFV1, if the conversion includes a “FrameMD5” of the source file.</span></span></li>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">Adding more information (specific location of the error in the bitstream) when FFV1 validation fails.</span></span></li>
@@ -122,7 +112,6 @@ Next steps:</span></span>
 				<!--[if mso]>
 				</td>
 				<![endif]-->
-
 				<!--[if mso]>
 				</tr>
 				</table>
@@ -134,16 +123,10 @@ Next steps:</span></span>
     <tbody class="mcnImageCardBlockOuter">
         <tr>
             <td class="mcnImageCardBlockInner" style="padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" valign="top">
-
 <table class="mcnImageCardBottomContent" style="background-color: #404040;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" width="100%" cellspacing="0" cellpadding="0" border="0" align="right">
     <tbody><tr>
         <td class="mcnImageCardBottomImageContent" style="padding-top: 0px;padding-right: 0px;padding-bottom: 0;padding-left: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" valign="top" align="center">
-
-
-
             <img alt="" src="https://gallery.mailchimp.com/bddbd93cd9a541f4eee376c49/images/7c5dceb9-33fe-4818-b300-b5f743c40dfd.png" style="max-width: 1047px;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;vertical-align: bottom;" class="mcnImage" width="563">
-
-
         </td>
     </tr>
     <tr>
@@ -152,10 +135,6 @@ Next steps:</span></span>
         </td>
     </tr>
 </tbody></table>
-
-
-
-
             </td>
         </tr>
     </tbody>
@@ -167,15 +146,12 @@ Next steps:</span></span>
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="599" style="width:599px;">
 				<![endif]-->
                 <table style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <h1 class="null" style="text-align: left;display: block;margin: 0;padding: 0;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 60px;font-style: normal;font-weight: normal;line-height: 125%;letter-spacing: -1px;color: #000000 !important;"><strong style="color: #3C54A5;font-family: lucida sans unicode,lucida grande,sans-serif;font-size: 24px;">Upcoming Events</strong></h1>
 <span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><strong><span style="color:#Ed2024">June 21st, 2017 4:45 - 5:30 pm PDT:&nbsp;</span></strong></span></span><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">Ashley will discuss MediaConch and format standards in her talk <a href="http://opensourcebridge.org/sessions/1958" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">How Open Source Audiovisual Tools Help Archivists (And You Too!)</a> at <a href="http://opensourcebridge.org/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">Open Source Bridge</a>&nbsp;this week in Portland, OR.</span></span><br>
 <br>
@@ -191,7 +167,6 @@ Tessa and Jérôme will be attending in person.&nbsp;&nbsp;For those unable to t
 <a href="http://ietf99streaming.dnsalias.net/ietf/ietf991.m3u&nbsp;" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">Audio stream</a><br>
 <br>
 Topics to be discussed at the meeting include:</span></span>
-
 <ul>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">finalizing existing informational documents (FFV1 version&nbsp;0 - version 3,&nbsp;</span></span><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">EBML, FLAC) for publication; </span></span></li>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">work to be done on FFV1 version 4&nbsp;and Matroska;</span></span></li>
@@ -222,7 +197,6 @@ Tessa will be leading a talk about standardization work and Jérôme will be coo
 				<!--[if mso]>
 				</td>
 				<![endif]-->
-
 				<!--[if mso]>
 				</tr>
 				</table>
@@ -256,24 +230,19 @@ Tessa will be leading a talk about standardization work and Jérôme will be coo
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="600" style="width:600px;">
 				<![endif]-->
                 <table style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <div style="text-align: left;"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:24px"><strong><span style="color:#3c54a5">Latest Downloads</span></strong></span></span></div>
-
                         </td>
                     </tr>
                 </tbody></table>
 				<!--[if mso]>
 				</td>
 				<![endif]-->
-
 				<!--[if mso]>
 				</tr>
 				</table>
@@ -289,15 +258,12 @@ Tessa will be leading a talk about standardization work and Jérôme will be coo
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="300" style="width:300px;">
 				<![endif]-->
                 <table style="max-width: 300px;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">Download MediaConch's <a href="https://mediaarea.net/MediaConch/Download" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">latest&nbsp;release</a>&nbsp;or a <a href="https://mediaarea.net/Download/Snapshots" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">daily build</a>.</span></span>
                         </td>
                     </tr>
@@ -305,15 +271,12 @@ Tessa will be leading a talk about standardization work and Jérôme will be coo
 				<!--[if mso]>
 				</td>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="300" style="width:300px;">
 				<![endif]-->
                 <table style="max-width: 300px;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">MediaConch now supports plugins including <a href="http://verapdf.org/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">VeraPDF</a> and <a href="http://dpfmanager.org/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">DPFManager</a>!</span></span>
                         </td>
                     </tr>
@@ -321,7 +284,6 @@ Tessa will be leading a talk about standardization work and Jérôme will be coo
 				<!--[if mso]>
 				</td>
 				<![endif]-->
-
 				<!--[if mso]>
 				</tr>
 				</table>
@@ -355,20 +317,16 @@ Tessa will be leading a talk about standardization work and Jérôme will be coo
 				<table align="left" border="0" cellspacing="0" cellpadding="0" width="100%" style="width:100%;">
 				<tr>
 				<![endif]-->
-
 				<!--[if mso]>
 				<td valign="top" width="599" style="width:599px;">
 				<![endif]-->
                 <table style="max-width: 100%;min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer" width="100%" cellspacing="0" cellpadding="0" border="0" align="left">
                     <tbody><tr>
-
                         <td class="mcnTextContent" style="padding: 0px 18px 9px;font-family: &quot;Lucida Sans Unicode&quot;, &quot;Lucida Grande&quot;, sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;" valign="top">
-
                             <h1 class="null" style="text-align: left;display: block;margin: 0;padding: 0;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 60px;font-style: normal;font-weight: normal;line-height: 125%;letter-spacing: -1px;color: #000000 !important;"><strong><span style="color:#3c54a5"><span style="font-size:24px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">New Release Notes</span></span></span></strong></h1>
 <span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><strong>What’s new in MediaConch 17.05</strong><br>
 <br>
 <strong><span style="color:#Ed2024">GUI/CLI/Server/Online</span></strong></span></span>
-
 <ul>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">Less verbose output by default</span></span></li>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">CSV output (useful for automation with the command line)</span></span></li>

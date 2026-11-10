@@ -13,18 +13,13 @@ tags: Newsletter
     <tbody class="mcnTextBlockOuter">
         <tr>
             <td valign="top" class="mcnTextBlockInner" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-
                 <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer">
                     <tbody><tr>
-
                         <td valign="top" class="mcnTextContent" style="padding: 9px 18px;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;">
-
                             <h3 style="display: block;margin: 0;padding: 0;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 20px;font-style: normal;font-weight: normal;line-height: 125%;letter-spacing: normal;text-align: center;color: #000000 !important;"><span style="font-size:26px"><span style="color:#47b749"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><strong>Happy Summer From the&nbsp;MediaArea Team!</strong></span></span></span></h3>
-
                         </td>
                     </tr>
                 </tbody></table>
-
             </td>
         </tr>
     </tbody>
@@ -50,17 +45,13 @@ tags: Newsletter
     <tbody class="mcnTextBlockOuter">
         <tr>
             <td valign="top" class="mcnTextBlockInner" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-
                 <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer">
                     <tbody><tr>
-
                         <td valign="top" class="mcnTextContent" style="padding: 9px 18px;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;">
-
                             <h1 class="null" style="text-align: left;display: block;margin: 0;padding: 0;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 60px;font-style: normal;font-weight: normal;line-height: 125%;letter-spacing: -1px;color: #000000 !important;"><strong><span style="color:#3c54a5"><span style="font-size:24px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">New Release Notes</span></span></span></strong></h1>
 <span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><strong>What's new in MediaConch 16.05</strong><br>
 <br>
 <strong><span style="color:#Ed2024">Local GUI, Online, CLI, Server</span></strong></span></span>
-
 <ul>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">MediaConch XML format v0.2</span></span></li>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">Improved Matroska tests</span></span></li>
@@ -74,17 +65,14 @@ tags: Newsletter
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">Minor UI improvements/fixes</span></span></li>
 </ul>
 <span style="color:#Ed2024"><strong><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">Online GUI</span></span></strong></span>
-
 <ul>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">Option for applying a policy to all open files</span></span></li>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">User settings: default policy, default display, default verbosity</span></span></li>
 	<li style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;"><span style="font-size:14px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif">Minor UI improvements/fixes</span></span></li>
 </ul>
-
                         </td>
                     </tr>
                 </tbody></table>
-
             </td>
         </tr>
     </tbody>
@@ -110,18 +98,13 @@ tags: Newsletter
     <tbody class="mcnTextBlockOuter">
         <tr>
             <td valign="top" class="mcnTextBlockInner" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-
                 <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer">
                     <tbody><tr>
-
                         <td valign="top" class="mcnTextContent" style="padding: 9px 18px;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;">
-
                             <div style="text-align: left;"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:24px"><strong><span style="color:#3c54a5">Latest Downloads</span></strong></span></span></div>
-
                         </td>
                     </tr>
                 </tbody></table>
-
             </td>
         </tr>
     </tbody>
@@ -129,27 +112,20 @@ tags: Newsletter
     <tbody class="mcnTextBlockOuter">
         <tr>
             <td valign="top" class="mcnTextBlockInner" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-
                 <table align="left" border="0" cellpadding="0" cellspacing="0" width="282" class="mcnTextContentContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                     <tbody><tr>
-
                         <td valign="top" class="mcnTextContent" style="padding: 9px 0px 9px 18px;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;">
-
                             <span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">Download MediaConch's <a href="https://mediaarea.net/MediaConch/Download" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">latest&nbsp;release</a>&nbsp;or a <a href="https://mediaarea.net/MediaConch/Download/Snapshots" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">daily build</a>.</span></span>
                         </td>
                     </tr>
                 </tbody></table>
-
                 <table align="right" border="0" cellpadding="0" cellspacing="0" width="282" class="mcnTextContentContainer" style="border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
                     <tbody><tr>
-
                         <td valign="top" class="mcnTextContent" style="padding: 9px 18px;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;">
-
                             <span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">MediaConch now supports plugins including VeraPDF and DPFManager!</span></span>
                         </td>
                     </tr>
                 </tbody></table>
-
             </td>
         </tr>
     </tbody>
@@ -175,16 +151,10 @@ tags: Newsletter
     <tbody class="mcnImageCardBlockOuter">
         <tr>
             <td class="mcnImageCardBlockInner" valign="top" style="padding-top: 9px;padding-right: 18px;padding-bottom: 9px;padding-left: 18px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-
 <table align="right" border="0" cellpadding="0" cellspacing="0" class="mcnImageCardBottomContent" width="100%" style="background-color: #404040;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
     <tbody><tr>
         <td class="mcnImageCardBottomImageContent" align="left" valign="top" style="padding-top: 0px;padding-right: 0px;padding-bottom: 0;padding-left: 0px;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-
-
-
             <img alt="" src="/bundles/mediaconch/img/html-gui-v16_05.png" width="564" style="max-width: 1087px;border: 0;height: auto;outline: none;text-decoration: none;-ms-interpolation-mode: bicubic;vertical-align: bottom;" class="mcnImage">
-
-
         </td>
     </tr>
     <tr>
@@ -193,10 +163,6 @@ tags: Newsletter
         </td>
     </tr>
 </tbody></table>
-
-
-
-
             </td>
         </tr>
     </tbody>
@@ -204,12 +170,9 @@ tags: Newsletter
     <tbody class="mcnTextBlockOuter">
         <tr>
             <td valign="top" class="mcnTextBlockInner" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;">
-
                 <table align="left" border="0" cellpadding="0" cellspacing="0" width="100%" style="min-width: 100%;border-collapse: collapse;mso-table-lspace: 0pt;mso-table-rspace: 0pt;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;" class="mcnTextContentContainer">
                     <tbody><tr>
-
                         <td valign="top" class="mcnTextContent" style="padding: 9px 18px;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 14px;font-style: normal;font-weight: normal;line-height: 125%;text-align: left;mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;word-break: break-word;color: #000000;">
-
 <br>
 <br>
 <span style="color:#3c54a5"><span style="font-size:24px"><strong>Upcoming Events</strong></span></span><br>
@@ -222,8 +185,6 @@ Join us for our pre-IETF Berlin Symposium: <a href="https://mediaarea.net/MediaC
 <br>
 <br>
 The MediaConch project and this symposium has received funding from <a href="http://www.preforma-project.eu/" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">PREFORMA</a>, co-funded by the European Commission under it's FP7-ICT Programme.
-
-
 <h1 style="text-align: left;display: block;margin: 0;padding: 0;font-family: 'Lucida Sans Unicode', 'Lucida Grande', sans-serif;font-size: 60px;font-style: normal;font-weight: normal;line-height: 125%;letter-spacing: -1px;color: #000000 !important;"><span style="color:#3c54a5"><span style="font-size:24px"><span style="font-family:lucida sans unicode,lucida grande,sans-serif"><strong>Feedback</strong></span></span></span></h1>
 <span style="font-family:lucida sans unicode,lucida grande,sans-serif"><span style="font-size:14px">MediaArea is eager to build a community of collaborators and testers to integrate the software in their workflows and&nbsp;participate in usability testing. Please <a href="https://mediaarea.net/Contact" target="_blank" style="mso-line-height-rule: exactly;-ms-text-size-adjust: 100%;-webkit-text-size-adjust: 100%;color: #47b749;font-weight: normal;text-decoration: none;">contact us</a> if you'd like to be involved!</span></span>
                         </td>
