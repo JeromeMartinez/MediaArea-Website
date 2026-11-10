@@ -66,3 +66,142 @@ jobs:
       - name: Test
         run: |
           vendor/bin/phpunit
+
+  # Previous versions of PHP, Symfony, Doctrine and of the database server: the dependencies are not the ones
+  # of composer.lock, Composer selects them for the version of PHP
+  Compatibility:
+    name: PHP ${{ matrix.php }}, ${{ matrix.dependencies }}, ${{ matrix.database }}
+    runs-on: ubuntu-26.04
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Symfony 6.4, Doctrine ORM 2 and DBAL 3: the lowest version of each dependency
+          - php: 8.1
+            dependencies: lowest
+            composer: --prefer-lowest --prefer-stable
+            database: mysql:5.6
+          # Symfony 6.4, Doctrine ORM 3 and DBAL 4
+          - php: 8.1
+            dependencies: current
+            database: mariadb:10.2
+          # Symfony 7.4, Doctrine ORM 3 and DBAL 4
+          - php: 8.2
+            dependencies: current
+            database: mariadb:10.3
+          # Symfony 7.4, Doctrine ORM 3 and DBAL 3
+          - php: 8.2
+            dependencies: dbal3
+            composer: --with doctrine/dbal:^3.8.2
+            database: mysql:5.7
+          # Symfony 7.4, Doctrine ORM 2 and DBAL 3
+          - php: 8.3
+            dependencies: orm2
+            composer: --with doctrine/orm:^2.20
+            database: mariadb:10.6
+          # Symfony 7.4, Doctrine ORM 3 and DBAL 4
+          - php: 8.3
+            dependencies: current
+            database: mysql:8.0
+          # Symfony 8, Doctrine ORM 3 and DBAL 4
+          - php: 8.4
+            dependencies: current
+            database: mysql:8.4
+          - php: 8.5
+            dependencies: current
+            database: mariadb:11.8
+          # The current versions with the oldest database servers: Doctrine DBAL does not support them any more
+          - php: 8.5
+            dependencies: current
+            database: mysql:5.6
+          - php: 8.5
+            dependencies: current
+            database: mariadb:10.2
+          # Percona XtraDB Cluster, a node in strict mode, with the lowest and the current versions
+          - php: 8.1
+            dependencies: lowest
+            composer: --prefer-lowest --prefer-stable
+            database: percona/percona-xtradb-cluster:5.7
+          - php: 8.5
+            dependencies: current
+            database: percona/percona-xtradb-cluster:5.7
+          # Symfony 8.2, which is not released yet: its pre-releases are installed
+          - php: 8.5
+            dependencies: symfony-8.2
+            symfony: 8.2
+            database: mysql:9.7
+    services:
+      mysql:
+        image: ${{ matrix.database }}
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: ci
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
+          MARIADB_DATABASE: ci
+          CLUSTER_NAME: ci
+        ports:
+          - 3306:3306
+        # The image of Percona XtraDB Cluster has only the mysql client
+        options: >-
+          --health-cmd="mysqladmin ping || mariadb-admin ping || mysql -h 127.0.0.1 -uroot -e status"
+          --health-interval=10s --health-timeout=5s --health-retries=12 --health-start-period=30s
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php }}
+          extensions: gd, intl
+          ini-values: memory_limit=-1
+          tools: composer:2.11
+          coverage: none
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Cache dependencies
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: ${{ runner.os }}-composer-${{ matrix.php }}-${{ matrix.dependencies }}-
+      - name: Prepare
+        run: |
+          cp app/config/parameters.yml.ci app/config/parameters.yml
+      - name: Select the version of Symfony
+        if: matrix.symfony
+        run: |
+          # Pre-releases are accepted, and each component of Symfony of composer.lock is requested in this version
+          composer config minimum-stability beta
+          composer config prefer-stable true
+          with=$(jq -r --arg version "${{ matrix.symfony }}.*" '
+            (.packages[] | select(.name == "symfony/framework-bundle") | .version | split(".")[0]) as $major
+            | [.packages[], ."packages-dev"[]][]
+            | select((.name | startswith("symfony/")) and (.version | startswith($major + ".")))
+            | "--with=" + .name + ":" + $version' composer.lock | tr '\n' ' ')
+          test -n "$with"
+          echo "SYMFONY_WITH=$with" >> $GITHUB_ENV
+      - name: Install dependencies
+        run: |
+          composer update --no-progress --prefer-dist --ansi ${{ matrix.composer }} $SYMFONY_WITH
+      - name: Configure
+        run: |
+          php bin/console doctrine:migrations:migrate --no-interaction
+          php bin/console doctrine:schema:validate
+          php bin/console doctrine:fixtures:load --env=test --no-interaction
+          php bin/console mediaarea:user:donor test@mediaarea.net 1
+          php bin/console mediaarea:user:create beta beta@mediaarea.net betaCI
+          php bin/console mediaarea:user:promote beta ROLE_BETA
+          php bin/console mediaarea:user:donor beta@mediaarea.net 30
+      - name: Check
+        run: |
+          php bin/console lint:container
+          php bin/console lint:twig app/ src/
+          php bin/console lint:yaml src/
+          php bin/console lint:yaml app/
+          php bin/console asset-map:compile --env=prod
+      - name: Test
+        run: |
+          vendor/bin/phpunit

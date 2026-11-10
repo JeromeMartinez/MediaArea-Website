@@ -8,12 +8,42 @@
 
 * A web server (tested on Apache 2.4)
     * mod_rewrite is recommended
-* PHP >= 8.4 (tested on version 8.5)
+* PHP >= 8.1 (tested on versions 8.1 to 8.5), the version of Symfony depends on it, see [Supported versions](#supported-versions)
     * Mandatory packages for Debian-like distributions : `sudo apt-get install libapache2-mod-php8.5 php8.5-cli php8.5-intl php8.5-curl php8.5-mysql php8.5-mbstring php8.5-xml php8.5-gd`
     * Mandatory packages for RedHat-like distributions : `sudo dnf install php php-cli php-intl php-mbstring php-pdo php-process php-xml php-gd php-mysqlnd`
     * date.timezone parameter should be set in your php.ini (both cli and apache module)
-* MySQL >= 8.0 or MariaDB >= 10.6 (tested on MySQL 9.7 and MariaDB 10.6)
+* MySQL >= 5.6 or MariaDB >= 10.2 (tested on MySQL 5.6 to 9.7, MariaDB 10.2 to 13.0 and Percona XtraDB Cluster 5.7)
 * [Composer](https://getcomposer.org/download/) 2
+
+## Supported versions
+
+The website is not tied to one version of Symfony: the same code works with Symfony 6.4, 7 and 8. Each version of Symfony needs a minimal version of PHP, and Composer installs the latest one which supports the PHP of the server. So PHP 8.1 is supported with Symfony 6.4, not with Symfony 8, which needs PHP 8.4.
+
+| PHP      | Symfony | Dependencies installed with |
+|----------|---------|-----------------------------|
+| 8.1      | 6.4     | `composer update`           |
+| 8.2, 8.3 | 7.4     | `composer update`           |
+| 8.4, 8.5 | 8       | `composer install`          |
+
+`composer install` installs the exact versions listed in `composer.lock`, and this file can list only one version of each dependency: it has the current ones, which need PHP 8.4. With PHP 8.1 to 8.3 Composer refuses to install them, so `composer update` is used instead: it ignores `composer.lock` and selects the latest versions which support the installed version of PHP.
+
+Other versions of the main dependencies can be used too:
+
+| Dependency    | Supported versions  |
+|---------------|---------------------|
+| Symfony       | 6.4, 7.2 to 7.4, 8  |
+| Doctrine ORM  | 2.20, 3.4 and later |
+| Doctrine DBAL | 3.8 and later, 4    |
+
+A version which is not the one Composer selects is requested with the `--with` option, e.g. `composer update --with doctrine/orm:^2.20` for Doctrine ORM 2 or `composer update --with doctrine/dbal:^3.8.2` for Doctrine DBAL 3.
+
+The lines of the first table, Doctrine ORM 2 and Doctrine DBAL 3 are tested by the [checks](https://github.com/MediaArea/MediaArea-Website/blob/master/.github/workflows/MediaArea-Website_Checks.yml), with several versions of MySQL and MariaDB and with Percona XtraDB Cluster.
+
+Why these limits:
+
+* PHP 8.1 is the minimum because Symfony 6.4 requires it, and Symfony 6.4 is the oldest version of Symfony with the AssetMapper component and the attributes used by the controllers (`Route`, `Template`, `IsGranted`, `MapEntity`).
+* Symfony 7.0 and 7.1 are not supported: DoctrineFixturesBundle 4.3, used by the tests, can not be installed with Symfony 7.0, and with Symfony 7.1 the country and the language of the user are not selected in the form of the profile, which is corrected in Symfony 6.4.20 and 7.2.5 only.
+* Symfony 7.2, 7.3 and 8.0 are supported but, as 7.0 and 7.1, they are not maintained any more: Composer refuses by default to install them because of their known security issues.
 
 ## Get sourcecode
 
@@ -42,6 +72,8 @@ cd YOUR_PATH/MediaArea-Website/
 composer install
 ```
 You'll get some configuration questions, you can use [these fake values](blob/master/app/config/parameters.yml.ci) if you don't care about the payments.
+
+With PHP 8.1, 8.2 or 8.3, run `composer update` instead of `composer install`, see [Supported versions](#supported-versions).
 
 ### SQL tables and assets
 

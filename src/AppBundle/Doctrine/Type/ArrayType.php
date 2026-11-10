@@ -16,6 +16,14 @@ class ArrayType extends Type
     const NAME = 'array';
 
     /**
+     * Name of the type, for Doctrine DBAL 3.
+     */
+    public function getName(): string
+    {
+        return self::NAME;
+    }
+
+    /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string

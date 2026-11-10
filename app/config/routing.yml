@@ -10,7 +10,7 @@ fos_user:
     resource: "@UserBundle/Resources/config/routing.yml"
 
 fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.php"
+    resource: routing_js.php
 
 blog:
     resource: "@BlogBundle/Controller/"

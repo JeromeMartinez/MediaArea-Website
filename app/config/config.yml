@@ -51,15 +51,22 @@ framework:
         strict_requirements: ~
     form: ~
     csrf_protection: ~
-    validation: ~
+    # The options which have not the same default value in all the supported versions of Symfony (6.4 to 8)
+    # are set with the value of the current version: validation, cookie of the session, handle_all_throwables
+    validation:
+        enable_attributes: true
+        email_validation_mode: html5
     default_locale: '%locale%'
     trusted_hosts: ~
     session:
         # https://symfony.com/doc/current/reference/configuration/framework.html#handler-id
         handler_id: session.handler.native_file
         save_path: '%kernel.project_dir%/var/sessions/%kernel.environment%'
+        cookie_secure: auto
+        cookie_samesite: lax
     fragments: ~
     http_method_override: true
+    handle_all_throwables: true
     assets: ~
     asset_mapper:
         # The assets are the Resources/public directories of the bundles

@@ -10,6 +10,11 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class RecaptchaVerifier
 {
+    /**
+     * Name of the request parameter with the answer to the captcha.
+     */
+    private const RESPONSE_KEY = 'g-recaptcha-response';
+
     private $privateKey;
 
     public function __construct(#[\SensitiveParameter] string $privateKey)
@@ -26,10 +31,10 @@ class RecaptchaVerifier
         $recaptcha = new ReCaptcha($this->privateKey);
 
         if ($checkHostname) {
-            $recaptcha = $recaptcha->withExpectedHostname($request->getHost());
+            $recaptcha->setExpectedHostname($request->getHost());
         }
 
-        $answer = $request->request->get(ReCaptcha::RESPONSE_KEY) ?? $request->query->get(ReCaptcha::RESPONSE_KEY);
+        $answer = $request->request->get(self::RESPONSE_KEY) ?? $request->query->get(self::RESPONSE_KEY);
 
         return $recaptcha->verify((string) $answer, $request->getClientIp())->isSuccess();
     }

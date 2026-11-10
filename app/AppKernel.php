@@ -1,9 +1,10 @@
 <?php
 
+use Composer\InstalledVersions;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\HttpKernel\Kernel;
-use Symfony\Component\Intl\Countries;
+use Symfony\Component\Mailer\Transport\Smtp\EsmtpTransport;
 
 class AppKernel extends Kernel
 {
@@ -64,14 +65,6 @@ class AppKernel extends Kernel
         return $bundles;
     }
 
-    public function boot(): void
-    {
-        // Kosovo has no ISO 3166-1 code, keep it in the countries with the code it uses (XK)
-        Countries::withUserAssigned(true);
-
-        parent::boot();
-    }
-
     public function getProjectDir(): string
     {
         return dirname(__DIR__);
@@ -99,7 +92,47 @@ class AppKernel extends Kernel
                 $container->getParameter('mailer_user'),
                 $container->getParameter('mailer_password')
             ));
+
+            $doctrine = self::getDoctrineLegacyConfiguration();
+            if ([] !== $doctrine) {
+                $container->loadFromExtension('doctrine', $doctrine);
+            }
         });
+    }
+
+    /**
+     * Options of DoctrineBundle which exist only for the previous versions of DoctrineBundle, Doctrine DBAL
+     * or Doctrine ORM: they select what the current versions always do.
+     */
+    private static function getDoctrineLegacyConfiguration(): array
+    {
+        $config = [];
+
+        if (method_exists(Doctrine\DBAL\Connection::class, 'getEventManager')) {
+            // Doctrine DBAL 3: nested transactions with savepoints, no type in the comment of the columns
+            $config['dbal'] = ['use_savepoints' => true, 'disable_type_comments' => true];
+        }
+
+        if (class_exists(Doctrine\ORM\Mapping\Driver\AnnotationDriver::class)) {
+            // Doctrine ORM 2: the fields are reported by the class which declares them, the proxies of the entities
+            // are lazy ghost objects when Symfony has them (up to version 7)
+            $config['orm'] = [
+                'report_fields_where_declared' => true,
+                'enable_lazy_ghost_objects' => trait_exists(Symfony\Component\VarExporter\LazyGhostTrait::class),
+            ];
+        }
+
+        if (version_compare(InstalledVersions::getVersion('doctrine/doctrine-bundle') ?? '3.0', '3.0', '<')) {
+            // No lookup of entities with the route placeholders, entities are lazy objects of PHP when possible
+            $config['orm']['controller_resolver'] = ['auto_mapping' => false];
+            if (\PHP_VERSION_ID >= 80400
+                && method_exists(Doctrine\ORM\Configuration::class, 'enableNativeLazyObjects')
+            ) {
+                $config['orm']['enable_native_lazy_objects'] = true;
+            }
+        }
+
+        return $config;
     }
 
     /**
@@ -118,8 +151,12 @@ class AppKernel extends Kernel
                     $credentials .= '@';
                 }
 
-                // Plain SMTP without STARTTLS negotiation, as with the former Swiftmailer configuration
-                return 'smtp://'.$credentials.($host ?: '127.0.0.1').'?auto_tls=false';
+                // Plain SMTP without STARTTLS negotiation, as with the former Swiftmailer configuration.
+                // It can not be disabled before Symfony 7.1: the certificate of the server is then not checked,
+                // a local server usually has not a valid one.
+                $options = method_exists(EsmtpTransport::class, 'setAutoTls') ? 'auto_tls=false' : 'verify_peer=0';
+
+                return 'smtp://'.$credentials.($host ?: '127.0.0.1').'?'.$options;
             case 'sendmail':
                 return 'sendmail://default';
             case 'mail':

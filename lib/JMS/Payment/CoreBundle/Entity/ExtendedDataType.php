@@ -45,6 +45,14 @@ class ExtendedDataType extends Type
         return self::$encryptionService;
     }
 
+    /**
+     * Name of the type, for Doctrine DBAL 3.
+     */
+    public function getName(): string
+    {
+        return self::NAME;
+    }
+
     public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
     {
         return $platform->getClobTypeDeclarationSQL($column);

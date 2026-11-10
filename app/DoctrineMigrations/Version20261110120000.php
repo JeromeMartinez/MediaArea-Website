@@ -26,8 +26,9 @@ final class Version20261110120000 extends AbstractMigration
         $this->addSql('ALTER TABLE financial_transactions CHANGE extended_data extended_data LONGTEXT DEFAULT NULL');
         $this->addSql('ALTER TABLE payment_instructions CHANGE extended_data extended_data LONGTEXT NOT NULL');
 
+        // The index is replaced instead of renamed: MariaDB has "RENAME INDEX" only since version 10.5
         if ($schema->getTable('user_quotas')->hasIndex('uniq_8h1679f4b67bf763')) {
-            $this->addSql('ALTER TABLE user_quotas RENAME INDEX uniq_8h1679f4b67bf763 TO UNIQ_A08B56FCA76ED395');
+            $this->addSql('ALTER TABLE user_quotas DROP INDEX uniq_8h1679f4b67bf763, ADD UNIQUE INDEX UNIQ_A08B56FCA76ED395 (user_id)');
         }
     }
 
@@ -40,7 +41,7 @@ final class Version20261110120000 extends AbstractMigration
         $this->addSql('ALTER TABLE payment_instructions CHANGE extended_data extended_data LONGTEXT NOT NULL COMMENT \'(DC2Type:extended_payment_data)\'');
 
         if ($schema->getTable('user_quotas')->hasIndex('UNIQ_A08B56FCA76ED395')) {
-            $this->addSql('ALTER TABLE user_quotas RENAME INDEX UNIQ_A08B56FCA76ED395 TO uniq_8h1679f4b67bf763');
+            $this->addSql('ALTER TABLE user_quotas DROP INDEX UNIQ_A08B56FCA76ED395, ADD UNIQUE INDEX uniq_8h1679f4b67bf763 (user_id)');
         }
     }
 }

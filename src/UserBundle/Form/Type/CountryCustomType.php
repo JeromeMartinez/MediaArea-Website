@@ -18,10 +18,10 @@ class CountryCustomType extends AbstractType
     private const PREFERRED_COUNTRIES = ['GB', 'FR', 'DE', 'IT', 'SE', 'NL', 'BE', 'CH', 'US', 'ES'];
 
     /**
-     * Regions which are not countries of ISO 3166-1 but were in the list of the previous versions of Symfony:
-     * users may have one of them in their profile.
+     * Regions which are not countries of ISO 3166-1 (Kosovo is XK) but were in the list of the previous versions
+     * of Symfony: users may have one of them in their profile.
      */
-    private const OTHER_REGIONS = ['AC', 'DG', 'EA', 'IC', 'TA'];
+    private const OTHER_REGIONS = ['AC', 'DG', 'EA', 'IC', 'TA', 'XK'];
 
     public function configureOptions(OptionsResolver $resolver): void
     {
@@ -61,7 +61,7 @@ class CountryCustomType extends AbstractType
 
         $names = Countries::getNames($displayLocale);
         foreach (self::OTHER_REGIONS as $region) {
-            $names[$region] = \Locale::getDisplayRegion('und_'.$region, $displayLocale);
+            $names[$region] ??= \Locale::getDisplayRegion('und_'.$region, $displayLocale);
         }
         (new \Collator($displayLocale))->asort($names);
 

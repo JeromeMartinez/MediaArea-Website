@@ -56,7 +56,11 @@ class RolesRefreshSubscriber implements EventSubscriberInterface
         }
 
         if ($token instanceof RememberMeToken) {
-            $newToken = new RememberMeToken($user, $token->getFirewallName());
+            // The secret is an argument of the constructor up to Symfony 7.1
+            $constructor = new \ReflectionMethod(RememberMeToken::class, '__construct');
+            $newToken = 2 < $constructor->getNumberOfRequiredParameters()
+                ? new RememberMeToken($user, $token->getFirewallName(), $token->getSecret())
+                : new RememberMeToken($user, $token->getFirewallName());
         } elseif ($token instanceof UsernamePasswordToken) {
             $newToken = new UsernamePasswordToken($user, $token->getFirewallName(), $roles);
         } else {
