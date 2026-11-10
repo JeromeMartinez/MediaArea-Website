@@ -36,9 +36,11 @@ fos_user_registration_check_email:
     controller: UserBundle\Controller\RegistrationController::checkEmailAction
 
 fos_user_registration_confirm:
-    path: /register/confirm/{token}
+    path: /register/confirm/{id}
     methods: [GET]
     controller: UserBundle\Controller\RegistrationController::confirmAction
+    requirements:
+        id: '\d+'
 
 fos_user_registration_confirmed:
     path: /register/confirmed

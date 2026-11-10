@@ -64,11 +64,6 @@ class UserManager
         return $this->findUserByUsername($usernameOrEmail);
     }
 
-    public function findUserByConfirmationToken($token): ?User
-    {
-        return $this->findUserBy(['confirmationToken' => $token]);
-    }
-
     /**
      * Updates the canonical fields and the password of a user then saves it.
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)

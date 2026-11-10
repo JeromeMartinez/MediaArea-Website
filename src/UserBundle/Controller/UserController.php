@@ -17,7 +17,6 @@ use UserBundle\Form\Type\GuestRegisterFormType;
 use PaymentBundle\Entity\Invoice;
 use UserBundle\Lib\Quotas\Quotas;
 use UserBundle\Lib\Settings\SettingsManager;
-use UserBundle\Lib\TokenGenerator;
 use UserBundle\Lib\UserManager;
 use VoteBundle\Entity\Vote;
 use VoteBundle\Entity\Feature;
@@ -30,18 +29,12 @@ class UserController extends AbstractController
 {
     private $em;
     private $userManager;
-    private $tokenGenerator;
     private $mailer;
 
-    public function __construct(
-        EntityManagerInterface $em,
-        UserManager $userManager,
-        TokenGenerator $tokenGenerator,
-        UserMailer $mailer
-    ) {
+    public function __construct(EntityManagerInterface $em, UserManager $userManager, UserMailer $mailer)
+    {
         $this->em = $em;
         $this->userManager = $userManager;
-        $this->tokenGenerator = $tokenGenerator;
         $this->mailer = $mailer;
     }
 
@@ -94,16 +87,11 @@ class UserController extends AbstractController
 
             $this->addFlash('success', 'You have been registered successfully');
 
-            if ($this->getParameter('user.registration.confirmation.enabled')) {
+            $confirmation = $this->getParameter('user.registration.confirmation.enabled');
+            if ($confirmation) {
+                // Keep guest user enable to avoid redirect to login page
                 $request->getSession()->set('fos_user_send_confirmation_email/email', $user->getEmail());
                 $route = 'fos_user_registration_check_email';
-
-                // Keep guest user enable to avoid redirect to login page
-                if (null === $user->getConfirmationToken()) {
-                    $user->setConfirmationToken($this->tokenGenerator->generateToken());
-                }
-
-                $this->mailer->sendConfirmationEmailMessage($user);
             } else {
                 $route = 'fos_user_registration_confirmed';
 
@@ -125,6 +113,11 @@ class UserController extends AbstractController
 
             // Update user
             $this->userManager->updateUser($user);
+
+            if ($confirmation) {
+                // The link of the email is signed for the address of the user, which is now saved
+                $this->mailer->sendConfirmationEmailMessage($user);
+            }
 
             return $this->redirectToRoute($route);
         }

@@ -7,21 +7,23 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\InvalidSignatureException;
+use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
+use SymfonyCasts\Bundle\VerifyEmail\VerifyEmailHelperInterface;
 use UserBundle\Entity\User;
 use UserBundle\Form\Type\RegistrationFormType;
-use UserBundle\Lib\TokenGenerator;
 use UserBundle\Lib\UserManager;
 use UserBundle\Security\LoginManager;
 
 /**
  * Controller managing the registration.
  *
- * Derived from the registration controller of FOSUserBundle (MIT license).
+ * Derived from the registration controller of FOSUserBundle (MIT license), the link which confirms the email
+ * address is signed and checked by SymfonyCastsVerifyEmailBundle.
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
@@ -30,7 +32,7 @@ class RegistrationController extends AbstractController
     private $formFactory;
     private $userManager;
     private $tokenStorage;
-    private $tokenGenerator;
+    private $verifyEmailHelper;
     private $loginManager;
     private $mailer;
     private $translator;
@@ -44,7 +46,7 @@ class RegistrationController extends AbstractController
         FormFactoryInterface $formFactory,
         UserManager $userManager,
         TokenStorageInterface $tokenStorage,
-        TokenGenerator $tokenGenerator,
+        VerifyEmailHelperInterface $verifyEmailHelper,
         LoginManager $loginManager,
         UserMailer $mailer,
         TranslatorInterface $translator,
@@ -54,7 +56,7 @@ class RegistrationController extends AbstractController
         $this->formFactory = $formFactory;
         $this->userManager = $userManager;
         $this->tokenStorage = $tokenStorage;
-        $this->tokenGenerator = $tokenGenerator;
+        $this->verifyEmailHelper = $verifyEmailHelper;
         $this->loginManager = $loginManager;
         $this->mailer = $mailer;
         $this->translator = $translator;
@@ -96,11 +98,6 @@ class RegistrationController extends AbstractController
             if ($this->confirmationEnabled) {
                 // The account is enabled once the email address is confirmed
                 $user->setEnabled(false);
-                if (null === $user->getConfirmationToken()) {
-                    $user->setConfirmationToken($this->tokenGenerator->generateToken());
-                }
-
-                $this->mailer->sendConfirmationEmailMessage($user);
 
                 $request->getSession()->set('fos_user_send_confirmation_email/email', $user->getEmail());
 
@@ -113,6 +110,11 @@ class RegistrationController extends AbstractController
             $user->addRole('ROLE_BASIC');
 
             $this->userManager->updateUser($user);
+
+            if ($this->confirmationEnabled) {
+                // The link of the email is signed with the identifier of the user, known now that he is saved
+                $this->mailer->sendConfirmationEmailMessage($user);
+            }
 
             $this->addFlash('success', $this->translator->trans('registration.flash.user_created', [], 'FOSUserBundle'));
 
@@ -154,21 +156,39 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * Receive the confirmation token from user email provider, login the user.
+     * Receive the signed link of the confirmation email, login the user.
      *
-     * @param string $token
+     * @param Request $request
+     * @param int     $id      Identifier of the user
      *
      * @return Response
      */
-    public function confirmAction($token)
+    public function confirmAction(Request $request, $id)
     {
-        $user = $this->userManager->findUserByConfirmationToken($token);
+        $user = $this->userManager->findUserBy(['id' => $id]);
 
-        if (null === $user) {
-            throw new NotFoundHttpException(sprintf('The user with confirmation token "%s" does not exist', $token));
+        try {
+            if (null === $user) {
+                throw new InvalidSignatureException();
+            }
+
+            $this->verifyEmailHelper->validateEmailConfirmationFromRequest(
+                $request,
+                (string) $user->getId(),
+                (string) $user->getEmail()
+            );
+        } catch (VerifyEmailExceptionInterface $e) {
+            // The link is not the one sent to the user, or it has expired
+            $this->addFlash('danger', $this->translator->trans($e->getReason(), [], 'VerifyEmailBundle'));
+
+            return $this->redirectToRoute('fos_user_security_login');
         }
 
-        $user->setConfirmationToken(null);
+        // The link logs in the user once: when his address is already confirmed, he has to log in
+        if ($user->isEnabled() && !$user->hasRole('ROLE_GUEST')) {
+            return $this->redirectToRoute('fos_user_security_login');
+        }
+
         $user->setEnabled(true);
 
         // Remove guest role

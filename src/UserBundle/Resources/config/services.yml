@@ -17,7 +17,9 @@ services:
     UserBundle\Controller\ResettingController:
         arguments:
             $retryTtl: '%user.resetting.retry_ttl%'
-            $tokenTtl: '%user.resetting.token_ttl%'
+
+    # Storage of the password reset requests of SymfonyCastsResetPasswordBundle
+    UserBundle\Repository\ResetPasswordRequestRepository: ~
 
     UserBundle\Security\LoginManager:
         arguments:

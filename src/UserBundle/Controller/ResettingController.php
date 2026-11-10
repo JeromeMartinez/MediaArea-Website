@@ -13,18 +13,18 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccountStatusException;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use SymfonyCasts\Bundle\ResetPassword\Exception\ExpiredResetPasswordTokenException;
+use SymfonyCasts\Bundle\ResetPassword\Exception\ResetPasswordExceptionInterface;
+use SymfonyCasts\Bundle\ResetPassword\ResetPasswordHelperInterface;
 use UserBundle\Form\Type\ResettingFormType;
-use UserBundle\Lib\TokenGenerator;
 use UserBundle\Lib\UserManager;
 use UserBundle\Security\LoginManager;
 
 /**
  * Controller managing the resetting of the password.
  *
- * Derived from the resetting controller of FOSUserBundle (MIT license).
- *
- * @author Thibault Duplessis <thibault.duplessis@gmail.com>
- * @author Christophe Coevoet <stof@notk.org>
+ * The reset requests and their tokens are handled by SymfonyCastsResetPasswordBundle, the pages are the ones
+ * the website had with FOSUserBundle.
  *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
@@ -32,37 +32,36 @@ class ResettingController extends AbstractController
 {
     private $formFactory;
     private $userManager;
-    private $tokenGenerator;
+    private $resetPasswordHelper;
     private $loginManager;
     private $mailer;
     private $translator;
     private $firewallName;
     private $retryTtl;
-    private $tokenTtl;
 
     /**
+     * @param int $retryTtl Delay before a new reset email can be requested, in seconds
+     *
      * @SuppressWarnings(PHPMD.ExcessiveParameterList)
      */
     public function __construct(
         FormFactoryInterface $formFactory,
         UserManager $userManager,
-        TokenGenerator $tokenGenerator,
+        ResetPasswordHelperInterface $resetPasswordHelper,
         LoginManager $loginManager,
         UserMailer $mailer,
         TranslatorInterface $translator,
         string $firewallName,
-        int $retryTtl,
-        int $tokenTtl
+        int $retryTtl
     ) {
         $this->formFactory = $formFactory;
         $this->userManager = $userManager;
-        $this->tokenGenerator = $tokenGenerator;
+        $this->resetPasswordHelper = $resetPasswordHelper;
         $this->loginManager = $loginManager;
         $this->mailer = $mailer;
         $this->translator = $translator;
         $this->firewallName = $firewallName;
         $this->retryTtl = $retryTtl;
-        $this->tokenTtl = $tokenTtl;
     }
 
     /**
@@ -110,14 +109,15 @@ class ResettingController extends AbstractController
 
         $user = $this->userManager->findUserByUsernameOrEmail($username);
 
-        if (null !== $user && !$user->isPasswordRequestNonExpired($this->retryTtl)) {
-            if (null === $user->getConfirmationToken()) {
-                $user->setConfirmationToken($this->tokenGenerator->generateToken());
-            }
+        if (null !== $user) {
+            try {
+                $token = $this->resetPasswordHelper->generateResetToken($user);
 
-            $this->mailer->sendResettingEmailMessage($user);
-            $user->setPasswordRequestedAt(new \DateTime());
-            $this->userManager->updateUser($user);
+                $this->mailer->sendResettingEmailMessage($user, $token->getToken());
+            } catch (ResetPasswordExceptionInterface $e) {
+                // An email was sent to the user a short time ago: no other one, and the same page is displayed
+                // so that it does not tell if the user exists
+            }
         }
 
         return $this->redirectToRoute('fos_user_resetting_check_email', ['username' => $username]);
@@ -154,14 +154,12 @@ class ResettingController extends AbstractController
      */
     public function resetAction(Request $request, $token)
     {
-        $user = $this->userManager->findUserByConfirmationToken($token);
-
-        if (null === $user) {
-            return $this->redirectToRoute('fos_user_security_login');
-        }
-
-        if (!$user->isPasswordRequestNonExpired($this->tokenTtl)) {
+        try {
+            $user = $this->resetPasswordHelper->validateTokenAndFetchUser((string) $token);
+        } catch (ExpiredResetPasswordTokenException $e) {
             return $this->redirectToRoute('fos_user_resetting_request');
+        } catch (ResetPasswordExceptionInterface $e) {
+            return $this->redirectToRoute('fos_user_security_login');
         }
 
         $form = $this->formFactory->createNamed('fos_user_resetting_form', ResettingFormType::class, $user, [
@@ -170,11 +168,12 @@ class ResettingController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user->setConfirmationToken(null);
-            $user->setPasswordRequestedAt(null);
             $user->setEnabled(true);
 
             $this->userManager->updateUser($user);
+
+            // The link is used: it does not work any more, as the other ones sent to the user
+            $this->resetPasswordHelper->removeResetRequest((string) $token);
 
             $this->addFlash('success', $this->translator->trans('resetting.flash.success', [], 'FOSUserBundle'));
 
