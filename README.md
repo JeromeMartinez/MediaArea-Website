@@ -71,7 +71,7 @@ Get dependencies with composer
 cd YOUR_PATH/MediaArea-Website/
 composer install
 ```
-You'll get some configuration questions, you can use [these fake values](blob/master/app/config/parameters.yml.ci) if you don't care about the payments.
+You'll get some configuration questions, you can use [these fake values](blob/master/app/config/parameters.yml.ci) if you don't care about the payments, or [simulate them](#payments).
 
 With PHP 8.1, 8.2 or 8.3, run `composer update` instead of `composer install`, see [Supported versions](#supported-versions).
 
@@ -129,6 +129,22 @@ Translations are stored is XML format [here](https://github.com/MediaArea/MediaA
 ## Template
 
 Templates are in twig format, they are available [here](https://github.com/MediaArea/MediaArea-Website/tree/master/src/AppBundle/Resources/views)
+
+## Payments
+
+The payments are made with Paypal Express Checkout, through the gateway of [Payum](https://github.com/Payum/Payum) for the NVP API of Paypal: its credentials are the `paypal_username`, `paypal_password` and `paypal_signature` parameters. The development environment (`app_dev.php`) uses the sandbox of Paypal, with the credentials of a sandbox account.
+
+The payments can be simulated, to test them without Paypal and without credentials: set `payment_simulation: true` in `app/config/parameters.yml`, then clear the cache. Nothing is sent to Paypal and no money is involved: the user is sent to a page of the website instead of the one of Paypal, where he chooses what happens to the payment:
+
+* the payment is made;
+* the user gives up;
+* Paypal declines the payment (error 10486);
+* Paypal holds the payment for review (status `Pending`).
+
+The website then does what it does with Paypal (order, invoice, donation of the user), as only the answers of the API of Paypal are simulated. The transactions of the simulated payments are named `SIMULATED-...`.  
+Never simulate the payments on a public website: everybody would get what a payment gives without paying.
+
+The tests always simulate the payments, the ones of [PaymentFlowTest](https://github.com/MediaArea/MediaArea-Website/blob/master/src/PaymentBundle/Tests/Controller/PaymentFlowTest.php) make payments as a user does in his browser.
 
 ## Coding standard
 

@@ -23,6 +23,7 @@ parameters:
     paypal_username: Travis
     paypal_password: Travis
     paypal_signature: Travis
+    payment_simulation: false
 
     # Recaptcha
     recaptcha_public: Travis
