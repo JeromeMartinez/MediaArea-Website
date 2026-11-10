@@ -8,6 +8,7 @@ use Payum\Core\GatewayInterface;
 use Payum\Core\HttpClientInterface;
 use Payum\Paypal\ExpressCheckout\Nvp\PaypalExpressCheckoutGatewayFactory;
 use PaymentBundle\Entity\Payment;
+use PaymentBundle\Simulation\SimulatedPaypalApi;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 /**
@@ -21,15 +22,23 @@ class PaypalExpressCheckoutMethod implements PaymentMethodInterface
     private $password;
     private $signature;
     private $sandbox;
+    private $simulatedApi;
+    private $paymentSimulation;
     private $gateway;
 
+    /**
+     * @param SimulatedPaypalApi $simulatedApi      API which replaces the one of Paypal when the payments are simulated
+     * @param bool               $paymentSimulation The payments are simulated: Paypal is not called
+     */
     public function __construct(
         HttpClientInterface $httpClient,
         RequestStack $requestStack,
         ?string $username,
         #[\SensitiveParameter] ?string $password,
         #[\SensitiveParameter] ?string $signature,
-        bool $sandbox
+        bool $sandbox,
+        SimulatedPaypalApi $simulatedApi,
+        bool $paymentSimulation
     ) {
         $this->httpClient = $httpClient;
         $this->requestStack = $requestStack;
@@ -37,6 +46,8 @@ class PaypalExpressCheckoutMethod implements PaymentMethodInterface
         $this->password = $password;
         $this->signature = $signature;
         $this->sandbox = $sandbox;
+        $this->simulatedApi = $simulatedApi;
+        $this->paymentSimulation = $paymentSimulation;
     }
 
     public function getName(): string
@@ -46,7 +57,7 @@ class PaypalExpressCheckoutMethod implements PaymentMethodInterface
 
     public function getLabel(): string
     {
-        return 'form.label.paypal_express_checkout';
+        return 'form.label.paypal_express_checkout'.($this->paymentSimulation ? '_simulation' : '');
     }
 
     public function getGateway(): GatewayInterface
@@ -56,7 +67,7 @@ class PaypalExpressCheckoutMethod implements PaymentMethodInterface
             $getHttpRequest = new GetHttpRequestAction();
             $getHttpRequest->setHttpRequestStack($this->requestStack);
 
-            $this->gateway = (new PaypalExpressCheckoutGatewayFactory())->create([
+            $config = [
                 'username' => (string) $this->username,
                 'password' => (string) $this->password,
                 'signature' => (string) $this->signature,
@@ -66,7 +77,14 @@ class PaypalExpressCheckoutMethod implements PaymentMethodInterface
                 'httplug.client' => $this->httpClient,
                 'httplug.message_factory' => new GuzzleMessageFactory(),
                 'payum.action.get_http_request' => $getHttpRequest,
-            ]);
+            ];
+
+            // The gateway is the same when the payments are simulated, only the API it calls changes
+            if ($this->paymentSimulation) {
+                $config['payum.api'] = $this->simulatedApi;
+            }
+
+            $this->gateway = (new PaypalExpressCheckoutGatewayFactory())->create($config);
         }
 
         return $this->gateway;

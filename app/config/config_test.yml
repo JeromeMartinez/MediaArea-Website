@@ -1,6 +1,10 @@
 imports:
     - { resource: config_dev.yml }
 
+parameters:
+    # The tests make payments: they are simulated
+    payment_simulation: true
+
 framework:
     test: ~
     session:

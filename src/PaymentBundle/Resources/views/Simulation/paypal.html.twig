@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Simulated payment with Paypal{% endblock %}
+{% block description %}Simulated payment with Paypal{% endblock %}
+
+{% block body %}
+<h1>Simulated payment with Paypal</h1>
+
+<div class="alert alert-warning">
+    The payments are simulated on this website: this page replaces the one of Paypal, nothing is sent to Paypal and no money is involved.
+</div>
+
+{% if checkout.transactionId is null %}
+    <p class="payment-simulation-amount">Payment of <strong>{{ checkout.amount }} {{ checkout.currency }}</strong> to MediaArea.</p>
+
+    <form method="post" class="payment-simulation">
+        <p>
+            <button type="submit" name="outcome" value="pay" class="btn btn-primary">Pay</button>
+            <button type="submit" name="outcome" value="cancel" class="btn btn-default">Cancel and return to the website</button>
+        </p>
+        <p>Other answers Paypal may give when the buyer accepts the payment:</p>
+        <p>
+            <button type="submit" name="outcome" value="decline" class="btn btn-default">Payment declined</button>
+            <button type="submit" name="outcome" value="pending" class="btn btn-default">Payment held for review</button>
+        </p>
+    </form>
+{% else %}
+    <p class="payment-simulation-amount">The payment of <strong>{{ checkout.amount }} {{ checkout.currency }}</strong> is already made (transaction {{ checkout.transactionId }}).</p>
+{% endif %}
+{% endblock %}

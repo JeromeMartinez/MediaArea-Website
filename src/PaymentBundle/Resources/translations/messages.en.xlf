@@ -10,6 +10,10 @@
         <source><![CDATA[form.label.paypal_express_checkout]]></source>
         <target><![CDATA[Paypal]]></target>
       </trans-unit>
+      <trans-unit id="form.label.paypal_express_checkout_simulation" approved="yes">
+        <source><![CDATA[form.label.paypal_express_checkout_simulation]]></source>
+        <target><![CDATA[Paypal (simulation)]]></target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

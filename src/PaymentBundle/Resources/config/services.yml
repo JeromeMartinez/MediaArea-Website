@@ -3,6 +3,9 @@ services:
         autowire: true
         autoconfigure: true
         public: false
+        bind:
+            # The payments are simulated: the payment providers are not called
+            $paymentSimulation: '%payment_simulation%'
 
     _instanceof:
         PaymentBundle\Method\PaymentMethodInterface:

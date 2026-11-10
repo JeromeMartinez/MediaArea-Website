@@ -10,11 +10,15 @@ use PaymentBundle\Entity\Order;
 use PaymentBundle\Entity\Payment;
 use PaymentBundle\Method\PaypalExpressCheckoutMethod;
 use PaymentBundle\Payum\HttpClient;
+use PaymentBundle\Simulation\PaypalSimulator;
+use PaymentBundle\Simulation\SimulatedPaypalApi;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Cache\Adapter\ArrayAdapter;
 use Symfony\Component\HttpClient\MockHttpClient;
 use Symfony\Component\HttpClient\Response\MockResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 /**
  * The gateway of Payum with the answers Paypal gives to the requests of its NVP API.
@@ -42,7 +46,22 @@ class PaypalExpressCheckoutMethodTest extends TestCase
         $requestStack = new RequestStack();
         $requestStack->push($request ?? Request::create('/orders/1/payment/create'));
 
-        return new PaypalExpressCheckoutMethod(new HttpClient($client), $requestStack, 'user', 'password', 'sign', true);
+        // The payments are not simulated: the simulated API is not used
+        $simulatedApi = new SimulatedPaypalApi(
+            new PaypalSimulator(new ArrayAdapter()),
+            $this->createStub(UrlGeneratorInterface::class)
+        );
+
+        return new PaypalExpressCheckoutMethod(
+            new HttpClient($client),
+            $requestStack,
+            'user',
+            'password',
+            'sign',
+            true,
+            $simulatedApi,
+            false
+        );
     }
 
     private function createDetails(PaypalExpressCheckoutMethod $method): ArrayObject
