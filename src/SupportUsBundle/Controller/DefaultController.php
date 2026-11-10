@@ -16,7 +16,7 @@ use PaymentBundle\Lib\VatCalculator;
 use SupportUsBundle\Lib\Corporate;
 use SupportUsBundle\Lib\Individual;
 use Doctrine\Persistence\ManagerRegistry;
-use JMS\Payment\CoreBundle\PluginController\PluginControllerInterface;
+use PaymentBundle\Lib\PaymentManager;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -24,12 +24,12 @@ use JMS\Payment\CoreBundle\PluginController\PluginControllerInterface;
 class DefaultController extends AbstractController
 {
     private $doctrine;
-    private $ppc;
+    private $payments;
 
-    public function __construct(ManagerRegistry $doctrine, PluginControllerInterface $ppc)
+    public function __construct(ManagerRegistry $doctrine, PaymentManager $payments)
     {
         $this->doctrine = $doctrine;
-        $this->ppc = $ppc;
+        $this->payments = $payments;
     }
 
     #[Route('/SupportUs', name: 'supportUs_about')]
@@ -51,7 +51,6 @@ class DefaultController extends AbstractController
         $form = $this->paymentForm(
             $request,
             'payment_orders_paymentcreateindividual',
-            'supportUs_individual',
             $ipToCurrency->getCurrency(),
             'individual'
         );
@@ -83,7 +82,6 @@ class DefaultController extends AbstractController
             $form = $this->paymentForm(
                 $request,
                 'payment_orders_paymentcreatecorporate',
-                'supportUs_corporate',
                 $ipToCurrency->getCurrency(),
                 'corporate'
             );
@@ -117,7 +115,6 @@ class DefaultController extends AbstractController
                 $form = $this->paymentForm(
                     $request,
                     'payment_orders_paymentcreatecustom',
-                    'supportUs_custom',
                     $request->query->get('currency'),
                     'custom',
                     ['amount' => (int) $request->query->get('amount'), 'currency' => $request->query->get('currency')],
@@ -151,7 +148,6 @@ class DefaultController extends AbstractController
         $form = $this->paymentForm(
             $request,
             'payment_orders_paymentcreateindividual',
-            'supportUs_individual',
             $ipToCurrency->getCurrency(),
             'individual'
         );
@@ -176,7 +172,6 @@ class DefaultController extends AbstractController
     protected function paymentForm(
         Request $request,
         string $returnRoute,
-        string $cancelRoute,
         string $currency,
         string $type = 'individual',
         array $cancelRouteParams = [],
@@ -195,14 +190,10 @@ class DefaultController extends AbstractController
             $em->persist($order);
             $em->flush();
 
+            // The payment provider sends the user back to this URL
             $returnUrl = $this->generateUrl(
                 $returnRoute,
                 ['id' => $order->getId(), 'routeParams' => $cancelRouteParams],
-                UrlGeneratorInterface::ABSOLUTE_URL
-            );
-            $cancerlUrl = $this->generateUrl(
-                $cancelRoute,
-                $cancelRouteParams,
                 UrlGeneratorInterface::ABSOLUTE_URL
             );
         }
@@ -210,41 +201,14 @@ class DefaultController extends AbstractController
         $form = $this->createForm(ChoosePaymentMethodType::class, null, [
             'amount_field_type' => 'text',
             'amount' => $amount,
-            'currency' => $currency,
-            // 'default_method' => 'stripe_credit_card',
             'default_method' => 'paypal_express_checkout',
-            'predefined_data' => [
-                'adyen_credit_card' => [
-                    'return_url' => $returnUrl ?? '',
-                ],
-                'paypal_express_checkout' => [
-                    'return_url' => $returnUrl ?? '',
-                    'cancel_url' => $cancerlUrl ?? '',
-                    'useraction' => 'commit',
-                ],
-            ],
-            'method_options' => [
-                'paypal_express_checkout' => [
-                    'label' => false,
-                ],
-                /*
-                'stripe_credit_card' => [
-                    'data' => ['name' => (null !== $this->getUser()) ? $this->getUser()->getNameForDisplay() : ''],
-                ],
-                */
-            ],
-            'allowed_methods' => ['paypal_express_checkout'/*, 'stripe_credit_card'*/],
+            'allowed_methods' => ['paypal_express_checkout'],
         ]);
 
         $form->handleRequest($request);
 
         if ('POST' === $request->getMethod() && $form->isSubmitted() && $form->isValid()) {
-            $ppc = $this->ppc;
-            $ppc->createPaymentInstruction($instruction = $form->getData());
-
-            $order->setPaymentInstruction($instruction);
-            $em->persist($order);
-            $em->flush();
+            $this->payments->create($order, $form->get('method')->getData(), $currency, $returnUrl);
 
             return $this->redirect(
                 $this->generateUrl($returnRoute, ['id' => $order->getId(), 'routeParams' => $cancelRouteParams])

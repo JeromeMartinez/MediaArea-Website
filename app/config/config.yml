@@ -40,6 +40,9 @@ parameters:
     # Lifetime of the link of the password reset email, in seconds
     user.resetting.token_ttl: 86400
 
+    # Payments: the sandbox of Paypal is used in the development environment
+    payment.paypal.sandbox: false
+
 framework:
     #esi: ~
     translator:
@@ -125,6 +128,9 @@ doctrine:
         types:
             # Type of the existing database which is not part of Doctrine DBAL any more
             array: AppBundle\Doctrine\Type\ArrayType
+        # The tables of JMSPaymentCoreBundle are kept as archives of the payments made before the "order_payment"
+        # table, they have no entity any more
+        schema_filter: '~^(?!(payment_instructions|payments|financial_transactions|credits)$)~'
 
     orm:
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
@@ -198,21 +204,6 @@ fos_js_routing:
         - mco_policy_rule_move
         - mco_policy_rule_values_list
         - mco_policy_tree_data
-
-jms_payment_core:
-    encryption:
-        provider: defuse_php_encryption
-        secret: "%jms_payment_core_secret%"
-
-kj_payment_stripe:
-    api_key: "%kj_payment_stripe_api_key%"
-    api_version: "%kj_payment_stripe_api_version%"
-
-jms_payment_paypal:
-    username: "%jms_payment_paypal_username%"
-    password: "%jms_payment_paypal_password%"
-    signature: "%jms_payment_paypal_signature%"
-    debug: false
 
 nelmio_cors:
     defaults:

@@ -16,8 +16,15 @@ class Order
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    #[ORM\OneToOne(targetEntity: \JMS\Payment\CoreBundle\Entity\PaymentInstruction::class)]
-    private $paymentInstruction;
+    #[ORM\OneToOne(targetEntity: Payment::class, mappedBy: 'order')]
+    private $payment;
+
+    /**
+     * Payment instruction of JMSPaymentCoreBundle, for the orders made when this bundle was used:
+     * its tables are kept in the database as archives.
+     */
+    #[ORM\Column(name: 'payment_instruction_id', type: 'integer', nullable: true)]
+    private $legacyPaymentInstructionId;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 5)]
     private $amount;
@@ -116,26 +123,36 @@ class Order
     }
 
     /**
-     * Set paymentInstruction.
+     * Set payment.
      *
-     * @param \JMS\Payment\CoreBundle\Entity\PaymentInstruction|null $paymentInstruction
+     * @param Payment|null $payment
      *
      * @return Order
      */
-    public function setPaymentInstruction(?\JMS\Payment\CoreBundle\Entity\PaymentInstruction $paymentInstruction = null)
+    public function setPayment(?Payment $payment = null)
     {
-        $this->paymentInstruction = $paymentInstruction;
+        $this->payment = $payment;
 
         return $this;
     }
 
     /**
-     * Get paymentInstruction.
+     * Get payment.
      *
-     * @return \JMS\Payment\CoreBundle\Entity\PaymentInstruction|null
+     * @return Payment|null
      */
-    public function getPaymentInstruction()
+    public function getPayment()
     {
-        return $this->paymentInstruction;
+        return $this->payment;
+    }
+
+    /**
+     * Get the identifier of the archived payment instruction of an old order.
+     *
+     * @return int|null
+     */
+    public function getLegacyPaymentInstructionId()
+    {
+        return $this->legacyPaymentInstructionId;
     }
 }

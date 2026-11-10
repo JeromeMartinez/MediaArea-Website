@@ -4,34 +4,6 @@
             {{ form_row(form.amount) }}
             {{ form_row(form.method) }}
         </div>
-        {# Disabling stripe
-        <div class="col-md-8 stripe-form">
-            {{ form_row(form.data_stripe_credit_card.name) }}
-            {{ form_row(form.data_stripe_credit_card.number) }}
-            <div class="form-group {% if not form.data_stripe_credit_card.exp_month.vars.valid or not form.data_stripe_credit_card.exp_year.vars.valid %}has-error{% endif %}">
-                {{ form_label(form.data_stripe_credit_card.exp_month) }}
-                <div class="col-sm-3">
-                    {{ form_widget(form.data_stripe_credit_card.exp_month) }}
-                    {{ form_errors(form.data_stripe_credit_card.exp_month) }}
-                </div>
-                <div class="col-sm-3">
-                    {{ form_widget(form.data_stripe_credit_card.exp_year) }}
-                    {{ form_errors(form.data_stripe_credit_card.exp_year) }}
-                </div>
-                <div class="col-sm-4">
-                    {{ form_row(form.data_stripe_credit_card.cvc) }}
-                </div>
-                <div class="clearfix"></div>
-                <div class="col-sm-6 col-sm-offset-2">
-                    <img src="{{ asset('bundles/payment/img/card-brands-min.png') }}" class="img-responsive">
-                </div>
-                <div class="clearfix"></div>
-                <div class="col-sm-6 col-sm-offset-2">
-                    {{ form_widget(form.recaptcha) }}
-                </div>
-            </div>
-        </div>
-        #}
         {{ form_widget(form.recaptcha) }}
         <div class="clearfix"></div>
         <div class="col-md-4 text-center">

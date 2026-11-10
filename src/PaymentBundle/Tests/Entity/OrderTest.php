@@ -2,42 +2,40 @@
 
 namespace PaymentBundle\Tests\Entity;
 
-use JMS\Payment\CoreBundle\Entity\PaymentInstruction;
-use JMS\Payment\CoreBundle\Model\PaymentInstructionInterface;
 use PaymentBundle\Entity\Order;
+use PaymentBundle\Entity\Payment;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class OrderTest extends KernelTestCase
 {
     /**
-     * The payment instruction of an order is first a proxy, it is loaded when a payment is created.
+     * The payment of an order is first a proxy, it is loaded when it is read.
      */
-    public function testPaymentInstructionOfAnOrderIsLoaded()
+    public function testPaymentOfAnOrderIsLoaded()
     {
         $entityManager = static::getContainer()->get('doctrine')->getManager();
 
-        $instruction = new PaymentInstruction(10, 'EUR', 'paypal_express_checkout');
-        $instruction->setState(PaymentInstructionInterface::STATE_VALID);
         $order = new Order(10);
-        $order->setPaymentInstruction($instruction);
-        $entityManager->persist($instruction);
+        $payment = new Payment($order, 'paypal_express_checkout', $order->getAmount(), 'EUR');
+        $payment->setState(Payment::STATE_CAPTURED);
         $entityManager->persist($order);
+        $entityManager->persist($payment);
         $entityManager->flush();
         $orderId = $order->getId();
         $entityManager->clear();
 
         $order = $entityManager->getRepository(Order::class)->find($orderId);
-        $instruction = $order->getPaymentInstruction();
-        $state = $instruction->getState();
-        $currency = $instruction->getCurrency();
-        $paymentSystemName = $instruction->getPaymentSystemName();
+        $payment = $order->getPayment();
+        $state = $payment->getState();
+        $currency = $payment->getCurrency();
+        $method = $payment->getMethod();
 
+        $entityManager->remove($payment);
         $entityManager->remove($order);
-        $entityManager->remove($instruction);
         $entityManager->flush();
 
-        $this->assertSame(PaymentInstructionInterface::STATE_VALID, $state);
+        $this->assertSame(Payment::STATE_CAPTURED, $state);
         $this->assertSame('EUR', $currency);
-        $this->assertSame('paypal_express_checkout', $paymentSystemName);
+        $this->assertSame('paypal_express_checkout', $method);
     }
 }

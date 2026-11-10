@@ -4,25 +4,25 @@ services:
         autoconfigure: true
         public: false
 
+    _instanceof:
+        PaymentBundle\Method\PaymentMethodInterface:
+            tags: [ payment.method ]
+
     PaymentBundle\:
         resource: '../../*'
-        exclude: '../../{Entity,Repository,Tests,Resources,Form}'
+        exclude: '../../{Entity,Event,Repository,Tests,Resources}'
 
-    JMS\Payment\CoreBundle\PluginController\PluginControllerInterface: '@payment.plugin_controller'
+    PaymentBundle\Method\PaypalExpressCheckoutMethod:
+        arguments:
+            $httpClient: '@PaymentBundle\Payum\HttpClient'
+            $username: '%paypal_username%'
+            $password: '%paypal_password%'
+            $signature: '%paypal_signature%'
+            $sandbox: '%payment.paypal.sandbox%'
+
+    PaymentBundle\Lib\DetailsCipher:
+        arguments: [ '%payment_secret%' ]
 
     PaymentBundle\EventListener\OrdersListener:
         tags:
-            - { name: kernel.event_listener, event: payment.state_change, method: onPaymentStateChange }
-
-    # Replaces the form type of JMSPaymentCoreBundle, which adds the payment methods as last argument
-    payment.form.choose_payment_method_type:
-        class: PaymentBundle\Form\ChoosePaymentMethodType
-        autowire: false
-        arguments: [ "@payment.plugin_controller", "@request_stack" ]
-        tags: [ { name: form.type,  alias: ma_choose_payment_method } ]
-        calls:
-            - method: setDataTransformer
-              arguments: [ "@payment.form.choose_payment_method_transformer" ]
-
-parameters:
-    payment.form.stripe_credit_card_type.class: KJ\Payment\StripeBundle\Form\StripeCreditCardMinimumType
+            - { name: kernel.event_listener, event: PaymentBundle\Event\PaymentCapturedEvent, method: onPaymentCaptured }

@@ -17,8 +17,22 @@ class Invoice
     #[ORM\ManyToOne(targetEntity: \UserBundle\Entity\User::class)]
     private $user;
 
-    #[ORM\OneToOne(targetEntity: \JMS\Payment\CoreBundle\Entity\PaymentInstruction::class)]
-    private $paymentInstruction;
+    #[ORM\JoinColumn(name: 'payment_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\OneToOne(targetEntity: Payment::class)]
+    private $payment;
+
+    /**
+     * Name of the payment method, e.g. paypal_express_checkout.
+     */
+    #[ORM\Column(type: 'string', length: 100, nullable: true)]
+    private $paymentMethod;
+
+    /**
+     * Payment instruction of JMSPaymentCoreBundle, for the invoices made when this bundle was used:
+     * its tables are kept in the database as archives.
+     */
+    #[ORM\Column(name: 'payment_instruction_id', type: 'integer', nullable: true)]
+    private $legacyPaymentInstructionId;
 
     #[ORM\Column(type: 'decimal', precision: 10, scale: 5)]
     private $amount;
@@ -221,37 +235,50 @@ class Invoice
     }
 
     /**
-     * Set paymentInstruction.
+     * Set the payment and its method.
      *
-     * @param \JMS\Payment\CoreBundle\Entity\PaymentInstruction|null $paymentInstruction
+     * @param Payment|null $payment
      *
      * @return Invoice
      */
-    public function setPaymentInstruction(?\JMS\Payment\CoreBundle\Entity\PaymentInstruction $paymentInstruction = null)
+    public function setPayment(?Payment $payment = null)
     {
-        $this->paymentInstruction = $paymentInstruction;
+        $this->payment = $payment;
+        if (null !== $payment) {
+            $this->paymentMethod = $payment->getMethod();
+        }
 
         return $this;
     }
 
     /**
-     * Get paymentInstruction.
+     * Get payment.
      *
-     * @return \JMS\Payment\CoreBundle\Entity\PaymentInstruction|null
+     * @return Payment|null
      */
-    public function getPaymentInstruction()
+    public function getPayment()
     {
-        return $this->paymentInstruction;
+        return $this->payment;
+    }
+
+    /**
+     * Get the identifier of the archived payment instruction of an old invoice.
+     *
+     * @return int|null
+     */
+    public function getLegacyPaymentInstructionId()
+    {
+        return $this->legacyPaymentInstructionId;
     }
 
     /**
      * Get payment system name.
      *
-     * @return string
+     * @return string|null
      */
     public function getPaymentSystemName()
     {
-        return $this->paymentInstruction->getPaymentSystemName();
+        return $this->paymentMethod;
     }
 
     /**
@@ -261,7 +288,7 @@ class Invoice
      */
     public function getShortPaymentSystemName()
     {
-        switch ($this->paymentInstruction->getPaymentSystemName()) {
+        switch ($this->paymentMethod) {
             case 'paypal_express_checkout':
                 return 'Paypal';
                 break;
@@ -269,7 +296,7 @@ class Invoice
                 return 'Stripe';
                 break;
             default:
-                return $this->paymentInstruction->getPaymentSystemName();
+                return (string) $this->paymentMethod;
         }
     }
 }

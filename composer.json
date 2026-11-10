@@ -4,7 +4,7 @@
     "type": "project",
     "description": "MediaArea website",
     "autoload": {
-        "psr-4": { "": ["src/", "lib/"] },
+        "psr-4": { "": "src/" },
         "classmap": [ "app/AppKernel.php" ]
     },
     "require": {
@@ -27,14 +27,17 @@
         "friendsofsymfony/jsrouting-bundle": "^3.5",
         "geoip2/geoip2": "^3.4",
         "google/recaptcha": "^1.3 || ^2.0",
+        "guzzlehttp/psr7": "^2.6",
         "incenteev/composer-parameter-handler": "^2.3",
         "knplabs/knp-menu-bundle": "^3.7",
         "matomo/device-detector": "^6.5",
         "mpdf/mpdf": "^8.3",
         "nelmio/cors-bundle": "^2.6",
+        "payum/core": "^1.7.2",
+        "payum/paypal-express-checkout-nvp": "^1.7.2",
+        "php-http/message-factory": "^1.1",
         "php-opencloud/openstack": "^3.17",
         "stof/doctrine-extensions-bundle": "^1.15",
-        "stripe/stripe-php": "^22.1",
         "symfony/asset": "^6.4 || ^7.2 || ^8.0",
         "symfony/asset-mapper": "^6.4 || ^7.2 || ^8.0",
         "symfony/console": "^6.4 || ^7.2 || ^8.0",
@@ -42,6 +45,7 @@
         "symfony/finder": "^6.4 || ^7.2 || ^8.0",
         "symfony/form": "^6.4.20 || ^7.2.5 || ^8.0",
         "symfony/framework-bundle": "^6.4 || ^7.2 || ^8.0",
+        "symfony/http-client": "^6.4 || ^7.2 || ^8.0",
         "symfony/intl": "^6.4 || ^7.2 || ^8.0",
         "symfony/mailer": "^6.4 || ^7.2 || ^8.0",
         "symfony/monolog-bundle": "^3.10 || ^4.0",
@@ -88,7 +92,13 @@
     "extra": {
         "public-dir": "web",
         "incenteev-parameters": {
-            "file": "app/config/parameters.yml"
+            "file": "app/config/parameters.yml",
+            "rename-map": {
+                "paypal_username": "jms_payment_paypal_username",
+                "paypal_password": "jms_payment_paypal_password",
+                "paypal_signature": "jms_payment_paypal_signature",
+                "payment_secret": "jms_payment_core_secret"
+            }
         }
     }
 }

@@ -4,65 +4,59 @@ namespace PaymentBundle\Lib;
 
 use Doctrine\ORM\EntityManagerInterface;
 use UserBundle\Entity\User;
-use JMS\Payment\CoreBundle\Model\PaymentInstructionInterface;
 use PaymentBundle\Entity\Invoice;
-use PaymentBundle\Entity\Order;
+use PaymentBundle\Entity\Payment;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class CreateInvoice
 {
-    protected $user;
+    protected $tokenStorage;
     protected $em;
-    protected $request;
+    protected $requestStack;
 
-    /**
-     * @param TokenStorageInterface $tokenStorage
-     * @param EntityManagerInterface         $entityManager
-     * @param RequestStack          $requestStack
-     */
     public function __construct(
         TokenStorageInterface $tokenStorage,
         EntityManagerInterface $entityManager,
         RequestStack $requestStack
     ) {
-        $this->user = $tokenStorage->getToken() ? $tokenStorage->getToken()->getUser() : null;
+        $this->tokenStorage = $tokenStorage;
         $this->em = $entityManager;
-        $this->request = $requestStack->getCurrentRequest();
+        $this->requestStack = $requestStack;
     }
 
     /**
-     * Create an invoice record.
-     *
-     * @param PaymentInstructionInterface $paymentInstruction
+     * Create the invoice of a payment.
      */
-    public function create(PaymentInstructionInterface $paymentInstruction, Order $order)
+    public function create(Payment $payment)
     {
         // Check if user is connected
-        if (!$this->user instanceof User) {
-            $this->user = null;
+        $user = $this->tokenStorage->getToken() ? $this->tokenStorage->getToken()->getUser() : null;
+        if (!$user instanceof User) {
+            $user = null;
         }
 
         // Get country
-        $ipToCountry = new IpToCountry($this->request->getClientIp());
+        $clientIp = $this->requestStack->getCurrentRequest()->getClientIp();
+        $ipToCountry = new IpToCountry($clientIp);
         $country = $ipToCountry->getCountryIsoCode('FR');
 
         // Calculate VAT
         $vat = new VatCalculator();
-        $vat->setGross($paymentInstruction->getApprovedAmount())
-            ->setCountry('custom' == $order->getType() ? 'XX' : $country)
+        $vat->setGross($payment->getAmount())
+            ->setCountry('custom' == $payment->getOrder()->getType() ? 'XX' : $country)
             ->calculateNet();
 
         // Create invoice
         $invoice = new Invoice();
-        $invoice->setUser($this->user)
-            ->setPaymentInstruction($paymentInstruction)
+        $invoice->setUser($user)
+            ->setPayment($payment)
             ->setAmount($vat->getNet())
             ->setVat($vat->getVatAmount())
-            ->setCurrency($paymentInstruction->getCurrency())
-            ->setIpAddress($this->request->getClientIp())
+            ->setCurrency($payment->getCurrency())
+            ->setIpAddress($clientIp)
             ->setCountry($country)
-            ->setDate($paymentInstruction->getUpdatedAt());
+            ->setDate($payment->getUpdatedAt());
 
         $this->em->persist($invoice);
         $this->em->flush();
