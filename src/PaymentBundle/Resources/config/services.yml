@@ -21,7 +21,7 @@ services:
             $username: '%paypal_username%'
             $password: '%paypal_password%'
             $signature: '%paypal_signature%'
-            $sandbox: '%payment.paypal.sandbox%'
+            $sandbox: '%paypal_sandbox%'
 
     PaymentBundle\Lib\DetailsCipher:
         arguments: [ '%payment_secret%' ]

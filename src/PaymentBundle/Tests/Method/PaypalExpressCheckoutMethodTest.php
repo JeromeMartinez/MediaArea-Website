@@ -31,6 +31,11 @@ class PaypalExpressCheckoutMethodTest extends TestCase
     private $requests = [];
 
     /**
+     * The sandbox of Paypal is used.
+     */
+    private $sandbox = true;
+
+    /**
      * @param array[] $responses Fields of the successive answers of Paypal
      */
     private function createMethod(array $responses, ?Request $request = null): PaypalExpressCheckoutMethod
@@ -58,7 +63,7 @@ class PaypalExpressCheckoutMethodTest extends TestCase
             'user',
             'password',
             'sign',
-            true,
+            $this->sandbox,
             $simulatedApi,
             false
         );
@@ -143,6 +148,28 @@ class PaypalExpressCheckoutMethodTest extends TestCase
         $this->assertEquals(10, $payment['PAYMENTREQUEST_0_AMT']);
         $this->assertSame('EUR', $payment['PAYMENTREQUEST_0_CURRENCYCODE']);
         $this->assertSame('Sale', $payment['PAYMENTREQUEST_0_PAYMENTACTION']);
+    }
+
+    /**
+     * Without the sandbox, the API and the pages are the ones of the real payments.
+     */
+    public function testPaypalWithoutSandbox()
+    {
+        $this->sandbox = false;
+        $method = $this->createMethod([
+            ['ACK' => 'Success', 'TOKEN' => 'EC-1'],
+            ['ACK' => 'Success', 'TOKEN' => 'EC-1', 'CHECKOUTSTATUS' => 'PaymentActionNotInitiated'],
+        ]);
+        $details = $this->createDetails($method);
+
+        try {
+            $method->getGateway()->execute(new Capture($details));
+            $this->fail('The user is not redirected to Paypal.');
+        } catch (HttpRedirect $reply) {
+            $this->assertSame('www.paypal.com', parse_url($reply->getUrl(), PHP_URL_HOST));
+        }
+
+        $this->assertSame('https://api-3t.paypal.com/nvp', $this->requests[0]['url']);
     }
 
     public function testCanceledByTheUser()

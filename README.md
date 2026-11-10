@@ -132,7 +132,9 @@ Templates are in twig format, they are available [here](https://github.com/Media
 
 ## Payments
 
-The payments are made with Paypal Express Checkout, through the gateway of [Payum](https://github.com/Payum/Payum) for the NVP API of Paypal: its credentials are the `paypal_username`, `paypal_password` and `paypal_signature` parameters. The development environment (`app_dev.php`) uses the sandbox of Paypal, with the credentials of a sandbox account.
+The payments are made with Paypal Express Checkout, through the gateway of [Payum](https://github.com/Payum/Payum) for the NVP API of Paypal: its credentials are the `paypal_username`, `paypal_password` and `paypal_signature` parameters.
+
+Real payments can be tested without money with the sandbox of Paypal, e.g. on a test website: set `paypal_sandbox: true` in `app/config/parameters.yml` (the development environment always uses the sandbox) with the NVP API credentials of a sandbox "Business" account, created on the [developer website of Paypal](https://developer.paypal.com/), clear the cache, then pay with a sandbox "Personal" account. Paypal only sends the browser of the user back to the website, which does not have to be reachable from the Internet.
 
 The payments can be simulated, to test them without Paypal and without credentials: set `payment_simulation: true` in `app/config/parameters.yml`, then clear the cache. Nothing is sent to Paypal and no money is involved: the user is sent to a page of the website instead of the one of Paypal, where he chooses what happens to the payment:
 
