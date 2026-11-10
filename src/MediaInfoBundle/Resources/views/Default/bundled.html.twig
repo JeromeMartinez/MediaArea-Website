@@ -1,4 +1,4 @@
-{% extends 'MediaInfoBundle::base.html.twig' %}
+{% extends '@MediaInfo/base.html.twig' %}
 
 {% block title %}MediaInfo - Bundled with a software distribution network{% endblock %}
 {% block description %}{% trans %}about.page.description{% endtrans %}{% endblock %}
@@ -22,9 +22,8 @@ Additionally, we aim to strike a balance between not annoying users and generati
 
 <h2>What if I have aggressive agressive ads?</h2>
 There's a good chance that you don't have an installer published by us, delete this installer and use ours instead. Make sure the publisher name is "MediaArea.net":<br/>
-{% image '@MediaInfoBundle/Resources/public/img/Bundled/MediaInfo_UAC.png' %}
-<img class="center-img" src="{{ asset_url }}" width="460" height="259" alt="Bundled">
-{% endimage %}<br/>
+<img class="center-img" src="{{ asset('bundles/mediainfo/img/Bundled/MediaInfo_UAC.png') }}" width="460" height="259" alt="Bundled">
+<br/>
 
 <h2>But isn't it open-source software?</h2>
 It has been open-source software since day one and still is today, as you can see in the <a href="https://mediaarea.net/en/MediaInfo/License">license</a>.<br/>

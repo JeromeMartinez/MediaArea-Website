@@ -103,7 +103,7 @@ class PublicPoliciesController extends BaseController
         if (!$quotas->hasPolicyCreationRights()) {
             return new JsonResponse([
                 'message' => 'Quota exceeded',
-                'quota' => $this->renderView('MediaConchOnlineBundle:Default:quotaExceeded.html.twig'),
+                'quota' => $this->renderView('@MediaConchOnline/Default/quotaExceeded.html.twig'),
             ], 400);
         }
 

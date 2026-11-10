@@ -1,4 +1,4 @@
-{% extends 'AVIMetaEditBundle::base.html.twig' %}
+{% extends '@AVIMetaEdit/base.html.twig' %}
 
 {% block title %}AVI MetaEdit{% endblock %}
 
@@ -28,9 +28,7 @@
     <div class="row reorder-xs">
         <div class="v-align carousel-padding-xs col-xs-12 col-sm-5">
             <div>
-            {% image '@AVIMetaEditBundle/Resources/public/img/AVIMetaEdit.png' %}
-                <img src="{{ asset_url }}" alt="AVI MetaEdit logo" class="img-responsive center-xs" title="AVI MetaEdit logo" />
-            {% endimage %}
+            <img src="{{ asset('bundles/avimetaedit/img/AVIMetaEdit.png') }}" alt="AVI MetaEdit logo" class="img-responsive center-xs" title="AVI MetaEdit logo" />
             </div>
         </div>
         <div class="v-align col-sm-7">
@@ -96,19 +94,17 @@
                         Version {{ downloadInfo.version }}{% if downloadInfo.name %}, for {{ downloadInfo.name }}{% endif %}
                     <br>
                     Other versions (packaging, OS, interface...) are also <a href="{{ path('avi_download') }}">available</a>
-                    {% image '@AppBundle/Resources/public/img/blank.gif' %}
-                    (<a href="{{ path('avi_download_windows') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Microsoft Windows" title="Microsoft Windows" class="sprite Windows"></a>
-                    <a href="{{ path('avi_download_mac') }}"><img src="{{ asset_url }}" width="16" height="16" alt="macOS" title="macOS" class="sprite MacOS"></a>
-                    <a href="{{ path('avi_download_debian') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Debian" title="Debian" class="sprite Debian"></a>
-                    <a href="{{ path('avi_download_ubuntu') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Ubuntu" title="Ubuntu" class="sprite Ubuntu"></a>
-                    <a href="{{ path('avi_download_ubuntu') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Linux Mint" title="Linux Mint" class="sprite Linux_Mint"></a>
-                    <a href="{{ path('avi_download_rhel') }}"><img src="{{ asset_url }}" width="16" height="16" alt="RedHat Entreprise Linux" title="RedHat Entreprise Linux" class="sprite RedHat"></a>
-                    <a href="{{ path('avi_download_centos') }}"><img src="{{ asset_url }}" width="16" height="16" alt="CentOS" title="CentOS" class="sprite CentOS"></a>
-                    <a href="{{ path('avi_download_fedora') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Fedora" title="Fedora" class="sprite Fedora"></a>
-                    <a href="{{ path('avi_download_opensuse') }}"><img src="{{ asset_url }}" width="16" height="16" alt="openSUSE" title="openSUSE" class="sprite openSUSE"></a>
-                    <a href="{{ path('avi_download_archlinux') }}"><img src="{{ asset_url }}" width="16" height="16" alt="ArchLinux" title="ArchLinux" class="sprite ArchLinux"></a>
-                    <a href="{{ path('avi_download_flatpak') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Flatpak" title="Flatpak" class="sprite Flatpak"></a>)
-                    {% endimage %}
+                    (<a href="{{ path('avi_download_windows') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Microsoft Windows" title="Microsoft Windows" class="sprite Windows"></a>
+                    <a href="{{ path('avi_download_mac') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="macOS" title="macOS" class="sprite MacOS"></a>
+                    <a href="{{ path('avi_download_debian') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Debian" title="Debian" class="sprite Debian"></a>
+                    <a href="{{ path('avi_download_ubuntu') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Ubuntu" title="Ubuntu" class="sprite Ubuntu"></a>
+                    <a href="{{ path('avi_download_ubuntu') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Linux Mint" title="Linux Mint" class="sprite Linux_Mint"></a>
+                    <a href="{{ path('avi_download_rhel') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="RedHat Entreprise Linux" title="RedHat Entreprise Linux" class="sprite RedHat"></a>
+                    <a href="{{ path('avi_download_centos') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="CentOS" title="CentOS" class="sprite CentOS"></a>
+                    <a href="{{ path('avi_download_fedora') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Fedora" title="Fedora" class="sprite Fedora"></a>
+                    <a href="{{ path('avi_download_opensuse') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="openSUSE" title="openSUSE" class="sprite openSUSE"></a>
+                    <a href="{{ path('avi_download_archlinux') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="ArchLinux" title="ArchLinux" class="sprite ArchLinux"></a>
+                    <a href="{{ path('avi_download_flatpak') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Flatpak" title="Flatpak" class="sprite Flatpak"></a>)
                     <br>
                     See <a href="https://github.com/MediaArea/AVIMetaEdit/blob/master/History_GUI.txt">ChangeLog</a> or <a href="/download/snapshots/binary/">very latest snapshots</a>
                     </div>

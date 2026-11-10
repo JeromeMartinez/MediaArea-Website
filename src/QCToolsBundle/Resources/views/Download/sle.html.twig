@@ -1,12 +1,10 @@
-{% extends 'QCToolsBundle::base.html.twig' %}
+{% extends '@QCTools/base.html.twig' %}
 
 {% block title %}QCTools - Download QCTools for SLE{% endblock %}
 
 {% block body %}
 <h1>Download - SLE</h1>
-{% image '@AppBundle/Resources/public/img/OS/Suse.png' %}
-<img src="{{ asset_url }}" alt="Suse" title="Suse" width="165" height="100"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/Suse.png') }}" alt="Suse" title="Suse" width="165" height="100"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

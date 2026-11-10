@@ -1,12 +1,10 @@
-{% extends 'RAWcookedBundle::base.html.twig' %}
+{% extends '@RAWcooked/base.html.twig' %}
 
 {% block title %}RAWcooked - Download RAWcooked for RHEL{% endblock %}
 
 {% block body %}
 <h1>Download - RHEL</h1>
-{% image '@AppBundle/Resources/public/img/OS/RedHat.png' %}
-<img src="{{ asset_url }}" alt="RedHat" title="RedHat" width="200" height="61"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/RedHat.png') }}" alt="RedHat" title="RedHat" width="200" height="61"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

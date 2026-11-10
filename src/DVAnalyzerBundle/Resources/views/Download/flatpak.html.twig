@@ -1,12 +1,10 @@
-{% extends 'DVAnalyzerBundle::base.html.twig' %}
+{% extends '@DVAnalyzer/base.html.twig' %}
 
 {% block title %}DV Analyzer - Download DV Analyzer Flatpak{% endblock %}
 
 {% block body %}
 <h1>Download - Flatpak</h1>
-{% image '@AppBundle/Resources/public/img/OS/Flatpak.png' %}
-<img src="{{ asset_url }}" alt="Flatpak" title="Flatpak" width="250" height="72"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/Flatpak.png') }}" alt="Flatpak" title="Flatpak" width="250" height="72"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

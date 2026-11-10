@@ -1,12 +1,10 @@
-{% extends 'RAWcookedBundle::base.html.twig' %}
+{% extends '@RAWcooked/base.html.twig' %}
 
 {% block title %}RAWcooked - Download RAWcooked for AlmaLinux{% endblock %}
 
 {% block body %}
 <h1>Download - AlmaLinux</h1>
-{% image '@AppBundle/Resources/public/img/OS/AlmaLinux.png' %}
-<img src="{{ asset_url }}" alt="AlmaLinux" title="AlmaLinux" width="350" height="65"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/AlmaLinux.png') }}" alt="AlmaLinux" title="AlmaLinux" width="350" height="65"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

@@ -1,12 +1,10 @@
-{% extends 'MOVMetaEditBundle::base.html.twig' %}
+{% extends '@MOVMetaEdit/base.html.twig' %}
 
 {% block title %}MOV MetaEdit - Download MOV MetaEdit for macOS{% endblock %}
 
 {% block body %}
 <h1>Download - macOS</h1>
-{% image '@AppBundle/Resources/public/img/OS/Mac_OS.png' %}
-<img src="{{ asset_url }}" alt="macOS" title="macOS" width="250" height="100"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/Mac_OS.png') }}" alt="macOS" title="macOS" width="250" height="100"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

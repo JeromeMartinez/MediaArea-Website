@@ -1,4 +1,4 @@
-{% extends 'DVAnalyzerBundle::base.html.twig' %}
+{% extends '@DVAnalyzer/base.html.twig' %}
 
 {% block title %}DV Analyzer - STTS Fluctuation{% endblock %}
 
@@ -6,8 +6,7 @@
 <h1>DV Analyzer Case Study: STTS Fluctuation</h1>
 &#8220;Sample to Time&#8221; (STTS) is a table in a Quicktime wrapper that represents how much time is allotted to each sample of a given track, i.e. the length of the sample&#8217;s duration.
 <div>
-	{% image '@DVAnalyzerBundle/Resources/public/img/stts_fluctuation_dumpster_stbl.gif' %}
-	<img src="{{ asset_url }}" alt="STTS Fluctuation as shown in Dumpster" title="stts_fluctuation_shown_in_dumpster" width="383" height="160" srcset="{{ asset_url }}{% endimage %}{% image '@DVAnalyzerBundle/Resources/public/img/stts_fluctuation_dumpster_stbl-300x125.gif' %} 383w, {{ asset_url }}{% endimage %} 300w" sizes="(max-width: 383px) 100vw, 383px"/>
+	<img src="{{ asset('bundles/dvanalyzer/img/stts_fluctuation_dumpster_stbl.gif') }}" alt="STTS Fluctuation as shown in Dumpster" title="stts_fluctuation_shown_in_dumpster" width="383" height="160" srcset="{{ asset('bundles/dvanalyzer/img/stts_fluctuation_dumpster_stbl.gif') }} 383w, {{ asset('bundles/dvanalyzer/img/stts_fluctuation_dumpster_stbl-300x125.gif') }} 300w" sizes="(max-width: 383px) 100vw, 383px"/>
 	<p class="wp-caption-text">STTS Fluctuation as shown in Dumpster</p>
 </div>
 <p>In a typical DV video track every sample &#8212; in this case the sample would be a video frame &#8212; is allotted exactly the same amount of time. This sample/frame duration can be used to calculate the frame rate of a DV file, most typically 29.97 (or 25) frames per second. The audio track is also assigned a regular STTS number. The STTS Fluctuation error arises when one particular frame of a file includes a sample-to-time value in consistent with the other frames in the file.</p>

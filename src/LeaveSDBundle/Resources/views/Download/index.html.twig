@@ -1,4 +1,4 @@
-{% extends 'LeaveSDBundle::base.html.twig' %}
+{% extends '@LeaveSD/base.html.twig' %}
 
 {% block title %}LeaveSD - Download{% endblock %}
 
@@ -14,9 +14,7 @@
     <td>Link</td>
 </tr>
 <tr>
-    {% image '@AppBundle/Resources/public/img/OS/Windows.png' %}
-    <th><a href="{{ path('leavesd_download_windows') }}"><img src="{{ asset_url }}" width="288" height="76" alt="Microsoft Windows" title="Microsoft Windows"></a></th>
-    {% endimage %}
+    <th><a href="{{ path('leavesd_download_windows') }}"><img src="{{ asset('bundles/app/img/OS/Windows.png') }}" width="288" height="76" alt="Microsoft Windows" title="Microsoft Windows"></a></th>
     <td><a href="{{ path('leavesd_download_windows') }}">MediaArea releases</a></td>
 </tr>
 <tr>

@@ -1,12 +1,10 @@
-{% extends 'QCToolsBundle::base.html.twig' %}
+{% extends '@QCTools/base.html.twig' %}
 
 {% block title %}QCTools - Download QCTools for Debian{% endblock %}
 
 {% block body %}
 <h1>Download - Debian</h1>
-{% image '@AppBundle/Resources/public/img/OS/Debian.png' %}
-<img src="{{ asset_url }}" alt="Debian" title="Debian" width="229" height="61"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/Debian.png') }}" alt="Debian" title="Debian" width="229" height="61"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

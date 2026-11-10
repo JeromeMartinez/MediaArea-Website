@@ -1,12 +1,10 @@
-{% extends 'BWFMetaEditBundle::base.html.twig' %}
+{% extends '@BWFMetaEdit/base.html.twig' %}
 
 {% block title %}BWF MetaEdit - Download BWF MetaEdit for Microsoft Windows{% endblock %}
 
 {% block body %}
 <h1>Download - Microsoft Windows</h1>
-{% image '@AppBundle/Resources/public/img/OS/Windows.png' %}
-<img src="{{ asset_url }}" alt="Windows logo" title="Windows logo" width="288" height="76"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/Windows.png') }}" alt="Windows logo" title="Windows logo" width="288" height="76"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

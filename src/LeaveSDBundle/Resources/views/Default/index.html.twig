@@ -1,4 +1,4 @@
-{% extends 'LeaveSDBundle::base.html.twig' %}
+{% extends '@LeaveSD/base.html.twig' %}
 
 {% block title %}LeaveSD{% endblock %}
 
@@ -68,9 +68,7 @@
                         Version {{ downloadInfo.version }}{% if downloadInfo.name %}, for {{ downloadInfo.name }}{% endif %}
                     <br>
                     Other versions (packaging, OS, interface...) are also <a href="{{ path('leavesd_download') }}">available</a>
-                    {% image '@AppBundle/Resources/public/img/blank.gif' %}
-                    (<a href="{{ path('leavesd_download_windows') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Microsoft Windows" title="Microsoft Windows" class="sprite Windows"></a>)
-                    {% endimage %}
+                    (<a href="{{ path('leavesd_download_windows') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Microsoft Windows" title="Microsoft Windows" class="sprite Windows"></a>)
                     <br>
                     See <a href="https://github.com/MediaArea/LeaveSD">Source code on GitHub</a>.
                     </div>

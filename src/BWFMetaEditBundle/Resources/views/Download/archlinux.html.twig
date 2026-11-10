@@ -1,12 +1,10 @@
-{% extends 'BWFMetaEditBundle::base.html.twig' %}
+{% extends '@BWFMetaEdit/base.html.twig' %}
 
 {% block title %}BWF MetaEdit - Download BWF MetaEdit for Arch Linux{% endblock %}
 
 {% block body %}
 <h1>Download - Arch Linux</h1>
-{% image '@AppBundle/Resources/public/img/OS/ArchLinux.png' %}
-<img src="{{ asset_url }}" alt="Arch Linux" title="Arch Linux" width="350" height="103"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/ArchLinux.png') }}" alt="Arch Linux" title="Arch Linux" width="350" height="103"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

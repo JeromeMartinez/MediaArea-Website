@@ -1,9 +1,7 @@
 <div class="container">
     <div class="row">
         <div class="col-sm-4 col-md-2">
-            {% image '@AppBundle/Resources/public/img/MediaInfo_90x90.png' %}
-                <a href="{{ path('mi_home') }}"><img src="{{ asset_url }}" alt="MediaInfo Logo" title="MediaInfo Logo" /></a>
-            {% endimage %}
+            <a href="{{ path('mi_home') }}"><img src="{{ asset('bundles/app/img/MediaInfo_90x90.png') }}" alt="MediaInfo Logo" title="MediaInfo Logo" /></a>
         </div>
         <div class="col-sm-4 col-md-3">
             <div class="footerHeading">MediaArea</div>

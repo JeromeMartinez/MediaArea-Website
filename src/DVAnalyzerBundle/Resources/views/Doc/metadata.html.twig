@@ -1,4 +1,4 @@
-{% extends 'DVAnalyzerBundle::base.html.twig' %}
+{% extends '@DVAnalyzer/base.html.twig' %}
 
 {% block title %}DV Analyzer - Temporal metadata{% endblock %}
 
@@ -23,7 +23,7 @@ metadata in another way) the file may be evaluated to report on DV
 metadata for each frame on fields such as recording date and time,
 timecode of the source tape, and camera settings.<br>
 &nbsp;<br>
-{% image '@DVAnalyzerBundle/Resources/public/img/dvanalyzer_fcp.jpg' %}<img src="{{ asset_url }}" alt="dvanalyzer_fcp" title="dvanalyzer_fcp" class="center-block" />{% endimage %}</p>
+<img src="{{ asset('bundles/dvanalyzer/img/dvanalyzer_fcp.jpg') }}" alt="dvanalyzer_fcp" title="dvanalyzer_fcp" class="center-block" /></p>
 <p>This DV file was edited at <a href="http://www.witness.org/" target="_blank">WITNESS</a>
  as a compilation tape. Material was shot on DV camera, ingested to
 files using Live Capture Plus, edited in Final Cut Pro, then exported to

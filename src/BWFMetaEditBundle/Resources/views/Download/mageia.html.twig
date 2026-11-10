@@ -1,12 +1,10 @@
-{% extends 'BWFMetaEditBundle::base.html.twig' %}
+{% extends '@BWFMetaEdit/base.html.twig' %}
 
 {% block title %}BWF MetaEdit - Download BWF MetaEdit for Mageia{% endblock %}
 
 {% block body %}
 <h1>Download - Mageia</h1>
-{% image '@AppBundle/Resources/public/img/OS/Mageia.png' %}
-<img src="{{ asset_url }}" alt="Mageia" title="Mageia" width="250" height="89"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/Mageia.png') }}" alt="Mageia" title="Mageia" width="250" height="89"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

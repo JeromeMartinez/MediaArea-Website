@@ -1,4 +1,4 @@
-{% extends 'MediaInfoBundle::base.html.twig' %}
+{% extends '@MediaInfo/base.html.twig' %}
 
 {% block title %}{% trans %}download.arch.page.title{% endtrans %}{% endblock %}
 {% block description %}{% trans %}about.page.description{% endtrans %}{% endblock %}
@@ -6,9 +6,7 @@
 
 {% block body %}
 <h1>{% trans %}download.arch.title{% endtrans %}</h1>
-{% image '@AppBundle/Resources/public/img/OS/ArchLinux.png' %}
-<img src="{{ asset_url }}" alt="Arch Linux" title="Arch Linux" width="350" height="103"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/ArchLinux.png') }}" alt="Arch Linux" title="Arch Linux" width="350" height="103"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

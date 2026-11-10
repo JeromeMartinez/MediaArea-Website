@@ -1,4 +1,4 @@
-{% extends 'MediaInfoBundle::base.html.twig' %}
+{% extends '@MediaInfo/base.html.twig' %}
 
 {% block title %}{% trans %}download.gentoo.page.title{% endtrans %}{% endblock %}
 {% block description %}{% trans %}about.page.description{% endtrans %}{% endblock %}
@@ -6,9 +6,7 @@
 
 {% block body %}
 <h1>{% trans %}download.gentoo.title{% endtrans %}</h1>
-{% image '@AppBundle/Resources/public/img/OS/Gentoo.png' %}
-<img src="{{ asset_url }}" alt="Gentoo" title="Gentoo" width="250" height="94"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/Gentoo.png') }}" alt="Gentoo" title="Gentoo" width="250" height="94"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

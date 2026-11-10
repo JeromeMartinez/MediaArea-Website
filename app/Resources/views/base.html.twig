@@ -29,14 +29,10 @@
         {% endstylesheets %}
         {% block stylesheets %}{% endblock %}
         {% block javascriptshead %}{% endblock %}
-        {% image '@AppBundle/Resources/public/img/favicon.ico' %}
-        <link rel="icon" type="image/x-icon" href="{{ asset_url }}" />
-        {% endimage %}
-        {% image '@AppBundle/Resources/public/img/apple-touch-icon.png' %}
-        <link rel="apple-touch-icon" href="{{ asset_url }}">
+        <link rel="icon" type="image/x-icon" href="{{ asset('bundles/app/img/favicon.ico') }}" />
+        <link rel="apple-touch-icon" href="{{ asset('bundles/app/img/apple-touch-icon.png') }}">
         <meta name="msapplication-TileColor" content="white">
-        <meta name="msapplication-TileImage" content="{{ asset_url }}">
-        {% endimage %}
+        <meta name="msapplication-TileImage" content="{{ asset('bundles/app/img/apple-touch-icon.png') }}">
         <!--[if lt IE 9]>
             <script src="{{ asset('/bundles/app/js/html5shiv.min.js') }}"></script>
             <script src="{{ asset('/bundles/app/js/respond.min.js') }}"></script>

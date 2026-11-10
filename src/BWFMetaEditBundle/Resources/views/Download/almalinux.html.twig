@@ -1,12 +1,10 @@
-{% extends 'BWFMetaEditBundle::base.html.twig' %}
+{% extends '@BWFMetaEdit/base.html.twig' %}
 
 {% block title %}BWF MetaEdit - Download BWF MetaEdit for Alma Linux{% endblock %}
 
 {% block body %}
 <h1>Download - Alma Linux</h1>
-{% image '@AppBundle/Resources/public/img/OS/AlmaLinux.png' %}
-<img src="{{ asset_url }}" alt="Alma Linux" title="Alma Linux" width="350" height="65"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/AlmaLinux.png') }}" alt="Alma Linux" title="Alma Linux" width="350" height="65"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

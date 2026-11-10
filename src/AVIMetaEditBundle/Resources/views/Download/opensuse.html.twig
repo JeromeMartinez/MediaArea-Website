@@ -1,12 +1,10 @@
-{% extends 'AVIMetaEditBundle::base.html.twig' %}
+{% extends '@AVIMetaEdit/base.html.twig' %}
 
 {% block title %}AVI MetaEdit - Download AVI MetaEdit for openSUSE{% endblock %}
 
 {% block body %}
 <h1>Download - openSUSE</h1>
-{% image '@AppBundle/Resources/public/img/OS/openSUSE.png' %}
-<img src="{{ asset_url }}" alt="openSUSE" title="openSUSE" width="155" height="100"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/openSUSE.png') }}" alt="openSUSE" title="openSUSE" width="155" height="100"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

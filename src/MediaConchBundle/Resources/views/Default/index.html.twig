@@ -1,4 +1,4 @@
-{% extends 'MediaConchBundle::base.html.twig' %}
+{% extends '@MediaConch/base.html.twig' %}
 
 {% block title %}MediaConch{% endblock %}
 
@@ -28,16 +28,12 @@
     <div class="row reorder-xs">
         <div class="v-align carousel-padding-xs col-xs-12 col-sm-5">
             <div>
-            {% image '@MediaConchBundle/Resources/public/img/MediaConch.png' %}
-                <img src="{{ asset_url }}" alt="MediaConch screenshot" class="img-responsive center-xs" title="MediaConch screenshot">
-            {% endimage %}
+            <img src="{{ asset('bundles/mediaconch/img/MediaConch.png') }}" alt="MediaConch screenshot" class="img-responsive center-xs" title="MediaConch screenshot">
             </div>
         </div>
         <div class="v-align col-sm-7">
             <div class="center-font-xs">
-                {% image '@MediaConchBundle/Resources/public/img/apple-icon-60x60.png' %}
-                    <h1 class="v-align bigtitle"><img src="{{ asset_url }}" title="MediaConch Logo"> MediaConch</h1>
-                {% endimage %}
+                <h1 class="v-align bigtitle"><img src="{{ asset('bundles/mediaconch/img/apple-icon-60x60.png') }}" title="MediaConch Logo"> MediaConch</h1>
             </div>
             <div class="projectDescription center-font-xs">
                 <strong>MediaConch</strong> is an extensible, open source software project consisting of an implementation checker, policy checker, reporter, and fixer that targets preservation-level audiovisual files (specifically <a href="https://www.matroska.org/" target="_blank">Matroska</a>, Linear Pulse Code Modulation (LPCM) and FF Video Codec 1 (<a href="https://github.com/FFmpeg/FFV1/blob/master/ffv1.md" target="_blank">FFV1</a>)) for use in memory institutions, providing detailed and batch-level conformance checking via an adaptable and flexible application program interface accessible by the command line, a graphical user interface, or a <a href="{{ path('mco_home') }}">web interface</a>.
@@ -101,19 +97,17 @@
                         Version {{ downloadInfo.version }}{% if downloadInfo.name %}, for {{ downloadInfo.name }}{% endif %}
                         <br>
                         Other versions (packaging, OS, interface...) are also <a href="{{ path('mc_download') }}">available</a>
-                        {% image '@AppBundle/Resources/public/img/blank.gif' %}
-                        (<a href="{{ path('mc_download_windows') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Microsoft Windows" title="Microsoft Windows" class="sprite Windows"></a>
-                        <a href="{{ path('mc_download_mac') }}"><img src="{{ asset_url }}" width="16" height="16" alt="macOS" title="macOS" class="sprite MacOS"></a>
-                        <a href="{{ path('mc_download_debian') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Debian" title="Debian" class="sprite Debian"></a>
-                        <a href="{{ path('mc_download_ubuntu') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Ubuntu" title="Ubuntu" class="sprite Ubuntu"></a>
-                        <a href="{{ path('mc_download_ubuntu') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Linux Mint" title="Linux Mint" class="sprite Linux_Mint"></a>
-                        <a href="{{ path('mc_download_rhel') }}"><img src="{{ asset_url }}" width="16" height="16" alt="RedHat Entreprise Linux" title="RedHat Entreprise Linux" class="sprite RedHat"></a>
-                        <a href="{{ path('mc_download_centos') }}"><img src="{{ asset_url }}" width="16" height="16" alt="CentOS" title="CentOS" class="sprite CentOS"></a>
-                        <a href="{{ path('mc_download_fedora') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Fedora" title="Fedora" class="sprite Fedora"></a>
-                        <a href="{{ path('mc_download_opensuse') }}"><img src="{{ asset_url }}" width="16" height="16" alt="openSUSE" title="openSUSE" class="sprite openSUSE"></a>
-                        <a href="{{ path('mc_download_archlinux') }}"><img src="{{ asset_url }}" width="16" height="16" alt="ArchLinux" title="ArchLinux" class="sprite ArchLinux"></a>
-                        <a href="{{ path('mc_download_flatpak') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Flatpak" title="Flatpak" class="sprite Flatpak"></a>)
-                        {% endimage %}
+                        (<a href="{{ path('mc_download_windows') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Microsoft Windows" title="Microsoft Windows" class="sprite Windows"></a>
+                        <a href="{{ path('mc_download_mac') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="macOS" title="macOS" class="sprite MacOS"></a>
+                        <a href="{{ path('mc_download_debian') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Debian" title="Debian" class="sprite Debian"></a>
+                        <a href="{{ path('mc_download_ubuntu') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Ubuntu" title="Ubuntu" class="sprite Ubuntu"></a>
+                        <a href="{{ path('mc_download_ubuntu') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Linux Mint" title="Linux Mint" class="sprite Linux_Mint"></a>
+                        <a href="{{ path('mc_download_rhel') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="RedHat Entreprise Linux" title="RedHat Entreprise Linux" class="sprite RedHat"></a>
+                        <a href="{{ path('mc_download_centos') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="CentOS" title="CentOS" class="sprite CentOS"></a>
+                        <a href="{{ path('mc_download_fedora') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Fedora" title="Fedora" class="sprite Fedora"></a>
+                        <a href="{{ path('mc_download_opensuse') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="openSUSE" title="openSUSE" class="sprite openSUSE"></a>
+                        <a href="{{ path('mc_download_archlinux') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="ArchLinux" title="ArchLinux" class="sprite ArchLinux"></a>
+                        <a href="{{ path('mc_download_flatpak') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Flatpak" title="Flatpak" class="sprite Flatpak"></a>)
                         <br>
                         See <a href="https://github.com/MediaArea/MediaConch_SourceCode/blob/master/History_GUI.txt">ChangeLog</a> or <a href="{{ path('mc_download_snapshots') }}">very latest snapshots</a>
                         <br>
@@ -142,14 +136,8 @@
 <section id="funding" class="anchor">
     <h2>Funding</h2>
     This project has received funding from <a href="http://www.preforma-project.eu/" target="_blank">PREFORMA</a>, co-funded by the <a href="https://europa.eu/" target="_blank">European Commission</a> under its <a href="https://ec.europa.eu/research/fp7/index_en.cfm" target="_blank">FP7-ICT</a> Programme.<br>
-    {% image '@MediaConchBundle/Resources/public/img/pfo_logo.png' %}
-        <a href="http://www.preforma-project.eu/" target="_blank"><img src="{{ asset_url }}" alt="PREFORMA logo" title="PREFORMA"></a>
-    {% endimage %}
-    {% image '@MediaConchBundle/Resources/public/img/eu_logo.png' %}
-        <a href="https://europa.eu/" target="_blank"><img src="{{ asset_url }}" alt="European Commission logo" title="European Commission"></a>
-    {% endimage %}
-    {% image '@MediaConchBundle/Resources/public/img/ec_logo.png' %}
-        <a href="https://ec.europa.eu/research/fp7/index_en.cfm" target="_blank"><img src="{{ asset_url }}" alt="FP7-ICT Programme logo" title="FP7-ICT Programme"></a>
-    {% endimage %}
+    <a href="http://www.preforma-project.eu/" target="_blank"><img src="{{ asset('bundles/mediaconch/img/pfo_logo.png') }}" alt="PREFORMA logo" title="PREFORMA"></a>
+    <a href="https://europa.eu/" target="_blank"><img src="{{ asset('bundles/mediaconch/img/eu_logo.png') }}" alt="European Commission logo" title="European Commission"></a>
+    <a href="https://ec.europa.eu/research/fp7/index_en.cfm" target="_blank"><img src="{{ asset('bundles/mediaconch/img/ec_logo.png') }}" alt="FP7-ICT Programme logo" title="FP7-ICT Programme"></a>
 </section>
 {% endblock %}

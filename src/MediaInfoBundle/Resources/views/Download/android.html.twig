@@ -1,4 +1,4 @@
-{% extends 'MediaInfoBundle::base.html.twig' %}
+{% extends '@MediaInfo/base.html.twig' %}
 
 {% block title %}{% trans %}download.android.page.title{% endtrans %}{% endblock %}
 {% block description %}{% trans %}about.page.description{% endtrans %}{% endblock %}
@@ -6,9 +6,7 @@
 
 {% block body %}
 <h1>{% trans %}download.android.title{% endtrans %}</h1>
-{% image '@AppBundle/Resources/public/img/OS/Android.png' %}
-<img src="{{ asset_url }}" alt="Android" title="Android" width="200" height="80"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/Android.png') }}" alt="Android" title="Android" width="200" height="80"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

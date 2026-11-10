@@ -1,12 +1,10 @@
-{% extends 'DVRescueBundle::base.html.twig' %}
+{% extends '@DVRescue/base.html.twig' %}
 
 {% block title %}DVRescue - Download DVRescue for CentOS{% endblock %}
 
 {% block body %}
 <h1>Download - CentOS</h1>
-{% image '@AppBundle/Resources/public/img/OS/CentOS.png' %}
-<img src="{{ asset_url }}" alt="CentOS" title="CentOS" width="271" height="60"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/CentOS.png') }}" alt="CentOS" title="CentOS" width="271" height="60"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

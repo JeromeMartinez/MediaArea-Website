@@ -1,4 +1,4 @@
-{% extends 'MediaConchBundle::base.html.twig' %}
+{% extends '@MediaConch/base.html.twig' %}
 
 {% block title %}Documentation: How To Use MediaConch{% endblock %}
 
@@ -85,9 +85,7 @@ Value: 29.970</p>
 <h3>Checker</h3>
 
 <p>
-    {% image '@MediaConchBundle/Resources/public/img/HowTo_Checker.png' %}
-    <img src="{{ asset_url }}" alt="MediaConch Checker">
-    {% endimage %}
+    <img src="{{ asset('bundles/mediaconch/img/HowTo_Checker.png') }}" alt="MediaConch Checker">
 </p>
 
 <p>By default, MediaConch opens in in the Checker section. In this, files are checked for specification validation and for conformance using policies defined by you. You may choose from either an existing policy in MediaConch, from an imported XSL policy file, or you can create your own within the application. MediaConch comes preloaded with several policies.</p>
@@ -99,15 +97,11 @@ Value: 29.970</p>
 <p>Implementation and Policy will give a high-level pass/fail view. If you hover over these results, a “see more” and “download” buttons will appear, just like the MediaInfo/MediaTrace reports.</p>
 
 <p>
-    {% image '@MediaConchBundle/Resources/public/img/HowTo_Results.png' %}
-    <img src="{{ asset_url }}" alt="MediaConch Checker Results">
-    {% endimage %}
+    <img src="{{ asset('bundles/mediaconch/img/HowTo_Results.png') }}" alt="MediaConch Checker Results">
 </p>
 
 <p>
-    {% image '@MediaConchBundle/Resources/public/img/HowTo_ResultsHover.png' %}
-    <img src="{{ asset_url }}" alt="MediaConch Checker Results">
-    {% endimage %}
+    <img src="{{ asset('bundles/mediaconch/img/HowTo_ResultsHover.png') }}" alt="MediaConch Checker Results">
 </p>
 
 <p>Implementation and Policy reports will be displayed in the method selected in the above drop-down menu. This can be changed at any time to see the reports in a different view. For MediaInfo and MediaTrace reports, you may navigate through an interactive directory tree structure representing the file created from the reports. Scroll to the bottom of the page to export any of these reports.</p>
@@ -123,9 +117,7 @@ Value: 29.970</p>
 <h3>Policies</h3>
 
 <p>
-    {% image '@MediaConchBundle/Resources/public/img/HowTo_Policy.png' %}
-    <img src="{{ asset_url }}" alt="MediaConch Policies">
-    {% endimage %}
+    <img src="{{ asset('bundles/mediaconch/img/HowTo_Policy.png') }}" alt="MediaConch Policies">
 </p>
 
 <p>In the Policies section, you can create customized policy tests to check for conformance to a specific set of standards that your collection must adhere to. You can also import previously generated policy sets in XSL format.</p>

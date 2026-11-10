@@ -1,13 +1,11 @@
-{% extends 'NoTimeToWaitBundle::base.html.twig' %}
+{% extends '@NoTimeToWait/base.html.twig' %}
 
 {% block title %}No Time To Wait{% endblock %}
 
 {% block body %}
   <header>
     <hgroup>
-      {% image '@NoTimeToWaitBundle/Resources/public/img/nttw.jpg' %}
-          <img src="{{ asset_url }}" alt="No Time To Wait logo" class="img-responsive center-xs" title="No Time To Wait logo">
-      {% endimage %}
+      <img src="{{ asset('bundles/notimetowait/img/nttw.jpg') }}" alt="No Time To Wait logo" class="img-responsive center-xs" title="No Time To Wait logo">
       <h1>No Time To Wait</h1>
       <p>Open Media, Open Formats, Open Archives</p>  
     </hgroup>

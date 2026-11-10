@@ -1,4 +1,4 @@
-{% extends 'DVRescueBundle::base.html.twig' %}
+{% extends '@DVRescue/base.html.twig' %}
 
 {% block title %}DVRescue{% endblock %}
 
@@ -28,9 +28,7 @@
     <div class="row reorder-xs">
         <div class="v-align carousel-padding-xs col-xs-12 col-sm-5">
             <div>
-            {% image '@DVRescueBundle/Resources/public/img/DVRescue_256.png' %}
-                <img src="{{ asset_url }}" alt="DVRescue logo" class="img-responsive center-xs" title="DVRescue logo">
-            {% endimage %}
+            <img src="{{ asset('bundles/dvrescue/img/DVRescue_256.png') }}" alt="DVRescue logo" class="img-responsive center-xs" title="DVRescue logo">
             </div>
         </div>
         <div class="v-align col-sm-7">
@@ -84,16 +82,14 @@
                         Version {{ downloadInfo.version }}{% if downloadInfo.name %}, for {{ downloadInfo.name }}{% endif %}
                     <br>
                     Other versions (packaging, OS, interface...) are also <a href="{{ path('dvrescue_download') }}">available</a>
-                    {% image '@AppBundle/Resources/public/img/blank.gif' %}
-                    (<a href="{{ path('dvrescue_download_windows') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Microsoft Windows" title="Microsoft Windows" class="sprite Windows"></a>
-                    <a href="{{ path('dvrescue_download_mac') }}"><img src="{{ asset_url }}" width="16" height="16" alt="macOS" title="macOS" class="sprite MacOS"></a>
-                    <a href="{{ path('dvrescue_download_debian') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Debian" title="Debian" class="sprite Debian"></a>
-                    <a href="{{ path('dvrescue_download_ubuntu') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Ubuntu" title="Ubuntu" class="sprite Ubuntu"></a>
-                    <a href="{{ path('dvrescue_download_ubuntu') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Linux Mint" title="Linux Mint" class="sprite Linux_Mint"></a>
-                    <a href="{{ path('dvrescue_download_centos') }}"><img src="{{ asset_url }}" width="16" height="16" alt="CentOS" title="CentOS" class="sprite CentOS"></a>
-                    <a href="{{ path('dvrescue_download_fedora') }}"><img src="{{ asset_url }}" width="16" height="16" alt="Fedora" title="Fedora" class="sprite Fedora"></a>
-                    <a href="{{ path('dvrescue_download_archlinux') }}"><img src="{{ asset_url }}" width="16" height="16" alt="ArchLinux" title="ArchLinux" class="sprite ArchLinux"></a>)
-                    {% endimage %}
+                    (<a href="{{ path('dvrescue_download_windows') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Microsoft Windows" title="Microsoft Windows" class="sprite Windows"></a>
+                    <a href="{{ path('dvrescue_download_mac') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="macOS" title="macOS" class="sprite MacOS"></a>
+                    <a href="{{ path('dvrescue_download_debian') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Debian" title="Debian" class="sprite Debian"></a>
+                    <a href="{{ path('dvrescue_download_ubuntu') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Ubuntu" title="Ubuntu" class="sprite Ubuntu"></a>
+                    <a href="{{ path('dvrescue_download_ubuntu') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Linux Mint" title="Linux Mint" class="sprite Linux_Mint"></a>
+                    <a href="{{ path('dvrescue_download_centos') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="CentOS" title="CentOS" class="sprite CentOS"></a>
+                    <a href="{{ path('dvrescue_download_fedora') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="Fedora" title="Fedora" class="sprite Fedora"></a>
+                    <a href="{{ path('dvrescue_download_archlinux') }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="16" height="16" alt="ArchLinux" title="ArchLinux" class="sprite ArchLinux"></a>)
                     <br>
                     See <a href="https://github.com/MediaArea/DVRescue/blob/master/History.txt">ChangeLog</a> or very latest snapshots (<a href="/download/snapshots/binary/dvrescue">CLI</a>, <a href="/download/snapshots/binary/dvrescue-gui">GUI</a>)
                     </div>

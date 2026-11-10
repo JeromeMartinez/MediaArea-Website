@@ -1,4 +1,4 @@
-{% extends 'MediaInfoBundle::base.html.twig' %}
+{% extends '@MediaInfo/base.html.twig' %}
 
 {% block title %}{% trans %}donate.page.title{% endtrans %}{% endblock %}
 {% block description %}{% trans %}about.page.description{% endtrans %}{% endblock %}
@@ -18,14 +18,10 @@
 <a class="FlattrButton" style="display:none" data-flattr-button="compact" href="{{ path('mi_home') }}"></a>
 
 <h2>{% trans %}donate.liberapay.title{% endtrans %}</h2>
-{% image '@AppBundle/Resources/public/img/Liberapay.png' %}
-<a href="{{ path('mi_donate') }}"><img src="{{ asset_url }}" width="70" height="25" alt="Liberapay" title="Liberapay"></a>
-{% endimage %}
+<a href="{{ path('mi_donate') }}"><img src="{{ asset('bundles/app/img/Liberapay.png') }}" width="70" height="25" alt="Liberapay" title="Liberapay"></a>
 
 <h2>{% trans %}donate.patreon.title{% endtrans %}</h2>
-{% image '@AppBundle/Resources/public/img/Patreon.png' %}
-<a href="https://www.patreon.com/MediaArea"><img src="{{ asset_url }}" width="128" height="25" alt="Patreon" title="Patreon"></a>
-{% endimage %}
+<a href="https://www.patreon.com/MediaArea"><img src="{{ asset('bundles/app/img/Patreon.png') }}" width="128" height="25" alt="Patreon" title="Patreon"></a>
 
 <h2>{% trans %}donate.bank.title{% endtrans %}</h2>
 {% trans %}donate.bank.content{% endtrans %}

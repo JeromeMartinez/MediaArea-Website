@@ -142,7 +142,7 @@ class XslPolicyController extends BaseController
         if (-1 == $parentId && !$quotas->hasPolicyCreationRights()) {
             return new JsonResponse([
                 'message' => 'Quota exceeded',
-                'quota' => $this->renderView('MediaConchOnlineBundle:Default:quotaExceeded.html.twig'),
+                'quota' => $this->renderView('@MediaConchOnline/Default/quotaExceeded.html.twig'),
             ], 400);
         }
 
@@ -186,7 +186,7 @@ class XslPolicyController extends BaseController
         if (!$quotas->hasPolicyCreationRights()) {
             return new JsonResponse([
                 'message' => 'Quota exceeded',
-                'quota' => $this->renderView('MediaConchOnlineBundle:Default:quotaExceeded.html.twig'),
+                'quota' => $this->renderView('@MediaConchOnline/Default/quotaExceeded.html.twig'),
             ], 400);
         }
 
@@ -243,7 +243,7 @@ class XslPolicyController extends BaseController
         if (!$quotas->hasPolicyCreationRights()) {
             return new JsonResponse([
                 'message' => 'Quota exceeded',
-                'quota' => $this->renderView('MediaConchOnlineBundle:Default:quotaExceeded.html.twig'),
+                'quota' => $this->renderView('@MediaConchOnline/Default/quotaExceeded.html.twig'),
             ], 400);
         }
 
@@ -425,7 +425,7 @@ class XslPolicyController extends BaseController
         if (-1 == $dstPolicyId && !$quotas->hasPolicyCreationRights()) {
             return new JsonResponse([
                 'message' => 'Quota exceeded',
-                'quota' => $this->renderView('MediaConchOnlineBundle:Default:quotaExceeded.html.twig'),
+                'quota' => $this->renderView('@MediaConchOnline/Default/quotaExceeded.html.twig'),
             ], 400);
         }
 

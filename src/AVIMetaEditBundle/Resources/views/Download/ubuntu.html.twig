@@ -1,15 +1,11 @@
-{% extends 'AVIMetaEditBundle::base.html.twig' %}
+{% extends '@AVIMetaEdit/base.html.twig' %}
 
 {% block title %}AVI MetaEdit - Download AVI MetaEdit for Ubuntu (Ubuntu, Kubuntu, Xbuntu...) and Linux Mint{% endblock %}
 
 {% block body %}
 <h1>Download - Ubuntu (Ubuntu, Kubuntu, Xbuntu...) and Linux Mint</h1>
-{% image '@AppBundle/Resources/public/img/OS/Ubuntu.png' %}
-<img src="{{ asset_url }}" alt="Ubuntu" title="Ubuntu" width="304" height="79">
-{% endimage %}
-{% image '@AppBundle/Resources/public/img/OS/Linux_Mint.png' %}
-<img src="{{ asset_url }}" alt="Linux Mint" title="Linux Mint" width="256" height="75"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/Ubuntu.png') }}" alt="Ubuntu" title="Ubuntu" width="304" height="79">
+<img src="{{ asset('bundles/app/img/OS/Linux_Mint.png') }}" alt="Linux Mint" title="Linux Mint" width="256" height="75"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

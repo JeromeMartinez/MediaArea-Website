@@ -1,4 +1,4 @@
-{% extends 'MediaConchOnlineBundle::base.html.twig' %}
+{% extends '@MediaConchOnline/base.html.twig' %}
 
 {% form_theme importDisplayForm 'bootstrap_3_layout.html.twig' %}
 
@@ -16,7 +16,7 @@ MediaConchOnline Display Management
         {% if importDisplayForm is defined and importDisplayForm %}
             {{ form(importDisplayForm) }}
         {% else %}
-            {{ include('MediaConchOnlineBundle:Default:quotaExceeded.html.twig') }}
+            {{ include('@MediaConchOnline/Default/quotaExceeded.html.twig') }}
         {% endif %}
     </div>
 </div>

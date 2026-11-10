@@ -46,7 +46,7 @@ class InvoiceController extends Controller
         $data = $this->getInvoiceDatas($id, $user);
 
         // Get html for pdf rendering
-        $html = $this->renderView('PaymentBundle:Invoice:pdf.html.twig', ['data' => $data]);
+        $html = $this->renderView('@Payment/Invoice/pdf.html.twig', ['data' => $data]);
 
         return new PDFResponse(
             $this->get('t_fox_mpdf_port.pdf')->generatePdf($html),

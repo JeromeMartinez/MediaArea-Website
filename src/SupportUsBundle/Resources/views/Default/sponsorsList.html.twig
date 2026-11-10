@@ -1,4 +1,4 @@
-{% extends 'SupportUsBundle::base.html.twig' %}
+{% extends '@SupportUs/base.html.twig' %}
 
 {% block title %}Support Us! List of sponsors of MediaArea{% endblock %}
 {% block description %}Support Us! List of sponsors of MediaArea{% endblock %}
@@ -13,23 +13,17 @@
         <li class="icon">
             <p class="button text-center"><a href="" target="_blank" title="Your company website URL">Your company name</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/350x350.png' %}
-                <a href="" target="_blank"><img src="{{ asset_url }}" alt="Your company website URL" title="Your company website URL" /></a>
-            {% endimage %}
+            <a href="" target="_blank"><img src="{{ asset('bundles/supportus/img/350x350.png') }}" alt="Your company website URL" title="Your company website URL" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="" target="_blank" title="Your company website URL">Your company name</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/350x350.png' %}
-                <a href="" target="_blank"><img src="{{ asset_url }}" alt="Your company website URL" title="Your company website URL" /></a>
-            {% endimage %}
+            <a href="" target="_blank"><img src="{{ asset('bundles/supportus/img/350x350.png') }}" alt="Your company website URL" title="Your company website URL" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="" target="_blank" title="Your company website URL">Your company name</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/350x350.png' %}
-                <a href="" target="_blank"><img src="{{ asset_url }}" alt="Your company website URL" title="Your company website URL" /></a>
-            {% endimage %}
+            <a href="" target="_blank"><img src="{{ asset('bundles/supportus/img/350x350.png') }}" alt="Your company website URL" title="Your company website URL" /></a>
         </li>
     </ul>
     <div class="clearfix"></div>
@@ -41,23 +35,17 @@
         <li class="icon">
             <p class="button text-center"><a href="" target="_blank" title="Your company website URL">Your company name</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/350x350.png' %}
-                <a href="" target="_blank"><img src="{{ asset_url }}" alt="Your company website URL" title="Your company website URL" /></a>
-            {% endimage %}
+            <a href="" target="_blank"><img src="{{ asset('bundles/supportus/img/350x350.png') }}" alt="Your company website URL" title="Your company website URL" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="" target="_blank" title="Your company website URL">Your company name</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/350x350.png' %}
-                <a href="" target="_blank"><img src="{{ asset_url }}" alt="Your company website URL" title="Your company website URL" /></a>
-            {% endimage %}
+            <a href="" target="_blank"><img src="{{ asset('bundles/supportus/img/350x350.png') }}" alt="Your company website URL" title="Your company website URL" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="" target="_blank" title="Your company website URL">Your company name</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/350x350.png' %}
-                <a href="" target="_blank"><img src="{{ asset_url }}" alt="Your company website URL" title="Your company website URL" /></a>
-            {% endimage %}
+            <a href="" target="_blank"><img src="{{ asset('bundles/supportus/img/350x350.png') }}" alt="Your company website URL" title="Your company website URL" /></a>
         </li>
     </ul>
     <div class="clearfix"></div>
@@ -69,114 +57,82 @@
         <li class="icon">
             <p class="button text-center"><a href="http://www.root6technology.com" target="_blank" title="ROOT6 Technology">ROOT6 Technology</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/root6tech_250.png' %}
-                <a href="http://www.root6technology.com" target="_blank"><img src="{{ asset_url }}" alt="ROOT6 Technology" title="ROOT6 Technology" /></a>
-            {% endimage %}
+            <a href="http://www.root6technology.com" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/root6tech_250.png') }}" alt="ROOT6 Technology" title="ROOT6 Technology" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="https://reto.ch" target="_blank" title="AV Preservation by reto.ch">AV Preservation by reto.ch</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/reto_250.png' %}
-                <a href="https://reto.ch" target="_blank"><img src="{{ asset_url }}" alt="AV Preservation by reto.ch" title="AV Preservation by reto.ch" /></a>
-            {% endimage %}
+            <a href="https://reto.ch" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/reto_250.png') }}" alt="AV Preservation by reto.ch" title="AV Preservation by reto.ch" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="http://www.cna.public.lu" target="_blank" title="Centre national de l’audiovisuel">Centre national de l’audiovisuel</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/CNA_250.png' %}
-                <a href="http://www.cna.public.lu" target="_blank"><img src="{{ asset_url }}" alt="Centre national de l’audiovisuel" title="Centre national de l’audiovisuel" /></a>
-            {% endimage %}
+            <a href="http://www.cna.public.lu" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/CNA_250.png') }}" alt="Centre national de l’audiovisuel" title="Centre national de l’audiovisuel" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="http://ifi.ie" target="_blank" title="Irish Film Institute">Irish Film Institute</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/IFI_250.png' %}
-                <a href="http://ifi.ie" target="_blank"><img src="{{ asset_url }}" alt="Irish Film Institute" title="Irish Film Institute" /></a>
-            {% endimage %}
+            <a href="http://ifi.ie" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/IFI_250.png') }}" alt="Irish Film Institute" title="Irish Film Institute" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="https://www.nb.no" target="_blank" title="Nasjonalbiblioteket">Nasjonalbiblioteket</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/Nasjonalbiblioteket_250.png' %}
-                <a href="https://www.nb.no" target="_blank"><img src="{{ asset_url }}" alt="Nasjonalbiblioteket" title="Nasjonalbiblioteket" /></a>
-            {% endimage %}
+            <a href="https://www.nb.no" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/Nasjonalbiblioteket_250.png') }}" alt="Nasjonalbiblioteket" title="Nasjonalbiblioteket" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="https://www.ad-id.org" target="_blank" title="Ad-ID">Ad-ID</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/Ad-ID_250.png' %}
-                <a href="https://www.ad-id.org" target="_blank"><img src="{{ asset_url }}" alt="Ad-ID" title="Ad-ID" /></a>
-            {% endimage %}
+            <a href="https://www.ad-id.org" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/Ad-ID_250.png') }}" alt="Ad-ID" title="Ad-ID" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="http://www.library.northwestern.edu" target="_blank" title="Northwestern University Libraries">Northwestern University Libraries</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/Northwestern_libraries_250.png' %}
-                <a href="http://www.library.northwestern.edu" target="_blank"><img src="{{ asset_url }}" alt="Northwestern University Libraries" title="Northwestern University Libraries" /></a>
-            {% endimage %}
+            <a href="http://www.library.northwestern.edu" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/Northwestern_libraries_250.png') }}" alt="Northwestern University Libraries" title="Northwestern University Libraries" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="https://www.library.wales" target="_blank" title="National Library of Wales">National Library of Wales</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/NLW_250.png' %}
-                <a href="https://www.library.wales" target="_blank"><img src="{{ asset_url }}" alt="National Library of Wales" title="National Library of Wales" /></a>
-            {% endimage %}
+            <a href="https://www.library.wales" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/NLW_250.png') }}" alt="National Library of Wales" title="National Library of Wales" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="https://bmac.libs.uga.edu/pawtucket2/" target="_blank" title="Walter J. Brown Media Archives">Walter J. Brown Media Archives</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/BrownMediaArchives_250.jpg' %}
-                <a href="https://bmac.libs.uga.edu/pawtucket2/" target="_blank"><img src="{{ asset_url }}" alt="Walter J. Brown Media Archives" title="Walter J. Brown Media Archives" /></a>
-            {% endimage %}
+            <a href="https://bmac.libs.uga.edu/pawtucket2/" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/BrownMediaArchives_250.jpg') }}" alt="Walter J. Brown Media Archives" title="Walter J. Brown Media Archives" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="https://ptlp.com/en/mediapreserve/overview/latest-news/" target="_blank" title="The MediaPreserve">The MediaPreserve</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/TheMediaPreserve_250.jpg' %}
-                <a href="https://ptlp.com/en/mediapreserve/overview/latest-news/" target="_blank"><img src="{{ asset_url }}" alt="The MediaPreserve" title="The MediaPreserve" /></a>
-            {% endimage %}
+            <a href="https://ptlp.com/en/mediapreserve/overview/latest-news/" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/TheMediaPreserve_250.jpg') }}" alt="The MediaPreserve" title="The MediaPreserve" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="https://www.bfi.org.uk" target="_blank" title="British Film Institute">British Film Institute</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/BFI_250.png' %}
-                <a href="https://www.bfi.org.uk" target="_blank"><img src="{{ asset_url }}" alt="British Film Institute" title="British Film Institute" /></a>
-            {% endimage %}
+            <a href="https://www.bfi.org.uk" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/BFI_250.png') }}" alt="British Film Institute" title="British Film Institute" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="https://elements.tv" target="_blank" title="ELEMENTS">ELEMENTS<br/>Human-centered media storage</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/ELEMENTS.png' %}
-                <a href="https://elements.tv" target="_blank"><img src="{{ asset_url }}" alt="ELEMENTS" title="ELEMENTS" /></a>
-            {% endimage %}
+            <a href="https://elements.tv" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/ELEMENTS.png') }}" alt="ELEMENTS" title="ELEMENTS" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="https://www.nypl.org" target="_blank" title="NYPL">New York Public Library</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/NYPL_250.png' %}
-                <a href="https://www.nypl.org" target="_blank"><img src="{{ asset_url }}" alt="NYPL" title="NYPL" /></a>
-            {% endimage %}
+            <a href="https://www.nypl.org" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/NYPL_250.png') }}" alt="NYPL" title="NYPL" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="https://www.tib.eu" target="_blank" title="TIB">TIB<br/>Leibniz Information Centre for Science and Technology</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/TIB_250.png' %}
-                <a href="https://www.tib.eu" target="_blank"><img src="{{ asset_url }}" alt="TIB" title="TIB" /></a>
-            {% endimage %}
+            <a href="https://www.tib.eu" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/TIB_250.png') }}" alt="TIB" title="TIB" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="https://www.filebot.net/" target="_blank" title="FileBot">FileBot</p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/FileBot.png' %}
-                <a href="https://www.filebot.net/" target="_blank"><img src="{{ asset_url }}" alt="FileBot" title="FileBot" /></a>
-            {% endimage %}
+            <a href="https://www.filebot.net/" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/FileBot.png') }}" alt="FileBot" title="FileBot" /></a>
         </li>
         <li class="icon">
             <p class="button text-center"><a href="https://www.bairesdev.com/sponsoring-open-source-projects/" target="_blank" title="BairesDev">BairesDev</p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/BairesDev.png' %}
-                <a href="https://www.bairesdev.com/sponsoring-open-source-projects/" target="_blank"><img src="{{ asset_url }}" alt="BairesDev" title="BairesDev" /></a>
-            {% endimage %}
+            <a href="https://www.bairesdev.com/sponsoring-open-source-projects/" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/BairesDev.png') }}" alt="BairesDev" title="BairesDev" /></a>
         </li>
     </ul>
     <div class="clearfix"></div>
@@ -187,9 +143,7 @@
         <li class="icon">
             <p class="button text-center"><a href="" target="_blank" title="Your company website URL">PDFinity</a></p>
 
-            {% image '@SupportUsBundle/Resources/public/img/sponsors/PDFinity.png' %}
-                <a href="https://www.pdfinity.com" target="_blank"><img src="{{ asset_url }}" alt="PDFinity" title="PDFinity" /></a>
-            {% endimage %}
+            <a href="https://www.pdfinity.com" target="_blank"><img src="{{ asset('bundles/supportus/img/sponsors/PDFinity.png') }}" alt="PDFinity" title="PDFinity" /></a>
         </li>
     </ul>
     <div class="clearfix"></div>

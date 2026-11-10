@@ -2,9 +2,7 @@
     <div class="container">
         <div class="navbar-header">
             <a class="navbar-brand" href="{{ path('mi_home') }}">
-                {% image '@AppBundle/Resources/public/img/MediaInfo_menu.png' %}
-                <img src='{{ asset_url }}' alt='MediaInfo' />
-                {% endimage %}
+                <img src='{{ asset('bundles/app/img/MediaInfo_menu.png') }}' alt='MediaInfo' />
             </a>
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#main-navbar" aria-expanded="false">
                 <span class="sr-only">Toggle navigation</span>
@@ -15,7 +13,7 @@
         </div>
 
         <div id="main-navbar" class="navbar-collapse collapse">
-            {{ knp_menu_render(menu ?? 'main', {compressed: true, currentClass: 'active', ancestorClass: 'active', template: 'AppBundle::knp_menu.html.twig'}) }}
+            {{ knp_menu_render(menu ?? 'main', {compressed: true, currentClass: 'active', ancestorClass: 'active', template: '@App/knp_menu.html.twig'}) }}
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">

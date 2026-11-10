@@ -1,4 +1,4 @@
-{% extends 'NoTimeToWaitBundle::base.html.twig' %}
+{% extends '@NoTimeToWait/base.html.twig' %}
 
 {% block title %}No Time to Wait 9!{% endblock %}
 
@@ -18,12 +18,8 @@
 <p>The NLI is delighted to host this prestigious event for professionals, researchers and advocates in the audiovisual archiving and digital preservation community. As one of Ireland’s key national memory institutions, the NLI has been at the forefront of digital collecting for over 15 years. The NLI’s multi-disciplinary teams — including specialists in born-digital archives, web archiving and digitisation — work collaboratively to ensure the long-term preservation of both digital and physical collections.   Recent milestones include the release of the NLI’s first Digital Preservation Policy in 2023, the formation of a dedicated Digital Preservation and Repository Services team, and continued modernisations of its collections management systems.</p>
 
 <p>
-{% image '@NoTimeToWaitBundle/Resources/public/img/NLI-External.jpg' %}
-  <img src="{{ asset_url }}" alt="exterior image of the National Library of Ireland" class="img-responsive center-xs" title="Outside NLI">
-{% endimage %}
-{% image '@NoTimeToWaitBundle/Resources/public/img/NLI-internal-reading-room.jpg' %}
-  <img src="{{ asset_url }}" alt="interior image of the National Library of Ireland" class="img-responsive center-xs" title="Inside NLI">
-{% endimage %}
+<img src="{{ asset('bundles/notimetowait/img/NLI-External.jpg') }}" alt="exterior image of the National Library of Ireland" class="img-responsive center-xs" title="Outside NLI">
+<img src="{{ asset('bundles/notimetowait/img/NLI-internal-reading-room.jpg') }}" alt="interior image of the National Library of Ireland" class="img-responsive center-xs" title="Inside NLI">
 </p>
 
 <p><iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d19180.53541877949!2d-6.280931536370832!3d53.336426618518836!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x48670e9a19f3dd89%3A0xdfe6f2dc79e7ae1!2sNational%20Library%20of%20Ireland!5e0!3m2!1sen!2sus!4v1729094860805!5m2!1sen!2sus" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe></p>

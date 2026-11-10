@@ -1,4 +1,4 @@
-{% extends 'SupportUsBundle::base.html.twig' %}
+{% extends '@SupportUs/base.html.twig' %}
 
 {% block title %}Support Us! Become a supporter of MediaArea{% endblock %}
 {% block description %}Support Us! Become a supporter of MediaArea{% endblock %}
@@ -84,14 +84,11 @@
 
 <div>
     Alternatively, you can support us on
-    {% image '@AppBundle/Resources/public/img/Patreon.png' %}
-    <a href="https://www.patreon.com/MediaArea"><img src="{{ asset_url }}" width="128" height="25" alt="Patreon" title="Patreon"></a>
-    {% endimage %},
+    <a href="https://www.patreon.com/MediaArea"><img src="{{ asset('bundles/app/img/Patreon.png') }}" width="128" height="25" alt="Patreon" title="Patreon"></a>
+    ,
     <a href="https://www.tipeee.com/mediaarea">Tipee</a>
 or
-    {% image '@AppBundle/Resources/public/img/Liberapay.png' %}
-    <a href="https://liberapay.com/MediaArea/"><img src="{{ asset_url }}" width="70" height="25" alt="Liberapay" title="Liberapay"></a>
-    {% endimage %}
+    <a href="https://liberapay.com/MediaArea/"><img src="{{ asset('bundles/app/img/Liberapay.png') }}" width="70" height="25" alt="Liberapay" title="Liberapay"></a>
 </div>
 {% endblock %}
 

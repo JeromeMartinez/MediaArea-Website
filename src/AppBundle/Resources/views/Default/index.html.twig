@@ -1,4 +1,4 @@
-{% extends 'AppBundle::base.html.twig' %}
+{% extends '@App/base.html.twig' %}
 
 {% block title %}MediaArea{% endblock %}
 {% block description %}{% trans %}about.page.description{% endtrans %}{% endblock %}
@@ -22,12 +22,12 @@
                 <span class="featureDescription">Technical design, implementation of the bytestream/bitstream analyzer, extraction of metadata</span>
             </header>
             <p class="featureInfos">
-                <a href="mailto:info@mediaarea.net">{% image '@AppBundle/Resources/public/img/Email16.png' %}<img src="{{ asset_url }}" alt="E-mail" />{% endimage %}</a>
-                <a href="https://fr.linkedin.com/in/jermartinez" target="_blank">{% image '@AppBundle/Resources/public/img/LinkedIn16.png' %}<img src="{{ asset_url }}" alt="LinkedIn" />{% endimage %}</a>
-                <a href="https://twitter.com/MediaArea_Net" target="_blank">{% image '@AppBundle/Resources/public/img/Twitter16.png' %}<img src="{{ asset_url }}" alt="Twitter" />{% endimage %}</a>
-                <a href="https://plus.google.com/u/0/+MediaAreaNetOfficial" target="_blank">{% image '@AppBundle/Resources/public/img/GooglePlus16.png' %}<img src="{{ asset_url }}" alt="Google Plus" />{% endimage %}</a>
-                <a href="https://github.com/JeromeMartinez" target="_blank">{% image '@AppBundle/Resources/public/img/GitHub16.png' %}<img src="{{ asset_url }}" alt="GitHub" />{% endimage %}</a>
-                <a href="https://www.openhub.net/accounts/JeromeMartinez" target="_blank">{% image '@AppBundle/Resources/public/img/OpenHub16.png' %}<img src="{{ asset_url }}" alt="Open Hub" />{% endimage %}</a>
+                <a href="mailto:info@mediaarea.net"><img src="{{ asset('bundles/app/img/Email16.png') }}" alt="E-mail" /></a>
+                <a href="https://fr.linkedin.com/in/jermartinez" target="_blank"><img src="{{ asset('bundles/app/img/LinkedIn16.png') }}" alt="LinkedIn" /></a>
+                <a href="https://twitter.com/MediaArea_Net" target="_blank"><img src="{{ asset('bundles/app/img/Twitter16.png') }}" alt="Twitter" /></a>
+                <a href="https://plus.google.com/u/0/+MediaAreaNetOfficial" target="_blank"><img src="{{ asset('bundles/app/img/GooglePlus16.png') }}" alt="Google Plus" /></a>
+                <a href="https://github.com/JeromeMartinez" target="_blank"><img src="{{ asset('bundles/app/img/GitHub16.png') }}" alt="GitHub" /></a>
+                <a href="https://www.openhub.net/accounts/JeromeMartinez" target="_blank"><img src="{{ asset('bundles/app/img/OpenHub16.png') }}" alt="Open Hub" /></a>
             </p>
         </div>
     </div>
@@ -38,9 +38,9 @@
                 <span class="featureDescription">Communication with memory institutions, definition of tests, documentation</span>
             </header>
             <p class="featureInfos">
-                <a href="http://dericed.com" target="_blank">{% image '@AppBundle/Resources/public/img/Website16.png' %}<img src="{{ asset_url }}" alt="Website" />{% endimage %}</a>
-                <a href="https://twitter.com/dericed" target="_blank">{% image '@AppBundle/Resources/public/img/Twitter16.png' %}<img src="{{ asset_url }}" alt="Twitter" />{% endimage %}</a>
-                <a href="https://github.com/dericed" target="_blank">{% image '@AppBundle/Resources/public/img/GitHub16.png' %}<img src="{{ asset_url }}" alt="GitHub" />{% endimage %}</a>
+                <a href="http://dericed.com" target="_blank"><img src="{{ asset('bundles/app/img/Website16.png') }}" alt="Website" /></a>
+                <a href="https://twitter.com/dericed" target="_blank"><img src="{{ asset('bundles/app/img/Twitter16.png') }}" alt="Twitter" /></a>
+                <a href="https://github.com/dericed" target="_blank"><img src="{{ asset('bundles/app/img/GitHub16.png') }}" alt="GitHub" /></a>
             </p>
         </div>
     </div>
@@ -52,9 +52,9 @@
                 <span class="featureDescription">Database management, automation, performance optimization, shell, website maintenance</span>
             </header>
             <p class="featureInfos">
-                <a href="mailto:info@mediaarea.net" target="_blank">{% image '@AppBundle/Resources/public/img/Email16.png' %}<img src="{{ asset_url }}" alt="E-mail" />{% endimage %}</a>
-                <a href="https://www.linkedin.com/in/guillaume-roques-3a962899/" target="_blank">{% image '@AppBundle/Resources/public/img/LinkedIn16.png' %}<img src="{{ asset_url }}" alt="LinkedIn" />{% endimage %}</a>
-                <a href="https://github.com/GuillaumeRoques" target="_blank">{% image '@AppBundle/Resources/public/img/GitHub16.png' %}<img src="{{ asset_url }}" alt="GitHub" />{% endimage %}</a>
+                <a href="mailto:info@mediaarea.net" target="_blank"><img src="{{ asset('bundles/app/img/Email16.png') }}" alt="E-mail" /></a>
+                <a href="https://www.linkedin.com/in/guillaume-roques-3a962899/" target="_blank"><img src="{{ asset('bundles/app/img/LinkedIn16.png') }}" alt="LinkedIn" /></a>
+                <a href="https://github.com/GuillaumeRoques" target="_blank"><img src="{{ asset('bundles/app/img/GitHub16.png') }}" alt="GitHub" /></a>
             </p>
         </div>
     </div>
@@ -65,10 +65,10 @@
                 <span class="featureDescription">Research and development, community engagement, and design</span>
             </header>
             <p class="featureInfos">
-                <a href="mailto:ashley.blewer@gmail.com" target="_blank">{% image '@AppBundle/Resources/public/img/Email16.png' %}<img src="{{ asset_url }}" alt="E-mail" />{% endimage %}</a>
-                <a href="http://ashleyblewer.com/" target="_blank">{% image '@AppBundle/Resources/public/img/Website16.png' %}<img src="{{ asset_url }}" alt="Website" />{% endimage %}</a>
-                <a href="https://twitter.com/ablwr" target="_blank">{% image '@AppBundle/Resources/public/img/Twitter16.png' %}<img src="{{ asset_url }}" alt="Twitter" />{% endimage %}</a>
-                <a href="https://github.com/ablwr" target="_blank">{% image '@AppBundle/Resources/public/img/GitHub16.png' %}<img src="{{ asset_url }}" alt="GitHub" />{% endimage %}</a>
+                <a href="mailto:ashley.blewer@gmail.com" target="_blank"><img src="{{ asset('bundles/app/img/Email16.png') }}" alt="E-mail" /></a>
+                <a href="http://ashleyblewer.com/" target="_blank"><img src="{{ asset('bundles/app/img/Website16.png') }}" alt="Website" /></a>
+                <a href="https://twitter.com/ablwr" target="_blank"><img src="{{ asset('bundles/app/img/Twitter16.png') }}" alt="Twitter" /></a>
+                <a href="https://github.com/ablwr" target="_blank"><img src="{{ asset('bundles/app/img/GitHub16.png') }}" alt="GitHub" /></a>
             </p>
         </div>
     </div>
@@ -80,8 +80,8 @@
                 <span class="featureDescription">Release manager, scripting, bug fixes</span>
             </header>
             <p class="featureInfos">
-                <a href="mailto:info@mediaarea.net" target="_blank">{% image '@AppBundle/Resources/public/img/Email16.png' %}<img src="{{ asset_url }}" alt="E-mail" />{% endimage %}</a>
-                <a href="https://github.com/g-maxime" target="_blank">{% image '@AppBundle/Resources/public/img/GitHub16.png' %}<img src="{{ asset_url }}" alt="GitHub" />{% endimage %}</a>
+                <a href="mailto:info@mediaarea.net" target="_blank"><img src="{{ asset('bundles/app/img/Email16.png') }}" alt="E-mail" /></a>
+                <a href="https://github.com/g-maxime" target="_blank"><img src="{{ asset('bundles/app/img/GitHub16.png') }}" alt="GitHub" /></a>
             </p>
         </div>
     </div>
@@ -92,9 +92,9 @@
                 <span class="featureDescription">Training, setup, support, A/V file analysis and repair, data recovery, communication with memory institutions</span>
             </header>
             <p class="featureInfos">
-                <a href="https://www.av-rd.com/" target="_blank">{% image '@AppBundle/Resources/public/img/Website16.png' %}<img src="{{ asset_url }}" alt="Website" />{% endimage %}</a>
-                <a href="https://twitter.com/pjotrek_b" target="_blank">{% image '@AppBundle/Resources/public/img/Twitter16.png' %}<img src="{{ asset_url }}" alt="Twitter" />{% endimage %}</a>
-                <a href="https://github.com/pjotrek-b" target="_blank">{% image '@AppBundle/Resources/public/img/GitHub16.png' %}<img src="{{ asset_url }}" alt="GitHub" />{% endimage %}</a>
+                <a href="https://www.av-rd.com/" target="_blank"><img src="{{ asset('bundles/app/img/Website16.png') }}" alt="Website" /></a>
+                <a href="https://twitter.com/pjotrek_b" target="_blank"><img src="{{ asset('bundles/app/img/Twitter16.png') }}" alt="Twitter" /></a>
+                <a href="https://github.com/pjotrek-b" target="_blank"><img src="{{ asset('bundles/app/img/GitHub16.png') }}" alt="GitHub" /></a>
             </p>
         </div>
     </div>
@@ -296,11 +296,11 @@
             <div class="col-sm-6">
                 <h4>Social</h4>
                 <ul class="icons">
-                    <li><a href="https://github.com/MediaArea" target="_blank">{% image '@AppBundle/Resources/public/img/GitHub16.png' %}<img src="{{ asset_url }}" alt="GitHub" />{% endimage %}</a></li>
-                    <li><a href="https://www.linkedin.com/company/mediaarea-net" target="_blank">{% image '@AppBundle/Resources/public/img/LinkedIn16.png' %}<img src="{{ asset_url }}" alt="LinkedIn" />{% endimage %}</a></li>
-                    <li><a href="https://twitter.com/MediaArea_Net" target="_blank">{% image '@AppBundle/Resources/public/img/Twitter16.png' %}<img src="{{ asset_url }}" alt="Twitter" />{% endimage %}</a></li>
+                    <li><a href="https://github.com/MediaArea" target="_blank"><img src="{{ asset('bundles/app/img/GitHub16.png') }}" alt="GitHub" /></a></li>
+                    <li><a href="https://www.linkedin.com/company/mediaarea-net" target="_blank"><img src="{{ asset('bundles/app/img/LinkedIn16.png') }}" alt="LinkedIn" /></a></li>
+                    <li><a href="https://twitter.com/MediaArea_Net" target="_blank"><img src="{{ asset('bundles/app/img/Twitter16.png') }}" alt="Twitter" /></a></li>
                     <li><a href="https://www.facebook.com/MediaAreaNet" target="_blank">f</a></li>
-                    <li><a href="https://plus.google.com/u/0/+MediaAreaNetOfficial" target="_blank">{% image '@AppBundle/Resources/public/img/GooglePlus16.png' %}<img src="{{ asset_url }}" alt="Google Plus" />{% endimage %}</a></li>
+                    <li><a href="https://plus.google.com/u/0/+MediaAreaNetOfficial" target="_blank"><img src="{{ asset('bundles/app/img/GooglePlus16.png') }}" alt="Google Plus" /></a></li>
                 </ul>
             </div>
         </div>

@@ -1,4 +1,4 @@
-{% extends 'MediaInfoBundle::base.html.twig' %}
+{% extends '@MediaInfo/base.html.twig' %}
 
 {% block title %}{% trans %}screenshots.page.title{% endtrans %}{% endblock %}
 {% block description %}{% trans %}about.page.description{% endtrans %}{% endblock %}
@@ -11,31 +11,19 @@
     <h2 id="windows">Windows</h2>
     <ul class="thumbnails">
         <li>
-            {% image '@MediaInfoBundle/Resources/public/img/Screenshot/MediaInfo_Windows_Easy_en.png' %}
-            <a class="fancybox-thumb" data-fancybox-group="galleryWin" href="{{ asset_url }}" title="Windows &quot;Easy&quot; view">
-                {% image '@MediaInfoBundle/Resources/public/img/Screenshot/MediaInfo_Windows_Easy_en-thumb.png' %}
-                <img src="{{ asset_url }}" alt="Windows &quot;Easy&quot; view" width="300" height="195">
-                {% endimage %}
+            <a class="fancybox-thumb" data-fancybox-group="galleryWin" href="{{ asset('bundles/mediainfo/img/Screenshot/MediaInfo_Windows_Easy_en.png') }}" title="Windows &quot;Easy&quot; view">
+                <img src="{{ asset('bundles/mediainfo/img/Screenshot/MediaInfo_Windows_Easy_en-thumb.png') }}" alt="Windows &quot;Easy&quot; view" width="300" height="195">
             </a>
-            {% endimage %}
         </li>
         <li>
-            {% image '@MediaInfoBundle/Resources/public/img/Screenshot/MediaInfo_Windows_Text_en.png' %}
-            <a class="fancybox-thumb" data-fancybox-group="galleryWin" href="{{ asset_url }}" title="Windows &quot;Text&quot; view">
-                {% image '@MediaInfoBundle/Resources/public/img/Screenshot/MediaInfo_Windows_Text_en-thumb.png' %}
-                <img src="{{ asset_url }}" alt="Windows &quot;Text&quot; view" width="300" height="363">
-                {% endimage %}
+            <a class="fancybox-thumb" data-fancybox-group="galleryWin" href="{{ asset('bundles/mediainfo/img/Screenshot/MediaInfo_Windows_Text_en.png') }}" title="Windows &quot;Text&quot; view">
+                <img src="{{ asset('bundles/mediainfo/img/Screenshot/MediaInfo_Windows_Text_en-thumb.png') }}" alt="Windows &quot;Text&quot; view" width="300" height="363">
             </a>
-            {% endimage %}
         </li>
         <li>
-            {% image '@MediaInfoBundle/Resources/public/img/Screenshot/MediaInfo_Windows_Tree_en.png' %}
-            <a class="fancybox-thumb" data-fancybox-group="galleryWin" href="{{ asset_url }}" title="Windows &quot;Tree&quot; view">
-                {% image '@MediaInfoBundle/Resources/public/img/Screenshot/MediaInfo_Windows_Tree_en-thumb.png' %}
-                <img src="{{ asset_url }}" alt="Windows &quot;Tree&quot; view" width="300" height="360">
-                {% endimage %}
+            <a class="fancybox-thumb" data-fancybox-group="galleryWin" href="{{ asset('bundles/mediainfo/img/Screenshot/MediaInfo_Windows_Tree_en.png') }}" title="Windows &quot;Tree&quot; view">
+                <img src="{{ asset('bundles/mediainfo/img/Screenshot/MediaInfo_Windows_Tree_en-thumb.png') }}" alt="Windows &quot;Tree&quot; view" width="300" height="360">
             </a>
-            {% endimage %}
         </li>
     </ul>
 </div>
@@ -44,31 +32,19 @@
     <h2 id="mac">Mac</h2>
     <ul class="thumbnails">
         <li>
-            {% image '@MediaInfoBundle/Resources/public/img/Screenshot/MediaInfo_Mac_Easy_en.png' %}
-            <a class="fancybox-thumb" data-fancybox-group="galleryMac" href="{{ asset_url }}" title="Mac &quot;Easy&quot; view">
-                {% image '@MediaInfoBundle/Resources/public/img/Screenshot/MediaInfo_Mac_Easy_en-thumb.png' %}
-                <img src="{{ asset_url }}" alt="Mac &quot;Easy&quot; view" width="300" height="195">
-                {% endimage %}
+            <a class="fancybox-thumb" data-fancybox-group="galleryMac" href="{{ asset('bundles/mediainfo/img/Screenshot/MediaInfo_Mac_Easy_en.png') }}" title="Mac &quot;Easy&quot; view">
+                <img src="{{ asset('bundles/mediainfo/img/Screenshot/MediaInfo_Mac_Easy_en-thumb.png') }}" alt="Mac &quot;Easy&quot; view" width="300" height="195">
             </a>
-            {% endimage %}
         </li>
         <li>
-            {% image '@MediaInfoBundle/Resources/public/img/Screenshot/MediaInfo_Mac_Text_en.png' %}
-            <a class="fancybox-thumb" data-fancybox-group="galleryMac" href="{{ asset_url }}" title="Mac &quot;Text&quot; view">
-                {% image '@MediaInfoBundle/Resources/public/img/Screenshot/MediaInfo_Mac_Text_en-thumb.png' %}
-                <img src="{{ asset_url }}" alt="Mac &quot;Text&quot; view" width="300" height="363">
-                {% endimage %}
+            <a class="fancybox-thumb" data-fancybox-group="galleryMac" href="{{ asset('bundles/mediainfo/img/Screenshot/MediaInfo_Mac_Text_en.png') }}" title="Mac &quot;Text&quot; view">
+                <img src="{{ asset('bundles/mediainfo/img/Screenshot/MediaInfo_Mac_Text_en-thumb.png') }}" alt="Mac &quot;Text&quot; view" width="300" height="363">
             </a>
-            {% endimage %}
         </li>
         <li>
-            {% image '@MediaInfoBundle/Resources/public/img/Screenshot/MediaInfo_Mac_Tree_en.png' %}
-            <a class="fancybox-thumb" data-fancybox-group="galleryMac" href="{{ asset_url }}" title="Mac &quot;Tree&quot; view">
-                {% image '@MediaInfoBundle/Resources/public/img/Screenshot/MediaInfo_Mac_Tree_en-thumb.png' %}
-                <img src="{{ asset_url }}" alt="Mac &quot;Tree&quot; view" width="300" height="360">
-                {% endimage %}
+            <a class="fancybox-thumb" data-fancybox-group="galleryMac" href="{{ asset('bundles/mediainfo/img/Screenshot/MediaInfo_Mac_Tree_en.png') }}" title="Mac &quot;Tree&quot; view">
+                <img src="{{ asset('bundles/mediainfo/img/Screenshot/MediaInfo_Mac_Tree_en-thumb.png') }}" alt="Mac &quot;Tree&quot; view" width="300" height="360">
             </a>
-            {% endimage %}
         </li>
     </ul>
 </div>

@@ -1,4 +1,4 @@
-{% extends 'MediaConchBundle::base.html.twig' %}
+{% extends '@MediaConch/base.html.twig' %}
 
 {% block title %}Fixity Feature for MediaConch{% endblock %}
 
@@ -42,9 +42,7 @@ The new fixer feature in MediaConch is able to resolve this issue.</p>
 <p>The resulting decoded frame (e.g. with FFmpeg “ffmpeg -i FFV1+PCM_WithChecksum_VideoBitFlip.mkv Decoded_Error.png”) is:</p>
 
 <p>
-    {% image '@MediaConchBundle/Resources/public/img/video_bitflip_detected.png' %}
-    <img src="{{ asset_url }}" alt="video_bitflip_detected">
-    {% endimage %}
+    <img src="{{ asset('bundles/mediaconch/img/video_bitflip_detected.png') }}" alt="video_bitflip_detected">
 </p>
 
 <p>Obviously the first (top left) and fourth (bottom right) slices are scrambled.</p>
@@ -60,9 +58,7 @@ The new fixer feature in MediaConch is able to resolve this issue.</p>
 <p>The resulting decoded frame (e.g. with FFmpeg “ffmpeg -i FFV1+PCM_WithChecksum_VideoBitFlip.mkv.fixed Decoded_Fixed.png”) is:</p>
 
 <p>
-    {% image '@MediaConchBundle/Resources/public/img/video_bitflip_corrected.png' %}
-    <img src="{{ asset_url }}" alt="video_bitflip_corrected">
-    {% endimage %}
+    <img src="{{ asset('bundles/mediaconch/img/video_bitflip_corrected.png') }}" alt="video_bitflip_corrected">
 </p>
 
 <p>…and it’s a miracle! The image is the expected one.</p>
@@ -80,9 +76,7 @@ The new fixer feature in MediaConch is able to resolve this issue.</p>
 <p>Download <a href="https://mediaarea.net/_/static/FFV1+PCM_WithChecksum_AudioBitFlip.mkv">this file</a>. This is a file created by FFmpeg with hand made flipped bit. The1st bit (most significant bit of 1st byte) of the PCM packet is flipped. The resulting decoded packet (e.g. file opened in open source audio editor <a href="https://www.audacityteam.org/" target="_blank">Audacity</a>) starts with:</p>
 
 <p>
-    {% image '@MediaConchBundle/Resources/public/img/audio_bitflip_detected.png' %}
-    <img src="{{ asset_url }}" alt="audio_bitflip_detected">
-    {% endimage %}
+    <img src="{{ asset('bundles/mediaconch/img/audio_bitflip_detected.png') }}" alt="audio_bitflip_detected">
 </p>
 
 <p>Obviously the 1st audio sample is completely wrong!</p>
@@ -98,9 +92,7 @@ The new fixer feature in MediaConch is able to resolve this issue.</p>
 <p>The resulting decoded frame starts with:</p>
 
 <p>
-    {% image '@MediaConchBundle/Resources/public/img/audio_bitflip_corrected.png' %}
-    <img src="{{ asset_url }}" alt="audio_bitflip_corrected" />
-    {% endimage %}
+    <img src="{{ asset('bundles/mediaconch/img/audio_bitflip_corrected.png') }}" alt="audio_bitflip_corrected" />
 </p>
 
 <p>Another miracle! The audio waveform is as expected.</p>

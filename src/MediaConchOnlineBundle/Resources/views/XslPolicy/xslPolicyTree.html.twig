@@ -1,4 +1,4 @@
-{% extends 'MediaConchOnlineBundle::base.html.twig' %}
+{% extends '@MediaConchOnline/base.html.twig' %}
 
 {% form_theme importPolicyForm 'bootstrap_3_layout.html.twig' %}
 {% form_theme policyCreateFromFileForm 'bootstrap_3_layout.html.twig' %}
@@ -57,7 +57,7 @@ MediaConchOnline Policy Management
                     {{ form_end(policyCreateFromFileForm) }}
                 </div>
             {% else %}
-                {{ include('MediaConchOnlineBundle:Default:quotaExceeded.html.twig') }}
+                {{ include('@MediaConchOnline/Default/quotaExceeded.html.twig') }}
             {% endif %}
         </div>
 

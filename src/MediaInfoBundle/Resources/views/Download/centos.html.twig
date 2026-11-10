@@ -1,4 +1,4 @@
-{% extends 'MediaInfoBundle::base.html.twig' %}
+{% extends '@MediaInfo/base.html.twig' %}
 
 {% block title %}{% trans %}download.centos.page.title{% endtrans %}{% endblock %}
 {% block description %}{% trans %}about.page.description{% endtrans %}{% endblock %}
@@ -6,9 +6,7 @@
 
 {% block body %}
 <h1>{% trans %}download.centos.title{% endtrans %}</h1>
-{% image '@AppBundle/Resources/public/img/OS/CentOS.png' %}
-<img src="{{ asset_url }}" alt="CentOS" title="CentOS" width="271" height="60"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/CentOS.png') }}" alt="CentOS" title="CentOS" width="271" height="60"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

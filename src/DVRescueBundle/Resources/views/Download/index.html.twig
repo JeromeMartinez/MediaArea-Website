@@ -1,4 +1,4 @@
-{% extends 'DVRescueBundle::base.html.twig' %}
+{% extends '@DVRescue/base.html.twig' %}
 
 {% block title %}DVRescue - Download{% endblock %}
 
@@ -12,52 +12,36 @@
     <td>Link</td>
 </tr>
 <tr>
-    {% image '@AppBundle/Resources/public/img/OS/Windows.png' %}
-    <th><a href="{{ path('dvrescue_download_windows') }}"><img src="{{ asset_url }}" width="288" height="76" alt="Microsoft Windows" title="Microsoft Windows"></a></th>
-    {% endimage %}
+    <th><a href="{{ path('dvrescue_download_windows') }}"><img src="{{ asset('bundles/app/img/OS/Windows.png') }}" width="288" height="76" alt="Microsoft Windows" title="Microsoft Windows"></a></th>
     <td><a href="{{ path('dvrescue_download_windows') }}">MediaArea releases</a></td>
 </tr>
 <tr>
-    {% image '@AppBundle/Resources/public/img/OS/Mac_OS.png' %}
-    <th><a href="{{ path('dvrescue_download_mac') }}"><img src="{{ asset_url }}" width="250" height="100" alt="macOS" title="macOS"></a></th>
-    {% endimage %}
+    <th><a href="{{ path('dvrescue_download_mac') }}"><img src="{{ asset('bundles/app/img/OS/Mac_OS.png') }}" width="250" height="100" alt="macOS" title="macOS"></a></th>
     <td><a href="{{ path('dvrescue_download_mac') }}">MediaArea releases</a></td>
 </tr>
 <tr>
-    {% image '@AppBundle/Resources/public/img/OS/Debian.png' %}
-    <th><a href="{{ path('dvrescue_download_debian') }}"><img src="{{ asset_url }}" width="229" height="61" alt="Debian" title="Debian"></a></th>
-    {% endimage %}
+    <th><a href="{{ path('dvrescue_download_debian') }}"><img src="{{ asset('bundles/app/img/OS/Debian.png') }}" width="229" height="61" alt="Debian" title="Debian"></a></th>
     <td><a href="{{ path('dvrescue_download_debian') }}">MediaArea releases</a></td>
 </tr>
 <tr>
-    {% image '@AppBundle/Resources/public/img/OS/Ubuntu.png' %}
-    <th><a href="{{ path('dvrescue_download_ubuntu') }}"><img src="{{ asset_url }}" width="304" height="79" alt="Ubuntu" title="Ubuntu"></a></th>
-    {% endimage %}
+    <th><a href="{{ path('dvrescue_download_ubuntu') }}"><img src="{{ asset('bundles/app/img/OS/Ubuntu.png') }}" width="304" height="79" alt="Ubuntu" title="Ubuntu"></a></th>
     <td><a href="{{ path('dvrescue_download_ubuntu') }}">MediaArea releases</a></td>
 </tr>
 <tr>
-    {% image '@AppBundle/Resources/public/img/OS/Linux_Mint.png' %}
-    <th><a href="{{ path('dvrescue_download_ubuntu') }}"><img src="{{ asset_url }}" width="256" height="75" alt="Linux Mint" title="Linux Mint"></a></th>
-    {% endimage %}
+    <th><a href="{{ path('dvrescue_download_ubuntu') }}"><img src="{{ asset('bundles/app/img/OS/Linux_Mint.png') }}" width="256" height="75" alt="Linux Mint" title="Linux Mint"></a></th>
     <td><a href="{{ path('dvrescue_download_ubuntu') }}">MediaArea releases</a></td>
 </tr>
 <tr>
-    {% image '@AppBundle/Resources/public/img/OS/CentOS.png' %}
-    <th><a href="{{ path('dvrescue_download_centos') }}"><img src="{{ asset_url }}" width="271" height="60" alt="CentOS" title="CentOS"></a></th>
-    {% endimage %}
+    <th><a href="{{ path('dvrescue_download_centos') }}"><img src="{{ asset('bundles/app/img/OS/CentOS.png') }}" width="271" height="60" alt="CentOS" title="CentOS"></a></th>
     <td><a href="{{ path('dvrescue_download_centos') }}">MediaArea releases</a></td>
 </tr>
 <tr>
-    {% image '@AppBundle/Resources/public/img/OS/Fedora.png' %}
-    <th><a href="{{ path('dvrescue_download_fedora') }}"><img src="{{ asset_url }}" width="250" height="89" alt="Fedora" title="Fedora"></a></th>
-    {% endimage %}
+    <th><a href="{{ path('dvrescue_download_fedora') }}"><img src="{{ asset('bundles/app/img/OS/Fedora.png') }}" width="250" height="89" alt="Fedora" title="Fedora"></a></th>
     <td><a href="{{ path('dvrescue_download_fedora') }}">MediaArea releases</a></td>
 </tr>
 
 <tr>
-    {% image '@AppBundle/Resources/public/img/OS/ArchLinux.png' %}
-    <th><a href="{{ path('dvrescue_download_archlinux') }}"><img src="{{ asset_url }}" width="350" height="103" alt="ArchLinux" title="ArchLinux"></a></th>
-    {% endimage %}
+    <th><a href="{{ path('dvrescue_download_archlinux') }}"><img src="{{ asset('bundles/app/img/OS/ArchLinux.png') }}" width="350" height="103" alt="ArchLinux" title="ArchLinux"></a></th>
     <td><a href="{{ path('dvrescue_download_archlinux') }}">MediaArea releases</a></td>
 </tr>
 <tr>

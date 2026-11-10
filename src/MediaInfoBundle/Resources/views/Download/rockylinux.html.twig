@@ -1,4 +1,4 @@
-{% extends 'MediaInfoBundle::base.html.twig' %}
+{% extends '@MediaInfo/base.html.twig' %}
 
 {% block title %}{% trans %}download.rockylinux.page.title{% endtrans %}{% endblock %}
 {% block description %}{% trans %}about.page.description{% endtrans %}{% endblock %}
@@ -6,9 +6,7 @@
 
 {% block body %}
 <h1>{% trans %}download.rockylinux.title{% endtrans %}</h1>
-{% image '@AppBundle/Resources/public/img/OS/RockyLinux.png' %}
-<img src="{{ asset_url }}" alt="Rocky Linux" title="Rocky Linux" width="350" height="65"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/RockyLinux.png') }}" alt="Rocky Linux" title="Rocky Linux" width="350" height="65"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

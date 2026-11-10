@@ -1,4 +1,4 @@
-{% extends 'MediaConchOnlineBundle::base.html.twig' %}
+{% extends '@MediaConchOnline/base.html.twig' %}
 
 {% block title %}
 MediaConchOnline (Conformance and policy checker)
@@ -6,9 +6,7 @@ MediaConchOnline (Conformance and policy checker)
 
 {% block body %}
 <h1 class="headline">
-    {% image '@MediaConchOnlineBundle/Resources/public/img/MediaConch-122x75.png' %}
-        <img src="{{ asset_url }}" alt="🐚" title="MediaConch" />
-    {% endimage %}
+    <img src="{{ asset('bundles/mediaconchonline/img/MediaConch-122x75.png') }}" alt="🐚" title="MediaConch" />
     MediaConchOnline
 </h1>
 <p>

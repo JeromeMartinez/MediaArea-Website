@@ -1,4 +1,4 @@
-{% extends 'AppBundle::base.html.twig' %}
+{% extends '@App/base.html.twig' %}
 
 {% block title %}{% trans %}divx.page.title{% endtrans %}{% endblock %}
 {% block description %}{% trans %}about.page.description{% endtrans %}{% endblock %}
@@ -20,9 +20,7 @@ The codec identifier name comes from the brand name of the encoder library.<br/>
 The name of the video compression technology is <a href="https://en.wikipedia.org/wiki/MPEG-4_Part_2">MPEG-4 Visual</a>.<br/>
 
 <h2>More info</h2>
-{% image '@AppBundle/Resources/public/img/Divx_logo.png' %}
-<img src="{{ asset_url }}" alt="DivX logo" width="232" height="60"><br/>
-{% endimage %}
+<img src="{{ asset('bundles/app/img/Divx_logo.png') }}" alt="DivX logo" width="232" height="60"><br/>
 Developed by: <a href="http://www.divx.com" title="DivX, Inc.">DivX, Inc.</a><br/>
 Latest release: 2.3.1.2<br/>
 License: Proprietary

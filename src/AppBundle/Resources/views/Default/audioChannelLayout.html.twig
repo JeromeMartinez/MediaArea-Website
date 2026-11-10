@@ -1,4 +1,4 @@
-{% extends 'AppBundle::base.html.twig' %}
+{% extends '@App/base.html.twig' %}
 
 {% block title %}Audio Channel Layout{% endblock %}
 
@@ -1001,9 +1001,7 @@ Blue rectangle: the screen.
 Black rectangles: LFE.
 </p>
 
-{% image '@AppBundle/Resources/public/img/AudioChannelLayout.png' %}
-<img class="center-block" src="{{ asset_url }}" alt="Audio channel Layout graphic">
-{% endimage %}
+<img class="center-block" src="{{ asset('bundles/app/img/AudioChannelLayout.png') }}" alt="Audio channel Layout graphic">
 </div>
 
 <div>

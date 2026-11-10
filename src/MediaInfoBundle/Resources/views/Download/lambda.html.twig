@@ -1,4 +1,4 @@
-{% extends 'MediaInfoBundle::base.html.twig' %}
+{% extends '@MediaInfo/base.html.twig' %}
 
 {% block title %}{% trans %}download.lambda.page.title{% endtrans %}{% endblock %}
 {% block description %}{% trans %}about.page.description{% endtrans %}{% endblock %}
@@ -6,9 +6,7 @@
 
 {% block body %}
 <h1>{% trans %}download.lambda.title{% endtrans %}</h1>
-{% image '@AppBundle/Resources/public/img/OS/Lambda.png' %}
-<img src="{{ asset_url }}" alt="Lambda" title="Lambda" width="350" height="99"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/Lambda.png') }}" alt="Lambda" title="Lambda" width="350" height="99"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

@@ -1,4 +1,4 @@
-{% extends 'MediaInfoBundle::base.html.twig' %}
+{% extends '@MediaInfo/base.html.twig' %}
 
 {% block title %}{% trans %}download.windows.page.title{% endtrans %}{% endblock %}
 {% block description %}{% trans %}about.page.description{% endtrans %}{% endblock %}
@@ -6,9 +6,7 @@
 
 {% block body %}
 <h1>{% trans %}download.windows.title{% endtrans %}</h1>
-{% image '@AppBundle/Resources/public/img/OS/Windows.png' %}
-<img src="{{ asset_url }}" alt="Windows logo" title="Windows logo" width="288" height="76"><br />
-{% endimage %}
+<img src="{{ asset('bundles/app/img/OS/Windows.png') }}" alt="Windows logo" title="Windows logo" width="288" height="76"><br />
 
 <div class="table-responsive">
 <table class="download table table-bordered table-condensed">

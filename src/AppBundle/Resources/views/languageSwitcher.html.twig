@@ -34,11 +34,9 @@
     	<ul class="scrollable-menu">
             {% set routeParams = app.request.attributes.get('_route_params')|merge(app.request.query.all()) %}
             {% set routeCurrent = app.request.get('_route') == "" ? 'homepage' : app.request.get('_route') %}
-            {% image '@AppBundle/Resources/public/img/blank.gif' %}
             {% for language in languages|keys %}
-                <li><a href="{{ path((routeCurrent), (routeParams|merge({'_locale': language}))) }}" title="{{ languages[language].title }}"><img src="{{ asset_url }}" width="25" height="15" title="{{ languages[language].title }}" alt="{{ languages[language].title }}" class="sprite {{ languages[language].sprite }}"> {{ languages[language].title }}</a></li>
+                <li><a href="{{ path((routeCurrent), (routeParams|merge({'_locale': language}))) }}" title="{{ languages[language].title }}"><img src="{{ asset('bundles/app/img/blank.gif') }}" width="25" height="15" title="{{ languages[language].title }}" alt="{{ languages[language].title }}" class="sprite {{ languages[language].sprite }}"> {{ languages[language].title }}</a></li>
             {% endfor %}
-            {% endimage %}
     	</ul>
     </div>
 </li>
