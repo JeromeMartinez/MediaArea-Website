@@ -31,4 +31,5 @@ monolog:
         #    level: info
 
 parameters:
-    payment.paypal.sandbox: true
+    # The development environment always uses the sandbox of Paypal
+    paypal_sandbox: true

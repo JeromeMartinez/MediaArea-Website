@@ -40,9 +40,6 @@ parameters:
     # Lifetime of the link of the password reset email, in seconds
     user.resetting.token_ttl: 86400
 
-    # Payments: the sandbox of Paypal is used in the development environment
-    payment.paypal.sandbox: false
-
 framework:
     #esi: ~
     translator:

@@ -25,6 +25,9 @@ parameters:
     paypal_username: ~
     paypal_password: ~
     paypal_signature: ~
+    # true to use the sandbox of Paypal, with the credentials of a sandbox account.
+    # The development environment always uses it
+    paypal_sandbox: false
     # Simulation of the payments, to test them: no payment provider is called and no money is involved.
     # Never on a public website: everybody would get what a payment gives without paying
     payment_simulation: false
