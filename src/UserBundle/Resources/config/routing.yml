@@ -1,0 +1,71 @@
+# Routes of the user accounts, they keep the names they had with FOSUserBundle
+
+fos_user_security_login:
+    path: /login
+    methods: [GET, POST]
+    controller: UserBundle\Controller\SecurityController::loginAction
+
+fos_user_security_check:
+    path: /login_check
+    methods: [POST]
+    controller: UserBundle\Controller\SecurityController::checkAction
+
+fos_user_security_logout:
+    path: /logout
+    methods: [GET, POST]
+    controller: UserBundle\Controller\SecurityController::logoutAction
+
+fos_user_profile_show:
+    path: /profile/
+    methods: [GET]
+    controller: UserBundle\Controller\UserController::showProfileAction
+
+fos_user_profile_edit:
+    path: /profile/edit
+    methods: [GET, POST]
+    controller: UserBundle\Controller\ProfileController::editAction
+
+fos_user_registration_register:
+    path: /register/
+    methods: [GET, POST]
+    controller: UserBundle\Controller\RegistrationController::registerAction
+
+fos_user_registration_check_email:
+    path: /register/check-email
+    methods: [GET]
+    controller: UserBundle\Controller\RegistrationController::checkEmailAction
+
+fos_user_registration_confirm:
+    path: /register/confirm/{token}
+    methods: [GET]
+    controller: UserBundle\Controller\RegistrationController::confirmAction
+
+fos_user_registration_confirmed:
+    path: /register/confirmed
+    methods: [GET]
+    controller: UserBundle\Controller\RegistrationController::confirmedAction
+
+fos_user_resetting_request:
+    path: /resetting/request
+    methods: [GET]
+    controller: UserBundle\Controller\ResettingController::requestAction
+
+fos_user_resetting_send_email:
+    path: /resetting/send-email
+    methods: [POST]
+    controller: UserBundle\Controller\ResettingController::sendEmailAction
+
+fos_user_resetting_check_email:
+    path: /resetting/check-email
+    methods: [GET]
+    controller: UserBundle\Controller\ResettingController::checkEmailAction
+
+fos_user_resetting_reset:
+    path: /resetting/reset/{token}
+    methods: [GET, POST]
+    controller: UserBundle\Controller\ResettingController::resetAction
+
+fos_user_change_password:
+    path: /profile/change-password
+    methods: [GET, POST]
+    controller: UserBundle\Controller\ProfileController::changePasswordAction

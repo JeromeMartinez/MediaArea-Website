@@ -1,25 +1,25 @@
 <?php
 
-use Symfony\Component\HttpKernel\Kernel;
 use Symfony\Component\Config\Loader\LoaderInterface;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\HttpKernel\Kernel;
+use Symfony\Component\Intl\Countries;
 
 class AppKernel extends Kernel
 {
-    public function registerBundles()
+    public function registerBundles(): iterable
     {
         $bundles = [
             new Symfony\Bundle\FrameworkBundle\FrameworkBundle(),
             new Symfony\Bundle\SecurityBundle\SecurityBundle(),
             new Symfony\Bundle\TwigBundle\TwigBundle(),
+            new Twig\Extra\TwigExtraBundle\TwigExtraBundle(),
             new Symfony\Bundle\MonologBundle\MonologBundle(),
-            new Symfony\Bundle\SwiftmailerBundle\SwiftmailerBundle(),
             new Doctrine\Bundle\DoctrineBundle\DoctrineBundle(),
-            new Sensio\Bundle\FrameworkExtraBundle\SensioFrameworkExtraBundle(),
             new AppBundle\AppBundle(),
-            new Symfony\Bundle\AsseticBundle\AsseticBundle(),
             new Knp\Bundle\MenuBundle\KnpMenuBundle(),
-            new FOS\UserBundle\FOSUserBundle(),
             new FOS\JsRoutingBundle\FOSJsRoutingBundle(),
+            new Symfony\UX\TwigComponent\TwigComponentBundle(),
             new EasyCorp\Bundle\EasyAdminBundle\EasyAdminBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
@@ -27,9 +27,7 @@ class AppKernel extends Kernel
             new JMS\Payment\PaypalBundle\JMSPaymentPaypalBundle(),
             new KJ\Payment\StripeBundle\KJPaymentStripeBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
-            new TFox\MpdfPortBundle\TFoxMpdfPortBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
-            new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
             new MediaTraceBundle\MediaTraceBundle(),
             new BWFMetaEditBundle\BWFMetaEditBundle(),
             new QCToolsBundle\QCToolsBundle(),
@@ -56,35 +54,82 @@ class AppKernel extends Kernel
         if (in_array($this->getEnvironment(), ['dev', 'test'], true)) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new Doctrine\Bundle\FixturesBundle\DoctrineFixturesBundle();
 
             if ('dev' === $this->getEnvironment()) {
-                $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
-                $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
+                $bundles[] = new Symfony\Bundle\MakerBundle\MakerBundle();
             }
         }
 
         return $bundles;
     }
 
-    public function getRootDir()
+    public function boot(): void
     {
-        return __DIR__;
+        // Kosovo has no ISO 3166-1 code, keep it in the countries with the code it uses (XK)
+        Countries::withUserAssigned(true);
+
+        parent::boot();
     }
 
-    public function getCacheDir()
+    public function getProjectDir(): string
     {
-        return dirname(__DIR__).'/var/cache/'.$this->getEnvironment();
+        return dirname(__DIR__);
     }
 
-    public function getLogDir()
+    public function getCacheDir(): string
     {
-        return dirname(__DIR__).'/var/logs';
+        return $this->getProjectDir().'/var/cache/'.$this->getEnvironment();
     }
 
-    public function registerContainerConfiguration(LoaderInterface $loader)
+    public function getLogDir(): string
     {
-        $loader->load($this->getRootDir().'/config/config_'.$this->getEnvironment().'.yml');
+        return $this->getProjectDir().'/var/logs';
+    }
+
+    public function registerContainerConfiguration(LoaderInterface $loader): void
+    {
+        $loader->load($this->getProjectDir().'/app/config/config_'.$this->getEnvironment().'.yml');
+
+        // The mailer_* parameters of parameters.yml are loaded at this point
+        $loader->load(static function (ContainerBuilder $container): void {
+            $container->setParameter('mailer_dsn', self::getMailerDsn(
+                $container->getParameter('mailer_transport'),
+                $container->getParameter('mailer_host'),
+                $container->getParameter('mailer_user'),
+                $container->getParameter('mailer_password')
+            ));
+        });
+    }
+
+    /**
+     * Build the mailer DSN from the mailer_* parameters.
+     */
+    private static function getMailerDsn(?string $transport, ?string $host, ?string $user, ?string $password): string
+    {
+        switch ($transport) {
+            case 'smtp':
+                $credentials = '';
+                if (null !== $user && '' !== $user) {
+                    $credentials = rawurlencode($user);
+                    if (null !== $password && '' !== $password) {
+                        $credentials .= ':'.rawurlencode($password);
+                    }
+                    $credentials .= '@';
+                }
+
+                // Plain SMTP without STARTTLS negotiation, as with the former Swiftmailer configuration
+                return 'smtp://'.$credentials.($host ?: '127.0.0.1').'?auto_tls=false';
+            case 'sendmail':
+                return 'sendmail://default';
+            case 'mail':
+                return 'native://default';
+            case null:
+            case 'null':
+                return 'null://null';
+        }
+
+        // Anything else is used as it is, e.g. a full DSN
+        return $transport;
     }
 }

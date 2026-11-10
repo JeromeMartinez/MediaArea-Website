@@ -2,19 +2,32 @@
 
 namespace UserBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Validator\Constraints\Email;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
+use UserBundle\Lib\DonorManipulator;
 
-class DonorCommand extends ContainerAwareCommand
+class DonorCommand extends Command
 {
+    protected $donorManipulator;
+    protected $validator;
+
+    public function __construct(DonorManipulator $donorManipulator, ValidatorInterface $validator)
+    {
+        $this->donorManipulator = $donorManipulator;
+        $this->validator = $validator;
+
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('mediaarea:user:donor')
@@ -47,22 +60,23 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $email = $input->getArgument('email');
         $amount = $input->getArgument('amount');
         $name = $input->getArgument('name');
 
-        $manipulator = $this->getContainer()->get('user.util.donor_manipulator');
-        $manipulator->createOrPromoteDonor($email, $amount, $name);
+        $this->donorManipulator->createOrPromoteDonor($email, $amount, $name);
 
         $output->writeln(sprintf('Created or updated user <comment>%s</comment>', $email));
+
+        return Command::SUCCESS;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $questions = array();
 
@@ -107,8 +121,7 @@ EOT
      */
     protected function validateEmail($email)
     {
-        $validator = $this->getContainer()->get('validator');
-        $errors = $validator->validate($email, new Email());
+        $errors = $this->validator->validate($email, new Email());
         if ($errors->count()) {
             throw new \Exception('Email is not valid');
         }

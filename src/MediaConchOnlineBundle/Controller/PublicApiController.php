@@ -2,9 +2,8 @@
 
 namespace MediaConchOnlineBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,20 +14,29 @@ use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicyGetPoliciesCount;
 use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicyExport;
 use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicyGetPolicy;
 use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicyGetPublicPolicies;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @Route("/MediaConchOnline/api/public/v1")
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class PublicApiController extends Controller
+#[Route('/MediaConchOnline/api/public/v1')]
+class PublicApiController extends AbstractController
 {
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     /**
      * Public policies page.
      *
      * @return json
-     * @Route("/publicpolicies/list", name="mco_api_public_policy_public")
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
+    #[Route('/publicpolicies/list', name: 'mco_api_public_policy_public')]
     public function publicPoliciesListAction(InitInstanceId $init, XslPolicyGetPublicPolicies $policyList)
     {
         // Init MediaConch-Server-ID
@@ -51,7 +59,7 @@ class PublicApiController extends Controller
                 }
 
                 // Fetch users
-                $query = $this->getDoctrine()->getRepository('UserBundle:User')->createQueryBuilder('u')
+                $query = $this->doctrine->getRepository(\UserBundle\Entity\User::class)->createQueryBuilder('u')
                     ->select('u.id, u.username, u.name, u.companyName')
                     ->where('u.id IN (:userId)')
                     ->setParameter('userId', $userList)
@@ -102,12 +110,12 @@ class PublicApiController extends Controller
      *
      * @return json
      *              {"policy":POLICY_JSTREE_JSON}
-     * @Route(
-     *     "/publicpolicies/policy/{id}/{userId}",
-     *     requirements={"id": "\d+", "userId": "\d+"},
-     *     name="mco_api_public_policy"
-     * )
      */
+    #[Route(
+        '/publicpolicies/policy/{id}/{userId}',
+        name: 'mco_api_public_policy',
+        requirements: ['id' => '\d+', 'userId' => '\d+'],
+    )]
     public function publicPoliciesPolicyAction($id, $userId, XslPolicyGetPolicy $policy)
     {
         try {
@@ -127,12 +135,12 @@ class PublicApiController extends Controller
      * @param int userId user ID of the policy to import
      *
      * @return XML
-     * @Route(
-     *     "/publicpolicies/policy/export/{id}/{userId}",
-     *     requirements={"id": "\d+", "userId": "\d+"},
-     *     name="mco_api_public_policy_public_export"
-     * )
      */
+    #[Route(
+        '/publicpolicies/policy/export/{id}/{userId}',
+        name: 'mco_api_public_policy_public_export',
+        requirements: ['id' => '\d+', 'userId' => '\d+'],
+    )]
     public function publicPoliciesPolicyExportAction($id, $userId, XslPolicyExport $policyExport)
     {
         try {
@@ -153,9 +161,8 @@ class PublicApiController extends Controller
      * Get the ApiKey for a user.
      *
      * @return json
-     * @Route("/login/ckeck", name="mco_api_public_get_api_key")
-     * @Method({"POST"})
      */
+    #[Route('/login/ckeck', name: 'mco_api_public_get_api_key', methods: ['POST'])]
     public function getApiKeyAction(Request $request, ApiKeyManager $apiKeyManager)
     {
         // Get the username value
@@ -180,10 +187,13 @@ class PublicApiController extends Controller
      * Count policies for a user.
      *
      * @return json
-     * @Route("/policies/count/{userId}", requirements={"userId": "\d+"},
-     *   name="mco_api_public_policies_count")
-     * @Method({"GET"})
      */
+    #[Route(
+        '/policies/count/{userId}',
+        name: 'mco_api_public_policies_count',
+        requirements: ['userId' => '\d+'],
+        methods: ['GET'],
+    )]
     public function policiesCountAction(XslPolicyGetPoliciesCount $policiesCount, Request $request, $userId)
     {
         $apiConfig = $this->getParameter('mco.api');

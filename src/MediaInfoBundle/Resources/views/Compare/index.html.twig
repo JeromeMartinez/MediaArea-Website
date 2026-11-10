@@ -51,24 +51,11 @@
 {% endblock %}
 
 {% block stylesheets %}
-{% stylesheets
-    '@MediaInfoBundle/Resources/public/css/mediainfoonline.css'
-    filter='?scssphp' output='css/compare.css'
- %}
-    <link rel="stylesheet" href="{{ preload(asset_url, { as: 'style', nopush: true }) }}" />
-{% endstylesheets %}
+<link rel="stylesheet" href="{{ preload(asset('bundles/mediainfo/css/mediainfoonline.css'), { as: 'style', nopush: true }) }}" />
 {% endblock %}
 
 {% block javascripts %}
-{% javascripts
-    '@MediaInfoBundle/Resources/public/js/compare/base.js'
-    '@MediaInfoBundle/Resources/public/js/compare/compare.js'
-    '@MediaInfoBundle/Resources/public/js/compare/analyze.js'
-    '@MediaConchOnlineBundle/Resources/public/js/utils/text.js'
-    filter='?jsqueeze' output='js/compare.js'
-%}
-<script type="text/javascript" src="{{ preload(asset_url, { as: 'script', nopush: true }) }}"></script>
-{% endjavascripts %}
+<script type="text/javascript" src="{{ preload(asset('bundles/mediainfo/js/compare.bundle.js'), { as: 'script', nopush: true }) }}"></script>
 
 <script>
 if (('WebAssembly' in window) && (typeof Promise !== 'undefined')) {

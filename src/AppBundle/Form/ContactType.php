@@ -3,8 +3,8 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Contact;
-use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
-use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
+use AppBundle\Form\Type\RecaptchaType;
+use AppBundle\Validator\Constraints\Recaptcha;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -15,7 +15,7 @@ class ContactType extends AbstractType
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name')
@@ -23,7 +23,7 @@ class ContactType extends AbstractType
             ->add('email')
             ->add('subject')
             ->add('message', TextareaType::class, ['attr' => ['rows' => 10]])
-            ->add('recaptcha', EWZRecaptchaType::class, [
+            ->add('recaptcha', RecaptchaType::class, [
                 'attr' => [
                     'options' => [
                         'theme' => 'light',
@@ -33,11 +33,11 @@ class ContactType extends AbstractType
                     ],
                 ],
                 'mapped' => false,
-                'constraints' => [new RecaptchaTrue()],
+                'constraints' => [new Recaptcha()],
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Contact::class,

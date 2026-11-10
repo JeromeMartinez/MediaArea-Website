@@ -130,31 +130,10 @@ MediaConchOnline Policy Management
 {% block javascripts %}
     <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
-    {% javascripts filter='?jsqueeze' output='js/policy.js'
-        '@AppBundle/Resources/public/js/jstree.min.js'
-        '@AppBundle/Resources/public/js/select2.js'
-        '@MediaConchOnlineBundle/Resources/public/js/message.js'
-        '@MediaConchOnlineBundle/Resources/public/js/policyTree.js'
-        '@MediaConchOnlineBundle/Resources/public/js/policyTreeAffix.js'
-        '@MediaConchOnlineBundle/Resources/public/js/policyTreePolicies.js'
-        '@MediaConchOnlineBundle/Resources/public/js/policyTreeRules.js'
-        '@MediaConchOnlineBundle/Resources/public/js/policyTreeRulesMI.js'
-        '@MediaConchOnlineBundle/Resources/public/js/policyTreeRulesMT.js'
-        '@MediaConchOnlineBundle/Resources/public/js/policyAjax.js'
-        '@MediaConchOnlineBundle/Resources/public/js/policy.js'
-        '@MediaConchOnlineBundle/Resources/public/js/utils/size.js'
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    <script src="{{ asset('bundles/mediaconchonline/js/policy.bundle.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets filter='cssrewrite' filter='?scssphp' output='css/policy.css'
-        'bundles/app/css/jstree.css'
-        '@AppBundle/Resources/public/css/select2.css'
-        '@AppBundle/Resources/public/css/select2-bootstrap.min.css'
-    %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
-    {% endstylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/mediaconchonline/css/policy.bundle.css') }}"/>
 {% endblock %}

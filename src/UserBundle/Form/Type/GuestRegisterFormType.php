@@ -46,14 +46,14 @@ class GuestRegisterFormType extends RegistrationFormType
             ->add('realUserName', HiddenType::class);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'validation_groups' => array('UserRegistration'),
         ));
     }
 
-    public function getParent()
+    public function getParent(): ?string
     {
         return RegistrationFormType::class;
     }

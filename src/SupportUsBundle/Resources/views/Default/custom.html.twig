@@ -36,26 +36,14 @@
 {% endblock %}
 
 {% block stylesheets %}
-{% stylesheets
-    '@SupportUsBundle/Resources/public/css/simple-slider.css'
-    '@SupportUsBundle/Resources/public/css/supportUs.css'
-    filter='?scssphp' output='css/supportUs.css'
- %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-{% endstylesheets %}
+<link rel="stylesheet" href="{{ asset('bundles/supportus/css/supportUs.bundle.css') }}" />
 {% endblock %}
 
 
 {% block javascripts %}
 <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
-{% javascripts
-    '@SupportUsBundle/Resources/public/js/simple-slider.min.js'
-    '@SupportUsBundle/Resources/public/js/supportUsSlider.js'
-    filter="?jsqueeze" output='js/supportUs.js'
- %}
-    <script src="{{ asset_url }}"></script>
-{% endjavascripts %}
+<script src="{{ asset('bundles/supportus/js/supportUs.bundle.js') }}"></script>
 
 <script>
     $(document).ready(function() {

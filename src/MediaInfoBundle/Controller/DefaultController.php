@@ -2,25 +2,38 @@
 
 namespace MediaInfoBundle\Controller;
 
-use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
-use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Form\Type\RecaptchaType;
+use AppBundle\Validator\Constraints\Recaptcha;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use PaymentBundle\Entity\Order;
 use PaymentBundle\Form\ChoosePaymentMethodType;
 use PaymentBundle\Lib\IpToCountry;
 use PaymentBundle\Lib\IpToCurrency;
+use MediaInfoBundle\Lib\DownloadInfo\MediaInfoDownloadInfo;
+use JMS\Payment\CoreBundle\PluginController\PluginControllerInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
-class DefaultController extends Controller
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
+class DefaultController extends AbstractController
 {
-    /**
-     * @Route("/{_locale}/MediaInfo", name="mi_home", requirements={"_locale": "%app.locales%"})
-     * @Template()
-     */
-    public function aboutAction(Request $request)
+    private $doctrine;
+    private $ppc;
+
+    public function __construct(ManagerRegistry $doctrine, PluginControllerInterface $ppc)
+    {
+        $this->doctrine = $doctrine;
+        $this->ppc = $ppc;
+    }
+
+    #[Route('/{_locale}/MediaInfo', name: 'mi_home', requirements: ['_locale' => '%app.locales%'])]
+    #[Template('@MediaInfo/Default/about.html.twig')]
+    public function aboutAction(Request $request, MediaInfoDownloadInfo $downloadInfo)
     {
         // Donated request
         if (null !== $request->query->get('Donated')) {
@@ -43,7 +56,6 @@ class DefaultController extends Controller
         }
 
         // Download infos
-        $downloadInfo = $this->get('mi.download_info');
         $downloadInfo->setUserAgent($request->headers->get('User-Agent'));
         $downloadInfo->parse();
 
@@ -58,32 +70,28 @@ class DefaultController extends Controller
         );
     }
 
-    /**
-     * @Route("/{_locale}/MediaInfo/Screenshots", name="mi_screenshots", requirements={"_locale": "%app.locales%"})
-     * @Template()
-     */
+    #[Route('/{_locale}/MediaInfo/Screenshots', name: 'mi_screenshots', requirements: ['_locale' => '%app.locales%'])]
+    #[Template('@MediaInfo/Default/screenshots.html.twig')]
     public function screenshotsAction()
     {
         return array();
     }
 
-    /**
-     * @Route("/{_locale}/MediaInfo/Donate", name="mi_donate", requirements={"_locale": "%app.locales%"})
-     * @Template()
-     */
+    #[Route('/{_locale}/MediaInfo/Donate', name: 'mi_donate', requirements: ['_locale' => '%app.locales%'])]
+    #[Template('@MediaInfo/Default/donate.html.twig')]
     public function donateAction(Request $request)
     {
         if ('POST' === $request->getMethod() &&
-            null !== $payment = $request->request->get('ma_choose_payment_method')) {
+            null !== $payment = ($request->request->all()['ma_choose_payment_method'] ?? null)) {
             $amount = $payment['amount'];
             if (!is_numeric($amount) || $amount < 1) {
                 throw new \Exception('Error Processing Request', 1);
             }
 
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->doctrine->getManager();
             $order = new Order($amount);
             $em->persist($order);
-            $em->flush($order);
+            $em->flush();
 
             $returnUrl = $this->generateUrl(
                 'payment_orders_paymentcreate',
@@ -127,7 +135,7 @@ class DefaultController extends Controller
             'allowed_methods' => ['paypal_express_checkout'/*, 'stripe_credit_card'*/],
         ]);
 
-        $form->add('recaptcha', EWZRecaptchaType::class, [
+        $form->add('recaptcha', RecaptchaType::class, [
             'attr' => [
                 'options' => [
                     'theme' => 'light',
@@ -138,19 +146,19 @@ class DefaultController extends Controller
             ],
             'mapped' => false,
             'constraints' => [
-                new RecaptchaTrue(),
+                new Recaptcha(),
             ],
         ]);
 
         $form->handleRequest($request);
 
         if ('POST' === $request->getMethod() && $form->isSubmitted() && $form->isValid()) {
-            $ppc = $this->get('payment.plugin_controller');
+            $ppc = $this->ppc;
             $ppc->createPaymentInstruction($instruction = $form->getData());
 
             $order->setPaymentInstruction($instruction);
             $em->persist($order);
-            $em->flush($order);
+            $em->flush();
 
             return $this->redirect($this->generateUrl('payment_orders_paymentcreate', [
                 'id' => $order->getId(),
@@ -167,46 +175,36 @@ class DefaultController extends Controller
         ];
     }
 
-    /**
-     * @Route("/{_locale}/MediaInfo/Testimonials", name="mi_testimonials", requirements={"_locale": "%app.locales%"})
-     * @Template()
-     */
+    #[Route('/{_locale}/MediaInfo/Testimonials', name: 'mi_testimonials', requirements: ['_locale' => '%app.locales%'])]
+    #[Template('@MediaInfo/Default/testimonials.html.twig')]
     public function testimonialsAction()
     {
         return array('noAds' => true);
     }
 
-    /**
-     * @Route("/{_locale}/MediaInfo/License", name="mi_license", requirements={"_locale": "%app.locales%"})
-     * @Template()
-     */
+    #[Route('/{_locale}/MediaInfo/License', name: 'mi_license', requirements: ['_locale' => '%app.locales%'])]
+    #[Template('@MediaInfo/Default/license.html.twig')]
     public function licenseAction()
     {
         return array();
     }
 
-    /**
-     * @Route("/{_locale}/MediaInfo/Prices", name="mi_prices", requirements={"_locale": "%app.locales%"})
-     * @Template()
-     */
+    #[Route('/{_locale}/MediaInfo/Prices', name: 'mi_prices', requirements: ['_locale' => '%app.locales%'])]
+    #[Template('@MediaInfo/Default/prices.html.twig')]
     public function pricesAction()
     {
         return array('noAds' => true);
     }
 
-    /**
-     * @Route("/{_locale}/MediaInfo/Bundled", name="mi_bundled", requirements={"_locale": "%app.locales%"})
-     * @Template()
-     */
+    #[Route('/{_locale}/MediaInfo/Bundled', name: 'mi_bundled', requirements: ['_locale' => '%app.locales%'])]
+    #[Template('@MediaInfo/Default/bundled.html.twig')]
     public function bundledAction()
     {
         return array();
     }
 
-    /**
-     * @Route("/MediaInfo/ChangeLog", name="mi_changelog")
-     * @Template()
-     */
+    #[Route('/MediaInfo/ChangeLog', name: 'mi_changelog')]
+    #[Template('@MediaInfo/Default/changelog.html.twig')]
     public function changelogAction()
     {
         return array();

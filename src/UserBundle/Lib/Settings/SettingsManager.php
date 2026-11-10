@@ -4,7 +4,7 @@ namespace UserBundle\Lib\Settings;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\UserBundle\Model\UserInterface;
+use UserBundle\Entity\User;
 use MediaConchOnlineBundle\Entity\DisplayFile;
 use UserBundle\Entity\Settings;
 
@@ -18,14 +18,14 @@ class SettingsManager
     public function __construct(TokenStorageInterface $tokenStorage, EntityManagerInterface $em)
     {
         $token = $tokenStorage->getToken();
-        if (null !== $token && $token->getUser() instanceof UserInterface) {
+        if (null !== $token && $token->getUser() instanceof User) {
             $this->user = $token->getUser();
         } else {
             throw new \Exception('Invalid User');
         }
 
         $this->em = $em;
-        $this->repository = $this->em->getRepository('UserBundle:Settings');
+        $this->repository = $this->em->getRepository(\UserBundle\Entity\Settings::class);
     }
 
     public function setDefaultPolicy($policy)
@@ -80,7 +80,7 @@ class SettingsManager
 
             return -2;
         } elseif (null !== $defaultDisplay) {
-            return $this->em->getRepository('MediaConchOnlineBundle:DisplayFile')->findOneByUserOrSystem($defaultDisplay, $this->user);
+            return $this->em->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)->findOneByUserOrSystem($defaultDisplay, $this->user);
         }
     }
 
@@ -139,7 +139,7 @@ class SettingsManager
     {
         $lastUsedDisplay = $this->getSetting('lastUsedDisplay');
         if (null !== $lastUsedDisplay) {
-            return $this->em->getRepository('MediaConchOnlineBundle:DisplayFile')->findOneByUserOrSystem($lastUsedDisplay, $this->user);
+            return $this->em->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)->findOneByUserOrSystem($lastUsedDisplay, $this->user);
         }
     }
 

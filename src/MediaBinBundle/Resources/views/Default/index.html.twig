@@ -56,13 +56,7 @@
 {% endblock %}
 
 {% block javascripts %}
-{% javascripts
-    '@AppBundle/Resources/public/js/simplePagination.js'
-    '@MediaBinBundle/Resources/public/js/listing.js'
-    filter='?jsqueeze' output='js/mediabinListing.js'
- %}
-<script type="text/javascript" src="{{ preload(asset_url, { as: 'script', nopush: true }) }}"></script>
-{% endjavascripts %}
+<script type="text/javascript" src="{{ preload(asset('bundles/mediabin/js/mediabinListing.bundle.js'), { as: 'script', nopush: true }) }}"></script>
 <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
 <script src="{{ path('fos_js_routing_js', { callback: 'fos.Router.setData' }) }}"></script>
 <script>

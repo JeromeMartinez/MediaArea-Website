@@ -12,11 +12,11 @@ class DisplayFileRepository extends EntityRepository
     public function getUserAndSystemDisplays($user)
     {
         $list = [];
-        $displays = $this->getEntityManager()->getRepository('MediaConchOnlineBundle:DisplayFile')->findByUser($user);
+        $displays = $this->getEntityManager()->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)->findByUser($user);
         foreach ($displays as $display) {
             $list['User displays'][$display->getId()] = $display;
         }
-        $displays = $this->getEntityManager()->getRepository('MediaConchOnlineBundle:DisplayFile')->findByUser(null);
+        $displays = $this->getEntityManager()->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)->findByUser(null);
         foreach ($displays as $display) {
             $list['System displays'][$display->getId()] = $display;
         }
@@ -27,11 +27,11 @@ class DisplayFileRepository extends EntityRepository
     public function getUserAndSystemDisplaysChoices($user)
     {
         $list = [];
-        $displays = $this->getEntityManager()->getRepository('MediaConchOnlineBundle:DisplayFile')->findByUser($user);
+        $displays = $this->getEntityManager()->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)->findByUser($user);
         foreach ($displays as $display) {
             $list['User displays'][$display->getDisplayName()] = $display->getId();
         }
-        $displays = $this->getEntityManager()->getRepository('MediaConchOnlineBundle:DisplayFile')->findByUser(null);
+        $displays = $this->getEntityManager()->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)->findByUser(null);
         foreach ($displays as $display) {
             $list['System displays'][$display->getDisplayName()] = $display->getId();
         }
@@ -41,7 +41,7 @@ class DisplayFileRepository extends EntityRepository
 
     public function findOneByUserOrSystem($display, $user)
     {
-        $query = $this->getEntityManager()->getRepository('MediaConchOnlineBundle:DisplayFile')->createQueryBuilder('d')
+        $query = $this->getEntityManager()->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)->createQueryBuilder('d')
             ->where('d.id = :displayID AND d.user = :userID')
             ->orWhere('d.id = :displayID AND d.user IS NULL')
             ->setParameter('displayID', $display)

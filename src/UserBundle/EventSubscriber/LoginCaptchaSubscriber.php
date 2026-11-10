@@ -2,36 +2,37 @@
 
 namespace UserBundle\EventSubscriber;
 
-use ReCaptcha\ReCaptcha;
+use AppBundle\Lib\Recaptcha\RecaptchaVerifier;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
-use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Http\SecurityRequestAttributes;
 
 class LoginCaptchaSubscriber implements EventSubscriberInterface
 {
-    private $privateKey;
+    private $verifier;
     private $router;
 
-    public function __construct($privateKey, RouterInterface $router)
+    public function __construct(RecaptchaVerifier $verifier, RouterInterface $router)
     {
-        $this->privateKey = $privateKey;
+        $this->verifier = $verifier;
         $this->router = $router;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
+            // Before the firewall
             KernelEvents::REQUEST => ['onKernelRequest', 10],
         ];
     }
 
-    public function onKernelRequest(GetResponseEvent $event): void
+    public function onKernelRequest(RequestEvent $event): void
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return;
         }
 
@@ -45,18 +46,14 @@ class LoginCaptchaSubscriber implements EventSubscriberInterface
         }
         $request->attributes->set('_login_captcha_checked', true);
 
-        $recaptcha = new ReCaptcha($this->privateKey);
-        $recaptcha->setExpectedHostname($request->getHost());
-        $response = $recaptcha->verify($request->request->get('g-recaptcha-response'), $request->getClientIp());
-
-        if ($response->isSuccess()) {
+        if ($this->verifier->verify($request, true)) {
             return;
         }
 
         $session = $request->getSession();
-        $session->set(Security::LAST_USERNAME, $request->request->get('_username', ''));
+        $session->set(SecurityRequestAttributes::LAST_USERNAME, $request->request->get('_username', ''));
         $session->set(
-            Security::AUTHENTICATION_ERROR,
+            SecurityRequestAttributes::AUTHENTICATION_ERROR,
             new CustomUserMessageAuthenticationException('This value is not a valid captcha.')
         );
 

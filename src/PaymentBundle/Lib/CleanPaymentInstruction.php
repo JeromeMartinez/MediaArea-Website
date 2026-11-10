@@ -2,7 +2,7 @@
 
 namespace PaymentBundle\Lib;
 
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use JMS\Payment\CoreBundle\Model\PaymentInstructionInterface;
 
 class CleanPaymentInstruction
@@ -10,9 +10,9 @@ class CleanPaymentInstruction
     protected $em;
 
     /**
-     * @param EntityManager $entityManager
+     * @param EntityManagerInterface $entityManager
      */
-    public function __construct(EntityManager $entityManager)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
     }

@@ -2,31 +2,35 @@
 
 namespace MediaConchOnlineBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use MediaConchOnlineBundle\Entity\DisplayFile;
 use MediaConchOnlineBundle\Form\Type\DisplayImportFormType;
 use UserBundle\Lib\Quotas\Quotas;
+use Doctrine\Persistence\ManagerRegistry;
+use Vich\UploaderBundle\Handler\DownloadHandler;
 
-/**
- * @Route("/MediaConchOnline/display/")
- */
+#[Route('/MediaConchOnline/display/')]
 class DisplayController extends BaseController
 {
-    /**
-     * @Route("", name="mco_display")
-     * @Template()
-     */
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
+    #[Route('', name: 'mco_display')]
+    #[Template('@MediaConchOnline/Display/display.html.twig')]
     public function displayAction(Request $request, Quotas $quotas)
     {
-        $displayList = $this->getDoctrine()
-            ->getRepository('MediaConchOnlineBundle:DisplayFile')
+        $displayList = $this->doctrine
+            ->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)
             ->findByUser($this->getUser());
 
-        $displaySystemList = $this->getDoctrine()
-            ->getRepository('MediaConchOnlineBundle:DisplayFile')
+        $displaySystemList = $this->doctrine
+            ->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)
             ->findByUser(null);
 
         if ($quotas->hasPolicyCreationRights()) {
@@ -34,7 +38,7 @@ class DisplayController extends BaseController
             $importDisplayForm = $this->createForm(DisplayImportFormType::class, $display);
             $importDisplayForm->handleRequest($request);
             if ($importDisplayForm->isSubmitted() && $importDisplayForm->isValid()) {
-                $em = $this->getDoctrine()->getManager();
+                $em = $this->doctrine->getManager();
 
                 // Set user at the creation of the policy
                 if (null === $display->getUser()) {
@@ -57,20 +61,17 @@ class DisplayController extends BaseController
         ];
     }
 
-    /**
-     * @Route("delete/{id}", requirements={"id": "\d+"}, name="mco_display_delete")
-     * @Method("GET")
-     */
+    #[Route('delete/{id}', name: 'mco_display_delete', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function displayDeleteAction($id)
     {
-        $policy = $this->getDoctrine()
-            ->getRepository('MediaConchOnlineBundle:DisplayFile')
+        $policy = $this->doctrine
+            ->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)
             ->findOneBy(['id' => $id, 'user' => $this->getUser()]);
 
         if (!$policy) {
             $this->addFlashBag('danger', 'Display not found');
         } else {
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->doctrine->getManager();
             $em->remove($policy);
             $em->flush();
 
@@ -80,14 +81,11 @@ class DisplayController extends BaseController
         return $this->redirectToRoute('mco_display');
     }
 
-    /**
-     * @Route("export/{id}", requirements={"id": "\d+"}, name="mco_display_export")
-     * @Method("GET")
-     */
-    public function displayExportAction($id)
+    #[Route('export/{id}', name: 'mco_display_export', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function displayExportAction($id, DownloadHandler $handler)
     {
-        $policy = $this->getDoctrine()
-            ->getRepository('MediaConchOnlineBundle:DisplayFile')
+        $policy = $this->doctrine
+            ->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)
             ->findOneBy(['id' => $id, 'user' => $this->getUser()]);
 
         if (!$policy) {
@@ -96,19 +94,14 @@ class DisplayController extends BaseController
             return $this->redirectToRoute('mco_display');
         }
 
-        $handler = $this->get('vich_uploader.download_handler');
-
         return $handler->downloadObject($policy, 'displayFile');
     }
 
-    /**
-     * @Route("system/export/{id}", requirements={"id": "\d+"}, name="mco_display_systemexport")
-     * @Method("GET")
-     */
-    public function displaySystemExportAction($id)
+    #[Route('system/export/{id}', name: 'mco_display_systemexport', requirements: ['id' => '\d+'], methods: ['GET'])]
+    public function displaySystemExportAction($id, DownloadHandler $handler)
     {
-        $policy = $this->getDoctrine()
-            ->getRepository('MediaConchOnlineBundle:DisplayFile')
+        $policy = $this->doctrine
+            ->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)
             ->findOneBy(['id' => $id, 'user' => null]);
 
         if (!$policy) {
@@ -116,8 +109,6 @@ class DisplayController extends BaseController
 
             return $this->redirectToRoute('mco_display');
         }
-
-        $handler = $this->get('vich_uploader.download_handler');
 
         return $handler->downloadObject($policy, 'displayFile');
     }

@@ -2,34 +2,42 @@
 
 namespace MediaBinBundle\Controller;
 
-use FOS\UserBundle\Model\UserInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use UserBundle\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use MediaBinBundle\Entity\Bin;
 use MediaBinBundle\Lib\KeyGenerator;
 use MediaBinBundle\Lib\XMLValidator;
 use MediaBinBundle\Lib\File\File;
 use MediaBinBundle\Model\BinInterface;
 use UserBundle\Controller\GuestControllerInterface;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Bridge\Doctrine\Attribute\MapEntity;
 
 /**
- * @Route("/api/v1/MediaBin")
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class ApiController extends Controller implements GuestControllerInterface
+#[Route('/api/v1/MediaBin')]
+class ApiController extends AbstractController implements GuestControllerInterface
 {
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     /**
-     * @Route("", name="mediabin_api_new")
-     * @Method({"PUT"})
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
+    #[Route('', name: 'mediabin_api_new', methods: ['PUT'])]
     public function newAction(Request $request, File $binFile)
     {
         $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
+        if (!is_object($user) || !$user instanceof User) {
             return new JsonResponse(['error' => 'User not logged'], 401);
         }
 
@@ -50,7 +58,7 @@ class ApiController extends Controller implements GuestControllerInterface
         }
 
         // Generate unique hash
-        $binRepository = $this->getDoctrine()->getRepository(Bin::class);
+        $binRepository = $this->doctrine->getRepository(Bin::class);
         do {
             $key = KeyGenerator::getKey();
         } while ($binRepository->findOneBy(['hash' => $key]));
@@ -66,7 +74,7 @@ class ApiController extends Controller implements GuestControllerInterface
             ->setVisibility((int) $request->request->get('visibility') ? 1 : 0)
             ->setExpireAt($expirationDate);
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->doctrine->getManager();
         $em->persist($bin);
         $em->flush();
 
@@ -80,11 +88,8 @@ class ApiController extends Controller implements GuestControllerInterface
         )]);
     }
 
-    /**
-     * @Route("/{hash}", requirements={"hash": "[a-zA-Z0-9]{8}"}, name="mediabin_api_update")
-     * @Method({"POST"})
-     */
-    public function updateAction(Request $request, Bin $bin)
+    #[Route('/{hash}', name: 'mediabin_api_update', requirements: ['hash' => '[a-zA-Z0-9]{8}'], methods: ['POST'])]
+    public function updateAction(Request $request, #[MapEntity(mapping: ['hash' => 'hash'])] Bin $bin)
     {
         if (true !== $checkOwner = $this->checkBinOwner($this->getUser(), $bin->getUser())) {
             return $checkOwner;
@@ -106,18 +111,20 @@ class ApiController extends Controller implements GuestControllerInterface
             $bin->setExpireAt($this->getExpirationDate($request->request->get('expiration')));
         }
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->doctrine->getManager();
         $em->persist($bin);
         $em->flush();
 
         return new JsonResponse(['success' => true]);
     }
 
-    /**
-     * @Route("/cancel/{hash}", requirements={"hash": "[a-zA-Z0-9]{8}"}, name="mediabin_api_cancel_expiration")
-     * @Method({"POST"})
-     */
-    public function cancelExpirationAction(Bin $bin)
+    #[Route(
+        '/cancel/{hash}',
+        name: 'mediabin_api_cancel_expiration',
+        requirements: ['hash' => '[a-zA-Z0-9]{8}'],
+        methods: ['POST'],
+    )]
+    public function cancelExpirationAction(#[MapEntity(mapping: ['hash' => 'hash'])] Bin $bin)
     {
         if (true !== $checkOwner = $this->checkBinOwner($this->getUser(), $bin->getUser())) {
             return $checkOwner;
@@ -125,18 +132,15 @@ class ApiController extends Controller implements GuestControllerInterface
 
         $bin->setExpireAt($this->getExpirationDate('1m'));
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->doctrine->getManager();
         $em->persist($bin);
         $em->flush();
 
         return new JsonResponse(['success' => true, 'binExpiration' => $bin->getExpireAt()->format('Y-m-d H:i')]);
     }
 
-    /**
-     * @Route("/{hash}", requirements={"hash": "[a-zA-Z0-9]{8}"}, name="mediabin_api_delete")
-     * @Method({"DELETE"})
-     */
-    public function deleteAction(Bin $bin)
+    #[Route('/{hash}', name: 'mediabin_api_delete', requirements: ['hash' => '[a-zA-Z0-9]{8}'], methods: ['DELETE'])]
+    public function deleteAction(#[MapEntity(mapping: ['hash' => 'hash'])] Bin $bin)
     {
         if (true !== $checkOwner = $this->checkBinOwner($this->getUser(), $bin->getUser())) {
             return $checkOwner;
@@ -144,7 +148,7 @@ class ApiController extends Controller implements GuestControllerInterface
 
         $bin->setExpireAt(new \DateTime());
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->doctrine->getManager();
         $em->persist($bin);
         $em->flush();
 
@@ -153,7 +157,7 @@ class ApiController extends Controller implements GuestControllerInterface
 
     protected function checkBinOwner($user, $binOwner)
     {
-        if (!is_object($user) || !$user instanceof UserInterface) {
+        if (!is_object($user) || !$user instanceof User) {
             return new JsonResponse(['error' => 'User not logged'], 401);
         }
 

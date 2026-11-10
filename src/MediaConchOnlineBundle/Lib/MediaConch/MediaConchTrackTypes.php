@@ -10,9 +10,12 @@ class MediaConchTrackTypes extends MediaConch
     {
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function run()
     {
-        $process = new Process($this->MediaConch.' --MAXML_StreamKinds');
+        $process = Process::fromShellCommandline($this->MediaConch.' --MAXML_StreamKinds');
 
         $process->run();
 

@@ -2,21 +2,19 @@
 
 namespace EmbARCBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
+use EmbARCBundle\Lib\DownloadInfo\EmbARCDownloadInfo;
 
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
-    /**
-     * @Route("/embARC", name="embarc_home")
-     * @Template()
-     */
-    public function indexAction(Request $request)
+    #[Route('/embARC', name: 'embarc_home')]
+    #[Template('@EmbARC/Default/index.html.twig')]
+    public function indexAction(Request $request, EmbARCDownloadInfo $downloadInfo)
     {
         // Download infos
-        $downloadInfo = $this->get('embarc.download_info');
         $downloadInfo->setUserAgent($request->headers->get('User-Agent'));
         $downloadInfo->parse();
 
@@ -25,19 +23,15 @@ class DefaultController extends Controller
         );
     }
 
-    /**
-     * @Route("/embARC/License", name="embarc_license")
-     * @Template()
-     */
+    #[Route('/embARC/License', name: 'embarc_license')]
+    #[Template('@EmbARC/Default/license.html.twig')]
     public function licenseAction()
     {
         return array();
     }
 
-    /**
-     * @Route("/embARC/man", name="embarc_man")
-     * @Template()
-     */
+    #[Route('/embARC/man', name: 'embarc_man')]
+    #[Template('@EmbARC/Default/man.html.twig')]
     public function manAction()
     {
         return array();

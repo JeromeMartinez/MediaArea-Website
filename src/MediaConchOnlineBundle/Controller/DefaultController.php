@@ -2,19 +2,15 @@
 
 namespace MediaConchOnlineBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
-/**
- * @Route("/MediaConchOnline")
- */
-class DefaultController extends Controller
+#[Route('/MediaConchOnline')]
+class DefaultController extends AbstractController
 {
-    /**
-     * @Route("/", name="mco_home")
-     * @Template()
-     */
+    #[Route('/', name: 'mco_home')]
+    #[Template('@MediaConchOnline/Default/homepage.html.twig')]
     public function homepageAction()
     {
         return [];

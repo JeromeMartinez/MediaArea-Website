@@ -25,6 +25,9 @@ $GLOBALS['dbSeverities'] =
     ),
 ];
 
+/**
+ * @SuppressWarnings(PHPMD.UndefinedVariable)
+ */
 class Severities
 {
     public function listSeverities()

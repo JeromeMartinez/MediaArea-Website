@@ -363,7 +363,6 @@ class MediaConchServer
 
         $response = curl_exec($curl);
         $headers = curl_getinfo($curl);
-        curl_close($curl);
 
         if (isset($headers['http_code']) && 200 == $headers['http_code']) {
             return json_decode($response);

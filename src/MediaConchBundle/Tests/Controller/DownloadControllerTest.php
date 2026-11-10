@@ -3,12 +3,11 @@
 namespace MediaConchBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class DownloadControllerTest extends WebTestCase
 {
-    /**
-     * @dataProvider urlProvider
-     */
+    #[DataProvider('urlProvider')]
     public function testResponse200($url)
     {
         $client = static::createClient();
@@ -17,7 +16,7 @@ class DownloadControllerTest extends WebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    public function urlProvider()
+    public static function urlProvider()
     {
         return [
             ['/MediaConch/Download'],

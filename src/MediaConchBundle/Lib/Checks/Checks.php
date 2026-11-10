@@ -3015,6 +3015,8 @@ function get_references($checkId, $urlPrefix, $formats = null, $elementId = null
     $dbSpecs = (new Specs)->getSpecs();
     global $dbChecks;
     global $dbProfileToSpec;
+    $temp = [];
+    $references = [];
     
     foreach ($dbChecks[$checkId]->references as $checkToDetail) {
         if ((!$formats || is_spec_in_formats($checkToDetail->specId, $formats)) && (!$elementId || $elementId == $checkToDetail->elementId || $elementId == end(explode('/', $checkToDetail->elementId))) && (!$fieldId || $fieldId == $checkToDetail->fieldId)) {
@@ -3070,6 +3072,7 @@ function get_references($checkId, $urlPrefix, $formats = null, $elementId = null
 function get_references_from_crosscheck_message($index, $message)
 {
     // Format
+    $pos = 0;
     $pos2 = strpos($message, ' ', $pos);
     if ($pos2 === false) {
         return null;
@@ -3120,6 +3123,7 @@ function get_message_complexity($messageParts)
 /**
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  * @SuppressWarnings(PHPMD.NPathComplexity)
+ * @SuppressWarnings(PHPMD.UndefinedVariable)
  */
 function map_message_to_references($formats, $groupId, $elementId, $fieldId, $message)
 {
@@ -3194,6 +3198,9 @@ function map_message_to_references($formats, $groupId, $elementId, $fieldId, $me
     return [ $errorKey, $errorsList ];
 }
 
+/**
+ * @SuppressWarnings(PHPMD.UndefinedVariable)
+ */
 function map_messages_to_references($formats, $groupId, $elementId, $fieldId, $messages)
 {
     foreach (explode(" / ", $messages) as $message) {
@@ -3342,6 +3349,7 @@ function manage_conformance($formats, $conformance)
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  * @SuppressWarnings(PHPMD.NPathComplexity)
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.UndefinedVariable)
  */
 class Checks
 {
@@ -3353,22 +3361,23 @@ class Checks
             $checks = [];
             $pos = 0;
             $valueFound = false;
-            $testLen = strlen($check->description);
-            while (pos) {
-                $pos2 = strpos($check->description, '<code>', $pos);
+            $description = (string) ($check->description ?? '');
+            $testLen = strlen($description);
+            while (true) {
+                $pos2 = strpos($description, '<code>', $pos);
                 if ($pos2 === false) {
                     $pos2 = $testLen;
                 }
                 if ($pos2 != $pos) {
-                    $sub = substr($check->description, $pos, $pos2 - $pos);
+                    $sub = substr($description, $pos, $pos2 - $pos);
                     if (count($checks) == 0 || $valueFound) {
                         $checks [] = $sub;
                     } else {
                         $checks [count($checks)-1] .= $sub;
                     }
                 }
-                if ($pos2 != $testLen && ($check->description[$pos2 + 6] == '(' || ($check->description[$pos2 + 6] == ' ' && $check->description[$pos2 + 7] == '('))) {
-                    $pos = strpos($check->description, ')</code>', $pos2 + 1);
+                if ($pos2 != $testLen && ($description[$pos2 + 6] == '(' || ($description[$pos2 + 6] == ' ' && $description[$pos2 + 7] == '('))) {
+                    $pos = strpos($description, ')</code>', $pos2 + 1);
                     if ($pos === false) {
                         break;
                     }
@@ -3376,12 +3385,13 @@ class Checks
                     $checks [] = null;
                     $valueFound = true;
                 } else {
-                    $pos = strpos($check->description, '</code>', $pos2 + 1);
+                    // No more code element when the end of the description is reached
+                    $pos = $pos2 < $testLen ? strpos($description, '</code>', $pos2 + 1) : false;
                     if ($pos === false) {
                         break;
                     }
                     $pos2 += 6;
-                    $sub = substr($check->description, $pos2, $pos - $pos2);
+                    $sub = substr($description, $pos2, $pos - $pos2);
                     if (count($checks) == 0) {
                         $checks [] = $sub;
                     } else {
@@ -3395,7 +3405,7 @@ class Checks
         }
         
         $data = [];
-        foreach (json_decode($miReport) as $media) {
+        foreach (json_decode((string) $miReport) ?? [] as $media) {
             foreach ($media as $tracks) {
                 unset($isNotFirst);
                 foreach ($tracks as $track) {
@@ -3445,7 +3455,7 @@ class Checks
         
         // List
         foreach ($dbChecks as $checkId => $check) {
-            $list[] = '<a href="Checks/' . $checkId . '">' . $check->description . '</a>';
+            $list[] = '<a href="Checks/' . $checkId . '">' . ($check->description ?? '') . '</a>';
         }
         $data [] = [ 'List of checks', [ [ null, $list ] ] ];
         

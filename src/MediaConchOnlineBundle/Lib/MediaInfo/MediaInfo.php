@@ -2,6 +2,9 @@
 
 namespace MediaConchOnlineBundle\Lib\MediaInfo;
 
+/**
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ */
 class MediaInfo
 {
     private $MediaInfo = '/usr/bin/mediainfo';

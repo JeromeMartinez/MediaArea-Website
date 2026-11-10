@@ -2,12 +2,12 @@
 
 namespace MediaConchOnlineBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\ServiceUnavailableHttpException;
 use MediaConchOnlineBundle\Lib\MediaConch\InitInstanceId;
 use MediaConchOnlineBundle\Lib\MediaConch\MediaConchServerException;
@@ -19,18 +19,16 @@ use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicySave;
 use UserBundle\Lib\Quotas\Quotas;
 
 /**
- * @Route("/MediaConchOnline/publicPolicies")
- *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
+#[Route('/MediaConchOnline/publicPolicies')]
 class PublicPoliciesController extends BaseController
 {
     /**
      * Public policies page.
-     *
-     * @Route("", name="mco_policy_public")
-     * @Template()
      */
+    #[Route('', name: 'mco_policy_public')]
+    #[Template('@MediaConchOnline/PublicPolicies/list.html.twig')]
     public function listAction(InitInstanceId $init)
     {
         // Init MediaConch-Server-ID
@@ -46,10 +44,13 @@ class PublicPoliciesController extends BaseController
      * @param int userId user ID of the policy to export
      *
      * @return XML
-     *
-     * @Route("/export/{id}/{userId}", requirements={"id": "\d+", "userId": "\d+"}, name="mco_policy_public_export")
-     * @Method("GET")
      */
+    #[Route(
+        '/export/{id}/{userId}',
+        name: 'mco_policy_public_export',
+        requirements: ['id' => '\d+', 'userId' => '\d+'],
+        methods: ['GET'],
+    )]
     public function policyExportAction($id, $userId, XslPolicyExport $policyExport, XslPolicyGetPolicyName $policyName)
     {
         try {
@@ -82,10 +83,13 @@ class PublicPoliciesController extends BaseController
      *
      * @return json
      *              {"policyId":ID}
-     *
-     * @Route("/import/{id}/{userId}", requirements={"id": "\d+", "userId": "\d+"}, name="mco_policy_public_import")
-     * @Method("GET")
      */
+    #[Route(
+        '/import/{id}/{userId}',
+        name: 'mco_policy_public_import',
+        requirements: ['id' => '\d+', 'userId' => '\d+'],
+        methods: ['GET'],
+    )]
     public function policyImportAction(
         $id,
         $userId,

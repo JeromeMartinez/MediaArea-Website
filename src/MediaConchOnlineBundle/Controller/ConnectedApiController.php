@@ -2,29 +2,33 @@
 
 namespace MediaConchOnlineBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use MediaConchOnlineBundle\Lib\MediaConch\InitInstanceId;
 use MediaConchOnlineBundle\Lib\MediaConch\MediaConchServerException;
 use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicyEditVisibility;
 use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicyGetPublicPolicies;
 use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicySave;
+use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @Route("/MediaConchOnline/api/connected/v1")
- */
+#[Route('/MediaConchOnline/api/connected/v1')]
 class ConnectedApiController extends BaseController
 {
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     /**
      * Public policies list.
      *
      * @return json
-     * @Route("/publicpolicies/list", name="mco_api_connected_policy_public")
-     * @Method({"GET"})
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
+    #[Route('/publicpolicies/list', name: 'mco_api_connected_policy_public', methods: ['GET'])]
     public function publicPoliciesListAction(InitInstanceId $init, XslPolicyGetPublicPolicies $policyList)
     {
         // Init MediaConch-Server-ID
@@ -47,7 +51,7 @@ class ConnectedApiController extends BaseController
                 }
 
                 // Fetch users
-                $query = $this->getDoctrine()->getRepository('UserBundle:User')->createQueryBuilder('u')
+                $query = $this->doctrine->getRepository(\UserBundle\Entity\User::class)->createQueryBuilder('u')
                     ->select('u.id, u.username, u.name, u.companyName')
                     ->where('u.id IN (:userId)')
                     ->setParameter('userId', $userList)
@@ -94,9 +98,13 @@ class ConnectedApiController extends BaseController
      * Unpublish a public policy.
      *
      * @return json
-     * @Route("/publicpolicies/unpublish/{id}", requirements={"id": "\d+"}, name="mco_api_connected_policy_unpublish")
-     * @Method({"PUT"})
      */
+    #[Route(
+        '/publicpolicies/unpublish/{id}',
+        name: 'mco_api_connected_policy_unpublish',
+        requirements: ['id' => '\d+'],
+        methods: ['PUT'],
+    )]
     public function publicPoliciesUnpublishAction(
         $id,
         XslPolicyEditVisibility $policyEditVisibility,

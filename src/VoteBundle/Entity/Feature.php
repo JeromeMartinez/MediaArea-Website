@@ -7,48 +7,33 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Parsedown;
 use VoteBundle\Model\FeatureInterface;
 
-/**
- * @ORM\Entity(repositoryClass="VoteBundle\Repository\FeatureRepository")
- * @ORM\Table(name="vote_features", indexes={@ORM\Index(name="status_idx", columns={"status"})})
- */
+#[ORM\Table(name: 'vote_features')]
+#[ORM\Index(name: 'status_idx', columns: ['status'])]
+#[ORM\Entity(repositoryClass: \VoteBundle\Repository\FeatureRepository::class)]
 class Feature implements FeatureInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 255)]
     protected $title;
 
-    /**
-     * @Gedmo\Slug(fields={"title"}, style="camel")
-     * @ORM\Column(length=255)
-     */
+    #[Gedmo\Slug(fields: ['title'], style: 'camel')]
+    #[ORM\Column(length: 255)]
     protected $slug;
 
-    /**
-     * @ORM\Column(type="text", length=65535)
-     */
+    #[ORM\Column(type: 'text', length: 65535)]
     protected $description;
 
-    /**
-     * @ORM\Column(type="integer", options={"default":0, "unsigned":true})
-     */
+    #[ORM\Column(type: 'integer', options: ['default' => 0, 'unsigned' => true])]
     protected $votesTarget = 0;
 
-    /**
-     * @ORM\Column(type="integer", options={"default":0, "unsigned":true})
-     */
+    #[ORM\Column(type: 'integer', options: ['default' => 0, 'unsigned' => true])]
     protected $votesCountCache = 0;
 
-    /**
-     * @ORM\Column(type="smallint", options={"default":0, "unsigned":true})
-     */
+    #[ORM\Column(type: 'smallint', options: ['default' => 0, 'unsigned' => true])]
     protected $status = 0;
 
     /**

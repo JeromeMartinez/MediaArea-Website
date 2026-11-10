@@ -15,7 +15,7 @@ class PostsTagFilter extends FilterIterator
         $this->tagFilter = $filter;
     }
 
-    public function accept()
+    public function accept(): bool
     {
         $post = $this->getInnerIterator()->current();
         if ($post->hasTagSlug($this->tagFilter)) {

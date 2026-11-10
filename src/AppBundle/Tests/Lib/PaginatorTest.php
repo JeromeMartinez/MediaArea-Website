@@ -4,12 +4,11 @@ namespace Tests\AppBundle\Lib;
 
 use PHPUnit\Framework\TestCase;
 use AppBundle\Lib\Paginator;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class PaginatorTest extends TestCase
 {
-    /**
-     * @dataProvider totalPagesProvider
-     */
+    #[DataProvider('totalPagesProvider')]
     public function testGetTotalPages($items, $itemsPerPage, $expected)
     {
         $paginator = new Paginator($items, $itemsPerPage, 'index_page', 'index', 1);
@@ -17,7 +16,7 @@ class PaginatorTest extends TestCase
         $this->assertEquals($expected, $paginator->getTotalPages());
     }
 
-    public function totalPagesProvider()
+    public static function totalPagesProvider()
     {
         return [
             [100, 10, 10],
@@ -27,9 +26,7 @@ class PaginatorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider pagesProvider
-     */
+    #[DataProvider('pagesProvider')]
     public function testGetPages($items, $currentPage, $pagesToShow, $expected)
     {
         $paginator = new Paginator($items, 1, 'index_page', 'index', $currentPage, $pagesToShow);
@@ -37,7 +34,7 @@ class PaginatorTest extends TestCase
         $this->assertEquals($expected, $paginator->getPages());
     }
 
-    public function pagesProvider()
+    public static function pagesProvider()
     {
         return [
             [20, 1, 10, [1, 2, 3, 4, 5, 6, 7, 8, 9, 'slide', 20]],
@@ -58,9 +55,7 @@ class PaginatorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider previousAndNextProvider
-     */
+    #[DataProvider('previousAndNextProvider')]
     public function testPreviousAndNextPage($items, $currentPage, $expectedPrevious, $expectedNext)
     {
         $paginator = new Paginator($items, 10, 'index_page', 'index', $currentPage);
@@ -69,7 +64,7 @@ class PaginatorTest extends TestCase
         $this->assertEquals($expectedNext, $paginator->getNextPage());
     }
 
-    public function previousAndNextProvider()
+    public static function previousAndNextProvider()
     {
         return [
             [95, 1, null, 2],
@@ -79,9 +74,7 @@ class PaginatorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider routeProvider
-     */
+    #[DataProvider('routeProvider')]
     public function testRoute($items, $currentPage, $expectedRoute, $expectedRouteParams)
     {
         $paginator = new Paginator($items, 10, 'index_page', 'index', $currentPage);
@@ -90,7 +83,7 @@ class PaginatorTest extends TestCase
         $this->assertEquals($expectedRouteParams, $paginator->getPageRouteParams($currentPage));
     }
 
-    public function routeProvider()
+    public static function routeProvider()
     {
         return [
             [95, 1, 'index', []],
@@ -99,9 +92,7 @@ class PaginatorTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider routeProvider
-     */
+    #[DataProvider('routeProvider')]
     public function testRouteWithParams($items, $currentPage, $expectedRoute, $expectedRouteParams)
     {
         $routeParams = ['tag' => 'test'];
@@ -115,9 +106,7 @@ class PaginatorTest extends TestCase
         );
     }
 
-    /**
-     * @dataProvider isCurrentProvider
-     */
+    #[DataProvider('isCurrentProvider')]
     public function testIsCurrent($items, $currentPage, $page, $expectedCurrent)
     {
         $paginator = new Paginator($items, 10, 'index_page', 'index', $currentPage);
@@ -125,7 +114,7 @@ class PaginatorTest extends TestCase
         $this->assertEquals($expectedCurrent, $paginator->isCurrent($page));
     }
 
-    public function isCurrentProvider()
+    public static function isCurrentProvider()
     {
         return [
             [95, 1, 1, true],

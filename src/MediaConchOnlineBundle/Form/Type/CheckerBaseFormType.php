@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\UserBundle\Model\UserInterface;
+use UserBundle\Entity\User;
 use UserBundle\Lib\Settings\SettingsManager;
 use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicyGetPoliciesNamesList;
 use MediaConchOnlineBundle\Lib\MediaConch\MediaConchServerException;
@@ -27,7 +27,7 @@ class CheckerBaseFormType extends AbstractType
         XslPolicyGetPoliciesNamesList $policyList
     ) {
         $token = $tokenStorage->getToken();
-        if (null !== $token && $token->getUser() instanceof UserInterface) {
+        if (null !== $token && $token->getUser() instanceof User) {
             $this->user = $token->getUser();
         } else {
             throw new \Exception('Invalid User');
@@ -48,7 +48,7 @@ class CheckerBaseFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('policy', ChoiceType::class, [
@@ -60,8 +60,8 @@ class CheckerBaseFormType extends AbstractType
                 'attr' => ['class' => 'policyList'],
             ])
             ->add('display', EntityType::class, [
-                'class' => 'MediaConchOnlineBundle:DisplayFile',
-                'choices' => $this->em->getRepository('MediaConchOnlineBundle:DisplayFile')->getUserAndSystemDisplays($this->user),
+                'class' => \MediaConchOnlineBundle\Entity\DisplayFile::class,
+                'choices' => $this->em->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)->getUserAndSystemDisplays($this->user),
                 'placeholder' => 'Choose a display',
                 'required' => false,
                 'label' => 'Display',
@@ -86,7 +86,7 @@ class CheckerBaseFormType extends AbstractType
             ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'form';
     }

@@ -4,32 +4,32 @@ namespace UserBundle\Lib\ApiKey;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\Security\Core\Encoder\EncoderFactoryInterface;
-use FOS\UserBundle\Util\TokenGeneratorInterface;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use UserBundle\Entity\ApiKey;
+use UserBundle\Lib\TokenGenerator;
 
 class ApiKeyManager
 {
     protected $em;
     protected $requestStack;
     protected $tokenGenerator;
-    protected $encoderFactory;
+    protected $passwordHasher;
 
     public function __construct(
         EntityManagerInterface $em,
         RequestStack $requestStack,
-        TokenGeneratorInterface $tokenGenerator,
-        EncoderFactoryInterface $encoderFactory
+        TokenGenerator $tokenGenerator,
+        UserPasswordHasherInterface $passwordHasher
     ) {
         $this->em = $em;
         $this->requestStack = $requestStack;
         $this->tokenGenerator = $tokenGenerator;
-        $this->encoderFactory = $encoderFactory;
+        $this->passwordHasher = $passwordHasher;
     }
 
     public function getUserForApiKey($apiKey)
     {
-        $apiToken = $this->em->getRepository('UserBundle:ApiKey')->findOneByToken($apiKey);
+        $apiToken = $this->em->getRepository(\UserBundle\Entity\ApiKey::class)->findOneByToken($apiKey);
 
         if (null === $apiToken) {
             return null;
@@ -52,7 +52,7 @@ class ApiKeyManager
      */
     public function getApiKeyForUser($username, $password, $app = null, $version = null)
     {
-        $user = $this->em->getRepository('UserBundle:User')->findOneByUsername($username);
+        $user = $this->em->getRepository(\UserBundle\Entity\User::class)->findOneByUsername($username);
 
         if (!$user) {
             return null;
@@ -62,7 +62,7 @@ class ApiKeyManager
             return null;
         }
 
-        $apiToken = $this->em->getRepository('UserBundle:ApiKey')->findOneBy(['user' => $user, 'app' => $app]);
+        $apiToken = $this->em->getRepository(\UserBundle\Entity\ApiKey::class)->findOneBy(['user' => $user, 'app' => $app]);
 
         if (!$apiToken) {
             $apiToken = $this->createApiKey($user, $app, $version);
@@ -105,8 +105,6 @@ class ApiKeyManager
      */
     protected function checkPassword($user, $password)
     {
-        $encoder = $this->encoderFactory->getEncoder($user);
-
-        return $encoder->isPasswordValid($user->getPassword(), $password, $user->getSalt());
+        return $this->passwordHasher->isPasswordValid($user, (string) $password);
     }
 }

@@ -21,7 +21,7 @@ class XslPolicyInfoFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('policyName', null, ['required' => false])
             ->add('policyDescription', TextareaType::class, ['required' => false])
@@ -48,7 +48,7 @@ class XslPolicyInfoFormType extends AbstractType
         }
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'xslPolicyInfo';
     }

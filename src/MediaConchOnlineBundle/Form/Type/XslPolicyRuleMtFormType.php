@@ -16,7 +16,7 @@ class XslPolicyRuleMtFormType extends AbstractType
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('title', TextType::class, ['label' => 'Rule name', 'required' => false])
             ->add('field', TextType::class)
@@ -29,7 +29,7 @@ class XslPolicyRuleMtFormType extends AbstractType
             ->add('scope', HiddenType::class, ['data' => 'mmt']);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'xslPolicyRuleMt';
     }

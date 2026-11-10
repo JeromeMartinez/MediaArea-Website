@@ -25,7 +25,7 @@ class PurgeExpiredBinCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('mediaarea:mediabin:purge')
@@ -41,7 +41,7 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $binRepository = $this->em->getRepository(Bin::class);
         $count = 0;
@@ -60,5 +60,7 @@ EOT
         } else {
             $output->writeln('<comment>No bin to purge</comment>');
         }
+
+        return Command::SUCCESS;
     }
 }

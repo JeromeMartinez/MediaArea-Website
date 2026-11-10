@@ -2,9 +2,8 @@
 
 namespace MediaConchOnlineBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -16,22 +15,28 @@ use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicyGetPolicies;
 use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicyGetPublicPolicies;
 use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicyImport;
 use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicySave;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
- * @Route("/MediaConchOnline/api/protected/v1")
- *
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class ProtectedApiController extends Controller
+#[Route('/MediaConchOnline/api/protected/v1')]
+class ProtectedApiController extends AbstractController
 {
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
     /**
      * Import a policy to the oublic policies list.
      *
      * @return json
-     * @Route("/publicpolicies/import")
-     * @Route("/policies/import")
-     * @Method({"POST"})
      */
+    #[Route('/publicpolicies/import', methods: ['POST'])]
+    #[Route('/policies/import', methods: ['POST'])]
     public function importPolicyAction(
         Request $request,
         XslPolicyImport $policyImport,
@@ -73,10 +78,10 @@ class ProtectedApiController extends Controller
      * Public policies list.
      *
      * @return json
-     * @Route("/publicpolicies/list")
      *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
+    #[Route('/publicpolicies/list')]
     public function publicPoliciesListAction(InitInstanceId $init, XslPolicyGetPublicPolicies $policyList)
     {
         // Init MediaConch-Server-ID
@@ -99,7 +104,7 @@ class ProtectedApiController extends Controller
                 }
 
                 // Fetch users
-                $query = $this->getDoctrine()->getRepository('UserBundle:User')->createQueryBuilder('u')
+                $query = $this->doctrine->getRepository(\UserBundle\Entity\User::class)->createQueryBuilder('u')
                     ->select('u.id, u.username, u.name, u.companyName')
                     ->where('u.id IN (:userId)')
                     ->setParameter('userId', $userList)
@@ -146,9 +151,8 @@ class ProtectedApiController extends Controller
      * Unpublish a public policy.
      *
      * @return json
-     * @Route("/publicpolicies/unpublish/{id}", requirements={"id": "\d+"})
-     * @Method({"PUT"})
      */
+    #[Route('/publicpolicies/unpublish/{id}', requirements: ['id' => '\d+'], methods: ['PUT'])]
     public function publicPoliciesUnpublishAction(
         $id,
         XslPolicyEditVisibility $policyEditVisibility,
@@ -171,9 +175,8 @@ class ProtectedApiController extends Controller
      * User policies list.
      *
      * @return json
-     * @Route("/userpolicies/list")
-     * @Method({"GET"})
      */
+    #[Route('/userpolicies/list', methods: ['GET'])]
     public function userPoliciesListAction(XslPolicyGetPolicies $policies)
     {
         $list = [];
@@ -208,9 +211,8 @@ class ProtectedApiController extends Controller
      * @param int id policy ID of the policy to import
      *
      * @return XML
-     * @Route("/userpolicies/policy/{id}", requirements={"id": "\d+"})
-     * @Method({"GET"})
      */
+    #[Route('/userpolicies/policy/{id}', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function userPoliciesPolicyExportAction($id, XslPolicyExport $policyExport)
     {
         try {

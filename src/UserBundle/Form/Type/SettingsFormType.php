@@ -8,7 +8,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\UserBundle\Model\UserInterface;
+use UserBundle\Entity\User;
 use UserBundle\Lib\Settings\SettingsManager;
 use MediaConchOnlineBundle\Entity\DisplayFile;
 use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicyGetPoliciesNamesList;
@@ -28,7 +28,7 @@ class SettingsFormType extends AbstractType
         XslPolicyGetPoliciesNamesList $policyList
     ) {
         $token = $tokenStorage->getToken();
-        if (null !== $token && $token->getUser() instanceof UserInterface) {
+        if (null !== $token && $token->getUser() instanceof User) {
             $this->user = $token->getUser();
         } else {
             throw new \Exception('Invalid User');
@@ -49,7 +49,7 @@ class SettingsFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('policy', ChoiceType::class, [
@@ -61,7 +61,7 @@ class SettingsFormType extends AbstractType
                 'attr' => ['class' => 'policyList'],
             ])
             ->add('display', ChoiceType::class, [
-                'choices' => ['Last used display' => -2] + $this->em->getRepository('MediaConchOnlineBundle:DisplayFile')->getUserAndSystemDisplaysChoices($this->user),
+                'choices' => ['Last used display' => -2] + $this->em->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)->getUserAndSystemDisplaysChoices($this->user),
                 'placeholder' => 'Default display (MediaConch Html)',
                 'required' => false,
                 'label' => 'Default Display',

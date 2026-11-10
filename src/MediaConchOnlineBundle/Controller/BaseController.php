@@ -2,11 +2,11 @@
 
 namespace MediaConchOnlineBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use UserBundle\Controller\GuestControllerInterface;
 
-abstract class BaseController extends Controller implements GuestControllerInterface
+abstract class BaseController extends AbstractController implements GuestControllerInterface
 {
     protected function addFlashBag($type, $message)
     {

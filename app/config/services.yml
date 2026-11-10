@@ -9,33 +9,30 @@ services:
         autoconfigure: true
         public: false
 
-    #service_name:
-    #    class: AppBundle\Directory\ClassName
-    #    arguments: ['@another_service_name', 'plain_value', '%parameter_name%']
-    app.locale_listener:
-        class: AppBundle\EventListener\LocaleListener
-        arguments: ['%kernel.default_locale%', '%app.locales%']
-        tags:
-            - { name: kernel.event_subscriber }
+    AppBundle\:
+        resource: '../../src/AppBundle/*'
+        exclude: '../../src/AppBundle/{Doctrine,Entity,Resources,Tests}'
 
-    app.cookies.listener:
-        class: AppBundle\EventListener\CookiesListener
+    AppBundle\AssetMapper\BundleAssetCompiler:
+        tags:
+            # After the other compilers: they have nothing to do in the content of the included assets
+            - { name: asset_mapper.compiler, priority: -100 }
+
+    AppBundle\EventListener\LocaleListener:
+        arguments: ['%kernel.default_locale%', '%app.locales%']
+
+    AppBundle\EventListener\CookiesListener:
         tags:
             - { name: kernel.event_listener, event: kernel.request, method: handleCookies }
             - { name: kernel.event_listener, event: kernel.response, method: setCookies }
 
-    twig.extension.text:
-        class: Twig_Extensions_Extension_Text
-        tags:
-            - { name: twig.extension }
+    AppBundle\Form\Type\RecaptchaType:
+        arguments: ['%recaptcha_public%', '%kernel.default_locale%']
 
-    twig.extension.intl:
-        class: Twig_Extensions_Extension_Intl
-        tags:
-            - { name: twig.extension }
+    AppBundle\Lib\Recaptcha\RecaptchaVerifier:
+        arguments: ['%recaptcha_private%']
 
-    app.menu_builder:
-        class: AppBundle\Menu\MenuBuilder
+    AppBundle\Menu\MenuBuilder:
         tags:
             - { name: knp_menu.menu_builder, method: createMainMenu, alias: main }
             - { name: knp_menu.menu_builder, method: createMediaTraceMenu, alias: mediatrace }
@@ -52,4 +49,3 @@ services:
             - { name: knp_menu.menu_builder, method: createEmbARCMenu, alias: embarc }
             - { name: knp_menu.menu_builder, method: createMediaConchMenu, alias: mc }
             - { name: knp_menu.menu_builder, method: createMediaConchOnlineMenu, alias: mco }
-        public: true

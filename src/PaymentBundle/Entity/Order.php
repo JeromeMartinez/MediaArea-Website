@@ -4,40 +4,28 @@ namespace PaymentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="orders")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'orders')]
+#[ORM\Entity]
 class Order
 {
     const STATUS_NEW = 0;
     const STATUS_COMPLETED = 1;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @ORM\OneToOne(targetEntity="JMS\Payment\CoreBundle\Entity\PaymentInstruction")
-     */
+    #[ORM\OneToOne(targetEntity: \JMS\Payment\CoreBundle\Entity\PaymentInstruction::class)]
     private $paymentInstruction;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=5)
-     */
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 5)]
     private $amount;
 
-    /**
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 10, nullable: true)]
     protected $type;
 
-    /**
-     * @ORM\Column(type="smallint", nullable=false, options={"default":0})
-     */
+    #[ORM\Column(type: 'smallint', nullable: false, options: ['default' => 0])]
     protected $status = 0;
 
     public function __construct($amount)
@@ -134,7 +122,7 @@ class Order
      *
      * @return Order
      */
-    public function setPaymentInstruction(\JMS\Payment\CoreBundle\Entity\PaymentInstruction $paymentInstruction = null)
+    public function setPaymentInstruction(?\JMS\Payment\CoreBundle\Entity\PaymentInstruction $paymentInstruction = null)
     {
         $this->paymentInstruction = $paymentInstruction;
 

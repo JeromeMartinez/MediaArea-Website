@@ -2,21 +2,19 @@
 
 namespace DVRescueBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
+use DVRescueBundle\Lib\DownloadInfo\DVRescueDownloadInfo;
 
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
-    /**
-     * @Route("/DVRescue", name="dvrescue_home")
-     * @Template()
-     */
-    public function indexAction(Request $request)
+    #[Route('/DVRescue', name: 'dvrescue_home')]
+    #[Template('@DVRescue/Default/index.html.twig')]
+    public function indexAction(Request $request, DVRescueDownloadInfo $downloadInfo)
     {
         // Download infos
-        $downloadInfo = $this->get('dvrescue.download_info');
         $downloadInfo->setUserAgent($request->headers->get('User-Agent'));
         $downloadInfo->parse();
 
@@ -25,19 +23,15 @@ class DefaultController extends Controller
         );
     }
 
-    /**
-     * @Route("/DVRescue/License", name="dvrescue_license")
-     * @Template()
-     */
+    #[Route('/DVRescue/License', name: 'dvrescue_license')]
+    #[Template('@DVRescue/Default/license.html.twig')]
     public function licenseAction()
     {
         return array();
     }
 
-    /**
-     * @Route("/DVRescue/man", name="dvrescue_man")
-     * @Template()
-     */
+    #[Route('/DVRescue/man', name: 'dvrescue_man')]
+    #[Template('@DVRescue/Default/man.html.twig')]
     public function manAction()
     {
         return array();

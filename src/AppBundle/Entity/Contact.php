@@ -6,31 +6,18 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class Contact
 {
-    /**
-     * @Assert\NotBlank(message = "Your name cannot be empty")
-     */
+    #[Assert\NotBlank(message: 'Your name cannot be empty')]
     protected $name;
 
-    /**
-     * @Assert\NotBlank(message = "Your email cannot be empty")
-     * @Assert\Email()
-     */
+    #[Assert\NotBlank(message: 'Your email cannot be empty')]
+    #[Assert\Email]
     protected $email;
 
-    /**
-     * @Assert\NotBlank(message = "Subject cannot be empty")
-     * @Assert\Length(
-     *      min = 2,
-     *      max = 50,
-     *      minMessage = "Subject must be at least {{ limit }} characters long",
-     *      maxMessage = "Subject cannot be longer than {{ limit }} characters"
-     * )
-     */
+    #[Assert\NotBlank(message: 'Subject cannot be empty')]
+    #[Assert\Length(min: 2, max: 50, minMessage: 'Subject must be at least {{ limit }} characters long', maxMessage: 'Subject cannot be longer than {{ limit }} characters')]
     protected $subject;
 
-    /**
-     * @Assert\NotBlank(message = "Your message cannot be empty")
-     */
+    #[Assert\NotBlank(message: 'Your message cannot be empty')]
     protected $message;
 
     protected $company;

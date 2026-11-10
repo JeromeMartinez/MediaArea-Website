@@ -2,6 +2,7 @@
 /app/config/parameters.yml
 /build/
 /phpunit.xml
+/.phpunit.result.cache
 /var/*
 !/var/cache
 /var/cache/*
@@ -12,15 +13,12 @@
 !/var/sessions
 /var/sessions/*
 !var/sessions/.gitkeep
-!var/SymfonyRequirements.php
 !var/data
 /vendor/
+/web/assets/
 /web/bundles/
-/web/images/
-/web/css/
-/web/js/
 /web/app_dev.php
-/.php_cs.cache
+/.php-cs-fixer.cache
 /worktrees/
 *.php~
 /files/

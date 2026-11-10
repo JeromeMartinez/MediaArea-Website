@@ -33,7 +33,7 @@ class VatCalculatorTest extends TestCase
             ->calculateNet();
 
         $this->assertEquals(0.85, $vat->getNet());
-        $this->assertEquals(0.15, $vat->getVatAmount());
+        $this->assertEqualsWithDelta(0.15, $vat->getVatAmount(), PHP_FLOAT_EPSILON);
         $this->assertEquals(1, $vat->getGross());
         $this->assertEquals(17, $vat->getVatRate());
     }

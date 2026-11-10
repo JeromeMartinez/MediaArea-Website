@@ -5,7 +5,6 @@ namespace UserBundle\Tests\Command;
 use Symfony\Component\Console\Tester\CommandTester;
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use UserBundle\Command\DonorCommand;
 
 class DonorCommandTest extends KernelTestCase
 {
@@ -15,7 +14,6 @@ class DonorCommandTest extends KernelTestCase
         $kernel->boot();
 
         $application = new Application($kernel);
-        $application->add(new DonorCommand());
 
         $command = $application->find('mediaarea:user:donor');
 
@@ -28,7 +26,7 @@ class DonorCommandTest extends KernelTestCase
         ));
 
         $output = $commandTester->getDisplay();
-        $this->assertContains('Created or updated user test@test.com', $output);
+        $this->assertStringContainsString('Created or updated user test@test.com', $output);
 
         // Command with name
         $commandTester = new CommandTester($command);
@@ -40,7 +38,7 @@ class DonorCommandTest extends KernelTestCase
         ));
 
         $output = $commandTester->getDisplay();
-        $this->assertContains('Created or updated user test@test.com', $output);
+        $this->assertStringContainsString('Created or updated user test@test.com', $output);
 
         // Invalid email
         $this->expectException(\Exception::class);

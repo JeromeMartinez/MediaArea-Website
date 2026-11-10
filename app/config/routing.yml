@@ -1,98 +1,97 @@
 easy_admin_bundle:
-    resource: "@EasyAdminBundle/Controller/AdminController.php"
-    type:     annotation
-    prefix:   /admin
+    resource: .
+    type:     easyadmin.routes
 
 user:
     resource: "@UserBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 fos_user:
-    resource: "@FOSUserBundle/Resources/config/routing/all.xml"
+    resource: "@UserBundle/Resources/config/routing.yml"
 
 fos_js_routing:
-    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.xml"
+    resource: "@FOSJsRoutingBundle/Resources/config/routing/routing.php"
 
 blog:
     resource: "@BlogBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 mov_meta_edit:
     resource: "@MOVMetaEditBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 avi_meta_edit:
     resource: "@AVIMetaEditBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 no_time_to_wait:
     resource: "@NoTimeToWaitBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 ollistd:
     resource: "@OllistdBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 media_bin:
     resource: "@MediaBinBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 dv_analyzer:
     resource: "@DVAnalyzerBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 qc_tools:
     resource: "@QCToolsBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 bwf_meta_edit:
     resource: "@BWFMetaEditBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 media_conch:
     resource: "@MediaConchBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 media_conch_online:
     resource: "@MediaConchOnlineBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 media_trace:
     resource: "@MediaTraceBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 raw_cooked:
     resource: "@RAWcookedBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 dvrescue:
     resource: "@DVRescueBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 leavesd:
     resource: "@LeaveSDBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 embarc:
     resource: "@EmbARCBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 support_us:
     resource: "@SupportUsBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 payment:
     resource: "@PaymentBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 vote:
     resource: "@VoteBundle/Controller/"
-    type:     annotation
+    type:     attribute
 
 app:
     resource: '@AppBundle/Controller/'
-    type: annotation
+    type: attribute
 
 media_info:
     resource: "@MediaInfoBundle/Controller/"
-    type:     annotation
+    type:     attribute

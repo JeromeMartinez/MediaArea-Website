@@ -10,9 +10,12 @@ class MediaConchTrackTypeFields extends MediaConch
     {
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     public function run($trackType)
     {
-        $process = new Process($this->MediaConch.' --MAXML_Fields='.$trackType);
+        $process = Process::fromShellCommandline($this->MediaConch.' --MAXML_Fields='.$trackType);
 
         $process->run();
 

@@ -4,39 +4,28 @@ namespace VoteBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="VoteBundle\Repository\VoteRepository")
- * @ORM\Table(name="votes", indexes={@ORM\Index(name="user_feature_idx", columns={"user_id", "feature_id"})})
- */
+#[ORM\Table(name: 'votes')]
+#[ORM\Index(name: 'user_feature_idx', columns: ['user_id', 'feature_id'])]
+#[ORM\Entity(repositoryClass: \VoteBundle\Repository\VoteRepository::class)]
 class Vote
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: \UserBundle\Entity\User::class)]
     protected $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="VoteBundle\Entity\Feature")
-     * @ORM\JoinColumn(name="feature_id", referencedColumnName="id")
-     */
+    #[ORM\JoinColumn(name: 'feature_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: \VoteBundle\Entity\Feature::class)]
     protected $feature;
 
-    /**
-     * @ORM\Column(type="integer", options={"default":0})
-     */
+    #[ORM\Column(type: 'integer', options: ['default' => 0])]
     private $points = 0;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $date;
 
     /**
@@ -104,7 +93,7 @@ class Vote
      *
      * @return Vote
      */
-    public function setUser(\UserBundle\Entity\User $user = null)
+    public function setUser(?\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
 
@@ -128,7 +117,7 @@ class Vote
      *
      * @return Vote
      */
-    public function setFeature(\VoteBundle\Entity\Feature $feature = null)
+    public function setFeature(?\VoteBundle\Entity\Feature $feature = null)
     {
         $this->feature = $feature;
 

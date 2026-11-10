@@ -4,7 +4,7 @@ namespace UserBundle\Lib\Quotas;
 
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\UserBundle\Model\UserInterface;
+use UserBundle\Entity\User;
 use UserBundle\Entity\UserQuotas;
 use MediaConchOnlineBundle\Lib\Api\Client as MediaConchApiClient;
 
@@ -39,7 +39,7 @@ class Quotas
     {
         // Check if quotas have already been set
         $userQuotas = $this->em
-            ->getRepository('UserBundle:UserQuotas')
+            ->getRepository(\UserBundle\Entity\UserQuotas::class)
             ->findOneByUser($this->user);
 
         if ($userQuotas) {
@@ -65,7 +65,7 @@ class Quotas
     public function resetQuotas()
     {
         $userQuotas = $this->em
-            ->getRepository('UserBundle:UserQuotas')
+            ->getRepository(\UserBundle\Entity\UserQuotas::class)
             ->findOneByUser($this->user);
 
         if ($userQuotas) {
@@ -187,7 +187,7 @@ class Quotas
         $xslPolicy = $this->mcApiClient->getPoliciesCount($this->user->getId());
 
         $display = $this->em
-            ->getRepository('MediaConchOnlineBundle:DisplayFile')
+            ->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)
             ->createQueryBuilder('p')
                 ->select('COUNT(p)')
                 ->where('p.user = :user')
@@ -202,7 +202,7 @@ class Quotas
     {
         $token = $tokenStorage->getToken();
 
-        if (null !== $token && $token->getUser() instanceof UserInterface) {
+        if (null !== $token && $token->getUser() instanceof User) {
             return $token->getUser();
         }
 
@@ -212,7 +212,7 @@ class Quotas
     private function getQuotasByUser()
     {
         $userQuotas = $this->em
-            ->getRepository('UserBundle:UserQuotas')
+            ->getRepository(\UserBundle\Entity\UserQuotas::class)
             ->findOneByUser($this->user);
 
         if (!$userQuotas) {
@@ -252,7 +252,7 @@ class Quotas
     protected function getUserQuotasDefault()
     {
         $defaultUserQuotas = $this->em
-        ->getRepository('UserBundle:UserQuotasDefault')
+        ->getRepository(\UserBundle\Entity\UserQuotasDefault::class)
         ->findOneByUser($this->user);
         if ($defaultUserQuotas) {
             $defaultQuotas = array('period' => $this->options['default']['period'],

@@ -2,8 +2,6 @@
 
 namespace UserBundle\Lib;
 
-use FOS\UserBundle\Model\UserManagerInterface;
-use FOS\UserBundle\Util\TokenGeneratorInterface;
 use SupportUsBundle\Lib\Individual;
 
 class DonorManipulator
@@ -11,24 +9,24 @@ class DonorManipulator
     /**
      * User manager.
      *
-     * @var UserManagerInterface
+     * @var UserManager
      */
     private $userManager;
 
     /**
      * Token generator.
      *
-     * @var TokenGeneratorInterface
+     * @var TokenGenerator
      */
     private $tokenGenerator;
 
     /**
      * UserManipulator constructor.
      *
-     * @param UserManagerInterface    $userManager
-     * @param TokenGeneratorInterface $tokenGenerator
+     * @param UserManager    $userManager
+     * @param TokenGenerator $tokenGenerator
      */
-    public function __construct(UserManagerInterface $userManager, TokenGeneratorInterface $tokenGenerator)
+    public function __construct(UserManager $userManager, TokenGenerator $tokenGenerator)
     {
         $this->userManager = $userManager;
         $this->tokenGenerator = $tokenGenerator;

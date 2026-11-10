@@ -4,32 +4,23 @@ namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(uniqueConstraints={@ORM\UniqueConstraint(columns={"user_id", "name"})})
- */
+#[ORM\Table]
+#[ORM\UniqueConstraint(columns: ['user_id', 'name'])]
+#[ORM\Entity]
 class Settings
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="settings")
-     */
+    #[ORM\ManyToOne(targetEntity: \UserBundle\Entity\User::class, inversedBy: 'settings')]
     protected $user;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     private $name;
 
-    /**
-     * @ORM\Column(type="text", length=65535, nullable=true)
-     */
+    #[ORM\Column(type: 'text', length: 65535, nullable: true)]
     private $value;
 
     /**
@@ -97,7 +88,7 @@ class Settings
      *
      * @return Settings
      */
-    public function setUser(\UserBundle\Entity\User $user = null)
+    public function setUser(?\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
 

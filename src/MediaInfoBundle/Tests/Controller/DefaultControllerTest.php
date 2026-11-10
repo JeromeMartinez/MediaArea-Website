@@ -28,9 +28,10 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('MediaInfo', $crawler->filter('h1')->text());
         $this->assertEquals('MediaInfo', trim($crawler->filter('#main-navbar ul.nav li.active a')->text()));
 
+        // The trailing slash of the URL of a page is removed by the router
         $client->request('GET', '/en/MediaInfo/');
-        $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $this->assertTrue($client->getResponse()->isRedirect('/en/MediaInfo'));
+        $this->assertEquals(301, $client->getResponse()->getStatusCode());
+        $this->assertTrue($client->getResponse()->isRedirect('http://localhost/en/MediaInfo'));
 
         // With invalid locale
         $client->request('GET', '/zz/MediaInfo');

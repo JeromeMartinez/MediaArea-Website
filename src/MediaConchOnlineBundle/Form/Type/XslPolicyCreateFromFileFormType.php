@@ -13,21 +13,21 @@ class XslPolicyCreateFromFileFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('file', FileType::class, [
                 'label' => 'File (max '.ini_get('upload_max_filesize').')',
-                'constraints' => [new File(['maxSize' => ini_get('upload_max_filesize')])],
+                'constraints' => [new File(maxSize: ini_get('upload_max_filesize'))],
                 'attr' => ['data-file-max-size' => ini_get('upload_max_filesize')],
             ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'xslPolicyCreateFromFile';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'csrf_protection' => false,

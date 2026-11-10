@@ -48,23 +48,10 @@ Public policies
 {% block javascripts %}
     <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
-    {% javascripts filter='?jsqueeze' output='js/publicPoliciesList.js'
-        '@AppBundle/Resources/public/js/jstree.min.js'
-        '@MediaConchOnlineBundle/Resources/public/js/message.js'
-        '@MediaConchOnlineBundle/Resources/public/js/utils/text.js'
-        '@MediaConchOnlineBundle/Resources/public/js/publicPolicies/list.js'
-        '@MediaConchOnlineBundle/Resources/public/js/publicPolicies/listPolicyTree.js'
-        '@MediaConchOnlineBundle/Resources/public/js/publicPolicies/listAjax.js'
-    %}
-        <script src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    <script src="{{ asset('bundles/mediaconchonline/js/publicPoliciesList.bundle.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets filter='cssrewrite' filter='?scssphp' output='css/publicPoliciesList.css'
-        'bundles/app/css/jstree.css'
-    %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
-    {% endstylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/app/css/jstree.css') }}"/>
 {% endblock %}

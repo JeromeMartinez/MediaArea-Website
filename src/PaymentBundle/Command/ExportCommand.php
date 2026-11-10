@@ -2,20 +2,34 @@
 
 namespace PaymentBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\ORM\EntityManagerInterface;
+use PaymentBundle\Entity\Invoice;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\Question;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
-class ExportCommand extends ContainerAwareCommand
+class ExportCommand extends Command
 {
+    protected $em;
+    protected $validator;
+
+    public function __construct(EntityManagerInterface $entityManager, ValidatorInterface $validator)
+    {
+        $this->em = $entityManager;
+        $this->validator = $validator;
+
+        parent::__construct();
+    }
+
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('mediaarea:payment:export')
@@ -49,21 +63,19 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $start = $input->getArgument('start');
         $end = $input->getArgument('end');
 
-        $em = $this->getContainer()->get('doctrine')->getManager();
-        $query = $em->createQuery(
+        $query = $this->em->createQuery(
             'SELECT i
-            FROM PaymentBundle:Invoice i
+            FROM '.Invoice::class.' i
             WHERE i.date >= :start AND i.date <= :end
             ORDER BY i.date ASC'
-        )->setParameters([
-            'start' => $this->getStartDate($start),
-            'end' => $this->getEndDate($start, $end),
-        ]);
+        )
+            ->setParameter('start', $this->getStartDate($start))
+            ->setParameter('end', $this->getEndDate($start, $end));
         $invoices = $query->getResult();
 
         $output->writeln('Invoices between '.$this->getStartDate($start).' and '.$this->getEndDate($start, $end));
@@ -71,7 +83,7 @@ EOT
         if (0 == count($invoices)) {
             $output->writeln('No invoices found for the given date range');
 
-            return;
+            return Command::SUCCESS;
         }
 
         $output->writeln('AmountExclTax,VAT,Currency,IP,Country,Date,PaymentSystem');
@@ -88,12 +100,14 @@ EOT
                 $invoice->getPaymentInstruction()->getPaymentSystemName()
             ));
         }
+
+        return Command::SUCCESS;
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function interact(InputInterface $input, OutputInterface $output)
+    protected function interact(InputInterface $input, OutputInterface $output): void
     {
         $questions = array();
 
@@ -200,8 +214,7 @@ EOT
             return false;
         }
 
-        $validator = $this->getContainer()->get('validator');
-        $errors = $validator->validate($dateTime, new DateTime(['format' => 'Y-m-d\TH:i:s']));
+        $errors = $this->validator->validate($dateTime, new DateTime(format: 'Y-m-d\TH:i:s'));
 
         return !$errors->count();
     }
@@ -219,8 +232,7 @@ EOT
             return false;
         }
 
-        $validator = $this->getContainer()->get('validator');
-        $errors = $validator->validate($date, new Date());
+        $errors = $this->validator->validate($date, new Date());
 
         return !$errors->count();
     }
@@ -238,8 +250,7 @@ EOT
             return false;
         }
 
-        $validator = $this->getContainer()->get('validator');
-        $errors = $validator->validate($date, new DateTime(['format' => 'Y-m']));
+        $errors = $this->validator->validate($date, new DateTime(format: 'Y-m'));
 
         return !$errors->count();
     }

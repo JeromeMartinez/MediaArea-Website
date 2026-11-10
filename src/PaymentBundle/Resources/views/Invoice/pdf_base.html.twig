@@ -8,16 +8,7 @@
         <meta name="Author" content="MediaArea" />
         <meta name="description" lang="en" content="{% block description %}MediaInfo{% endblock %}">
         <meta name="keywords" lang="en" content="{% block keywords %}MediaInfo{% endblock %}">
-        {% stylesheets
-            'bundles/app/css/bootstrap.css'
-            'bundles/app/css/jquery.fancybox-thumbs.css'
-            'bundles/app/css/jquery.fancybox.css'
-            'bundles/app/css/jquery.socialshareprivacy.min.css'
-            'bundles/app/css/base.css'
-            filter='cssrewrite' filter='?scssphp' output='css/main.css'
-         %}
-            <link rel="stylesheet" href="{{ asset_url }}" media="all" />
-        {% endstylesheets %}
+        <link rel="stylesheet" href="{{ asset('bundles/app/css/main.bundle.css') }}" media="all" />
 
         <style>
             footer {

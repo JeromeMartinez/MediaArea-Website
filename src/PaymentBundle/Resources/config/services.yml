@@ -1,20 +1,23 @@
 services:
-    payment.status.change:
-        class: PaymentBundle\EventListener\OrdersListener
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    PaymentBundle\:
+        resource: '../../*'
+        exclude: '../../{Entity,Repository,Tests,Resources,Form}'
+
+    JMS\Payment\CoreBundle\PluginController\PluginControllerInterface: '@payment.plugin_controller'
+
+    PaymentBundle\EventListener\OrdersListener:
         tags:
             - { name: kernel.event_listener, event: payment.state_change, method: onPaymentStateChange }
-        arguments: [ "@payment.invoice.create", "@security.token_storage", "@user.util.donor_manipulator", "@payment.clean.payment_instruction", "@doctrine.orm.entity_manager" ]
 
-    payment.invoice.create:
-        class: PaymentBundle\Lib\CreateInvoice
-        arguments: [ "@security.token_storage", "@doctrine.orm.entity_manager", "@request_stack" ]
-
-    payment.clean.payment_instruction:
-        class: PaymentBundle\Lib\CleanPaymentInstruction
-        arguments: [ "@doctrine.orm.entity_manager" ]
-
+    # Replaces the form type of JMSPaymentCoreBundle, which adds the payment methods as last argument
     payment.form.choose_payment_method_type:
         class: PaymentBundle\Form\ChoosePaymentMethodType
+        autowire: false
         arguments: [ "@payment.plugin_controller", "@request_stack" ]
         tags: [ { name: form.type,  alias: ma_choose_payment_method } ]
         calls:

@@ -941,6 +941,7 @@ $GLOBALS['dbSpecs'] =
 /**
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
  * @SuppressWarnings(PHPMD.NPathComplexity)
+ * @SuppressWarnings(PHPMD.UndefinedVariable)
  */
 class Specs
 {

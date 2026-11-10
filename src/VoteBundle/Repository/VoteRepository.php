@@ -3,25 +3,26 @@
 namespace VoteBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
-use FOS\UserBundle\Model\UserInterface;
+use UserBundle\Entity\User;
 use VoteBundle\Model\FeatureInterface;
 
 class VoteRepository extends EntityRepository
 {
-    public function getTotalVotesByUserAndFeature(UserInterface $user, FeatureInterface $feature)
+    public function getTotalVotesByUserAndFeature(User $user, FeatureInterface $feature)
     {
         $votes = $this->createQueryBuilder('v')
             ->select('SUM(v.points) as totalPoints')
             ->where('v.user = :user')
             ->andWhere('v.feature = :feature')
-            ->setParameters(['user' => $user, 'feature' => $feature])
+            ->setParameter('user', $user)
+            ->setParameter('feature', $feature)
             ->getQuery()
             ->getSingleResult();
 
         return $votes['totalPoints'] ?? 0;
     }
 
-    public function getTotalVotesByUser(UserInterface $user)
+    public function getTotalVotesByUser(User $user)
     {
         $votes = $this->createQueryBuilder('v')
             ->select('SUM(v.points) as totalPoints')

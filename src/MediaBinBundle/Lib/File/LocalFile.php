@@ -62,7 +62,7 @@ class LocalFile
 
     protected function setPath($path)
     {
-        $this->path = rtrim($path, '/').'/';
+        $this->path = rtrim((string) $path, '/').'/';
 
         return $this;
     }

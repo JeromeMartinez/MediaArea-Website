@@ -2,16 +2,14 @@
 
 namespace MediaTraceBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
-    /**
-     * @Route("/MediaTrace", name="mediatrace_home")
-     * @Template()
-     */
+    #[Route('/MediaTrace', name: 'mediatrace_home')]
+    #[Template('@MediaTrace/Default/index.html.twig')]
     public function indexAction()
     {
         return array();

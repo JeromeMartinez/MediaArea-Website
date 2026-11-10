@@ -10,24 +10,24 @@ use Symfony\Component\Validator\Constraints\File;
 
 class CheckerUploadFormType extends CheckerBaseFormType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         parent::buildForm($builder, $options);
         $builder
             ->add('file', FileType::class, [
                 'label' => 'File (max '.ini_get('upload_max_filesize').')',
-                'constraints' => [new File(['maxSize' => ini_get('upload_max_filesize')])],
+                'constraints' => [new File(maxSize: ini_get('upload_max_filesize'))],
                 'attr' => ['data-file-max-size' => ini_get('upload_max_filesize')],
             ])
             ->add('check', SubmitType::class, ['attr' => ['class' => 'btn-warning'], 'label' => 'Check file']);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'checkerUpload';
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'csrf_protection' => false,

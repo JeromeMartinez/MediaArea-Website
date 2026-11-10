@@ -2,21 +2,19 @@
 
 namespace MOVMetaEditBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
+use MOVMetaEditBundle\Lib\DownloadInfo\MOVMetaEditDownloadInfo;
 
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
-    /**
-     * @Route("/MOVMetaEdit", name="mov_home")
-     * @Template()
-     */
-    public function indexAction(Request $request)
+    #[Route('/MOVMetaEdit', name: 'mov_home')]
+    #[Template('@MOVMetaEdit/Default/index.html.twig')]
+    public function indexAction(Request $request, MOVMetaEditDownloadInfo $downloadInfo)
     {
         // Download infos
-        $downloadInfo = $this->get('mov.download_info');
         $downloadInfo->setUserAgent($request->headers->get('User-Agent'));
         $downloadInfo->parse();
 
@@ -25,10 +23,8 @@ class DefaultController extends Controller
         );
     }
 
-    /**
-     * @Route("/MOVMetaEdit/License", name="mov_license")
-     * @Template()
-     */
+    #[Route('/MOVMetaEdit/License', name: 'mov_license')]
+    #[Template('@MOVMetaEdit/Default/license.html.twig')]
     public function licenseAction()
     {
         return array();

@@ -2,7 +2,10 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\Lib\Recaptcha\RecaptchaVerifier;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use Symfony\Component\Mime\Email;
 
 class ContactControllerTest extends WebTestCase
 {
@@ -17,10 +20,27 @@ class ContactControllerTest extends WebTestCase
         $this->assertEquals('MediaArea', trim($crawler->filter('#main-navbar ul.nav li.active a')->text()));
     }
 
+    /**
+     * Client for which the answer to the captcha, not checked with Google, is always the right one.
+     *
+     * @return KernelBrowser
+     */
+    private function createClientWithoutCaptcha()
+    {
+        $client = static::createClient();
+        // Keep the services between the display of the form and its submission
+        $client->disableReboot();
+
+        $verifier = $this->createStub(RecaptchaVerifier::class);
+        $verifier->method('verify')->willReturn(true);
+        static::getContainer()->set(RecaptchaVerifier::class, $verifier);
+
+        return $client;
+    }
+
     public function testSendMessageWithoutCompany()
     {
-        $this->markTestSkipped('Skipped due to new captcha system');
-        $client = static::createClient();
+        $client = $this->createClientWithoutCaptcha();
 
         $crawler = $client->request('GET', '/Contact');
 
@@ -31,29 +51,25 @@ class ContactControllerTest extends WebTestCase
             'contact[subject]' => 'Subject',
             'contact[message]' => 'Message',
         ]);
-        $client->enableProfiler();
         $crawler = $client->submit($form);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertTrue($client->getResponse()->isRedirect('/Contact'));
 
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $this->assertEmailCount(1);
 
-        $this->assertEquals(1, $mailCollector->getMessageCount());
+        $message = $this->getMailerMessage();
 
-        $collectedMessages = $mailCollector->getMessages();
-        $message = $collectedMessages[0];
-
-        $this->assertInstanceOf('Swift_Message', $message);
+        $this->assertInstanceOf(Email::class, $message);
         $this->assertEquals('Subject', $message->getSubject());
-        $this->assertEquals(['test@mediaarea.net' => 'Name'], $message->getFrom());
-        $this->assertEquals('info@mediaarea.net', key($message->getTo()));
-        $this->assertEquals("Source: web\n\nMessage", $message->getBody());
+        $this->assertEquals('test@mediaarea.net', $message->getFrom()[0]->getAddress());
+        $this->assertEquals('Name', $message->getFrom()[0]->getName());
+        $this->assertEquals('info@mediaarea.net', $message->getTo()[0]->getAddress());
+        $this->assertEquals("Source: web\n\nMessage", $message->getTextBody());
     }
 
     public function testSendMessageWithCompany()
     {
-        $this->markTestSkipped('Skipped due to new captcha system');
-        $client = static::createClient();
+        $client = $this->createClientWithoutCaptcha();
 
         $crawler = $client->request('GET', '/Contact');
 
@@ -65,29 +81,25 @@ class ContactControllerTest extends WebTestCase
             'contact[message]' => 'Message',
             'contact[company]' => 'My company',
         ]);
-        $client->enableProfiler();
         $crawler = $client->submit($form);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertTrue($client->getResponse()->isRedirect('/Contact'));
 
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $this->assertEmailCount(1);
 
-        $this->assertEquals(1, $mailCollector->getMessageCount());
+        $message = $this->getMailerMessage();
 
-        $collectedMessages = $mailCollector->getMessages();
-        $message = $collectedMessages[0];
-
-        $this->assertInstanceOf('Swift_Message', $message);
+        $this->assertInstanceOf(Email::class, $message);
         $this->assertEquals('Subject', $message->getSubject());
-        $this->assertEquals(['test@mediaarea.net' => 'Name'], $message->getFrom());
-        $this->assertEquals('info@mediaarea.net', key($message->getTo()));
-        $this->assertEquals("Source: web\nCompany: My company\n\nMessage", $message->getBody());
+        $this->assertEquals('test@mediaarea.net', $message->getFrom()[0]->getAddress());
+        $this->assertEquals('Name', $message->getFrom()[0]->getName());
+        $this->assertEquals('info@mediaarea.net', $message->getTo()[0]->getAddress());
+        $this->assertEquals("Source: web\nCompany: My company\n\nMessage", $message->getTextBody());
     }
 
     public function testSendMessageWithSponsor()
     {
-        $this->markTestSkipped('Skipped due to new captcha system');
-        $client = static::createClient();
+        $client = $this->createClientWithoutCaptcha();
 
         $crawler = $client->request('GET', '/Contact?sponsor=Bronze+Sponsor&amount=3000+%E2%82%AC');
 
@@ -98,22 +110,19 @@ class ContactControllerTest extends WebTestCase
             'contact[name]' => 'Name',
             'contact[email]' => 'test@mediaarea.net',
         ]);
-        $client->enableProfiler();
         $crawler = $client->submit($form);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
         $this->assertTrue($client->getResponse()->isRedirect('/Contact'));
 
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
+        $this->assertEmailCount(1);
 
-        $this->assertEquals(1, $mailCollector->getMessageCount());
+        $message = $this->getMailerMessage();
 
-        $collectedMessages = $mailCollector->getMessages();
-        $message = $collectedMessages[0];
-
-        $this->assertInstanceOf('Swift_Message', $message);
+        $this->assertInstanceOf(Email::class, $message);
         $this->assertEquals('Request quote for Bronze Sponsor (3000 €)', $message->getSubject());
-        $this->assertEquals(['test@mediaarea.net' => 'Name'], $message->getFrom());
-        $this->assertEquals('info@mediaarea.net', key($message->getTo()));
-        $this->assertEquals("Source: web\n\nI'm interested in becoming a MediaArea sponsor.\n\nPlease send me a quote of 3000 € to become a Bronze Sponsor.", $message->getBody());
+        $this->assertEquals('test@mediaarea.net', $message->getFrom()[0]->getAddress());
+        $this->assertEquals('Name', $message->getFrom()[0]->getName());
+        $this->assertEquals('info@mediaarea.net', $message->getTo()[0]->getAddress());
+        $this->assertEquals("Source: web\n\nI'm interested in becoming a MediaArea sponsor.\n\nPlease send me a quote of 3000 € to become a Bronze Sponsor.", $message->getTextBody());
     }
 }

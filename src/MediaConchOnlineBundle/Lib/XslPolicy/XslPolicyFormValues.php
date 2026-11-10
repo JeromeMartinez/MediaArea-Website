@@ -4,6 +4,8 @@ namespace MediaConchOnlineBundle\Lib\XslPolicy;
 
 class XslPolicyFormValues extends XslPolicyBase
 {
+    protected $value;
+
     public function getValues($trackType, $field, $value = null)
     {
         $this->value = $value;

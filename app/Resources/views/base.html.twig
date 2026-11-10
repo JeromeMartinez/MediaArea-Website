@@ -17,16 +17,7 @@
         <link rel="alternate" type="application/rss+xml" title="MediaConch new releases feed" href="/rss/mediaconch_updates.xml" />
         <link rel="alternate" type="application/rss+xml" title="MediaArea blog" href="{{ path('ma_blog_feed') }}" />
         {% block head %}{% endblock %}
-        {% stylesheets
-            'bundles/app/css/bootstrap.css'
-            'bundles/app/css/jquery.fancybox-thumbs.css'
-            'bundles/app/css/jquery.fancybox.css'
-            'bundles/app/css/jquery.socialshareprivacy.min.css'
-            'bundles/app/css/base.css'
-            filter='cssrewrite' filter='?scssphp' output='css/main.css'
-         %}
-            <link rel="stylesheet" href="{{ preload(asset_url, { as: 'style', nopush: true }) }}" type="text/css" media="all" />
-        {% endstylesheets %}
+        <link rel="stylesheet" href="{{ preload(asset('bundles/app/css/main.bundle.css'), { as: 'style', nopush: true }) }}" type="text/css" media="all" />
         {% block stylesheets %}{% endblock %}
         {% block javascriptshead %}{% endblock %}
         <link rel="icon" type="image/x-icon" href="{{ asset('bundles/app/img/favicon.ico') }}" />
@@ -103,24 +94,7 @@
         <script type="text/javascript">
             var assetsBaseDir = "{{ asset('/bundles/app/') }}";
         </script>
-        {% javascripts
-            '@AppBundle/Resources/public/js/jquery.min.js'
-            '@AppBundle/Resources/public/js/jquery.cookies.min.js'
-            '@AppBundle/Resources/public/js/jquery.socialshareprivacy.min.js'
-            '@AppBundle/Resources/public/js/jquery.fancybox.js'
-            '@AppBundle/Resources/public/js/jquery.fancybox-thumbs.js'
-            '@AppBundle/Resources/public/js/jquery.mousewheel.js'
-            '@AppBundle/Resources/public/js/bootstrap.min.js'
-            '@AppBundle/Resources/public/js/Tags.js'
-            '@AppBundle/Resources/public/js/social.js'
-            '@AppBundle/Resources/public/js/jquery.scrollex.min.js'
-            '@AppBundle/Resources/public/js/jquery.scrolly.min.js'
-            '@AppBundle/Resources/public/js/sidebar.js'
-            '@AppBundle/Resources/public/js/base.js'
-            filter="?jsqueeze" output='js/main.js'
-         %}
-            <script src="{{ preload(asset_url, { as: 'script', nopush: true }) }}"></script>
-        {% endjavascripts %}
+        <script src="{{ preload(asset('bundles/app/js/main.bundle.js'), { as: 'script', nopush: true }) }}"></script>
         {{ include('@App/socialShare.html.twig') }}
         {% block javascripts %}{% endblock %}
         {% if ads %}

@@ -22,7 +22,7 @@ class CleanCacheCommand extends Command
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('mediaarea:mediabin:cleancache')
@@ -38,12 +38,12 @@ EOT
     /**
      * {@inheritdoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         if (!$this->binFile->isExternalEnabled()) {
             $output->writeln('<comment>External files are not enabled, no clean cache to do.</comment>');
 
-            return;
+            return Command::SUCCESS;
         }
 
         $finder = new Finder();
@@ -60,5 +60,7 @@ EOT
         } else {
             $output->writeln('<comment>No bin file to expunge from cache</comment>');
         }
+
+        return Command::SUCCESS;
     }
 }

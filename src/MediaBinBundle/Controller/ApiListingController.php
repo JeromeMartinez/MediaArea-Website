@@ -2,28 +2,30 @@
 
 namespace MediaBinBundle\Controller;
 
-use FOS\UserBundle\Model\UserInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use UserBundle\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Translation\TranslatorInterface;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Routing\Attribute\Route;
 use MediaBinBundle\Entity\Bin;
+use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @Route("/api/v1/MediaBin/list")
- */
-class ApiListingController extends Controller
+#[Route('/api/v1/MediaBin/list')]
+class ApiListingController extends AbstractController
 {
-    /**
-     * @Route("/byUser", name="mediabin_api_listing_user")
-     * @Method({"GET"})
-     */
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
+    #[Route('/byUser', name: 'mediabin_api_listing_user', methods: ['GET'])]
     public function byUserAction(Request $request, TranslatorInterface $translator)
     {
         $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
+        if (!is_object($user) || !$user instanceof User) {
             return new JsonResponse(['error' => 'User not logged'], 401);
         }
 
@@ -37,7 +39,7 @@ class ApiListingController extends Controller
             return new JsonResponse(['error' => 'Limit parameter should be an integer >= 1'], 400);
         }
 
-        $binRepository = $this->getDoctrine()->getRepository(Bin::class);
+        $binRepository = $this->doctrine->getRepository(Bin::class);
 
         $list = [];
         $defaultBinTitle = $translator->trans('mediabin.create.title.placeholder');
@@ -51,10 +53,7 @@ class ApiListingController extends Controller
         return new JsonResponse(['list' => $list]);
     }
 
-    /**
-     * @Route("/latestsPublic", name="mediabin_api_listing_latests_public")
-     * @Method({"GET"})
-     */
+    #[Route('/latestsPublic', name: 'mediabin_api_listing_latests_public', methods: ['GET'])]
     public function latestsPublicAction(Request $request, TranslatorInterface $translator)
     {
         (int) $start = $request->query->get('start', 0);
@@ -70,7 +69,7 @@ class ApiListingController extends Controller
             return new JsonResponse(['error' => 'Limit parameter should be an integer >= 1'], 400);
         }
 
-        $binRepository = $this->getDoctrine()->getRepository(Bin::class);
+        $binRepository = $this->doctrine->getRepository(Bin::class);
 
         $list = [];
         $defaultBinTitle = $translator->trans('mediabin.create.title.placeholder');

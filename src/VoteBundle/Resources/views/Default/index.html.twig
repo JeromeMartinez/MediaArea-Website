@@ -57,22 +57,11 @@
 {% endblock %}
 
 {% block stylesheets %}
-{% stylesheets
-    '@VoteBundle/Resources/public/css/datatables.min.css'
-    '@VoteBundle/Resources/public/css/vote.css'
-    output='css/datatables.min.css'
- %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-{% endstylesheets %}
+<link rel="stylesheet" href="{{ asset('bundles/vote/css/vote.bundle.css') }}" />
 {% endblock %}
 
 {% block javascripts %}
-{% javascripts
-    '@VoteBundle/Resources/public/js/datatables.min.js'
-    output='js/datatables.min.js'
- %}
-    <script src="{{ asset_url }}"></script>
-{% endjavascripts %}
+<script src="{{ asset('bundles/vote/js/datatables.min.js') }}"></script>
 
 <script>
     $(document).ready(function() {

@@ -2,16 +2,14 @@
 
 namespace MediaInfoBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 
-class CompareController extends Controller
+class CompareController extends AbstractController
 {
-    /**
-     * @Route("/MediaCompare", name="mi_compare")
-     * @Template()
-     */
+    #[Route('/MediaCompare', name: 'mi_compare')]
+    #[Template('@MediaInfo/Compare/index.html.twig')]
     public function indexAction()
     {
         return [];

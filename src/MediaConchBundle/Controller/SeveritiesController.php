@@ -2,20 +2,16 @@
 
 namespace MediaConchBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 use MediaConchBundle\Lib\Checks\Severities;
 
-/**
- * @Route("/Severities")
- */
-class SeveritiesController extends Controller
+#[Route('/Severities')]
+class SeveritiesController extends AbstractController
 {
-    /**
-     * @Route("", name="severities_home")
-     * @Template()
-     */
+    #[Route('', name: 'severities_home')]
+    #[Template('@MediaConch/Severities/severities.html.twig')]
     public function severitiesAction(Severities $severities)
     {
         header('X-Robots-Tag: none');
@@ -24,10 +20,8 @@ class SeveritiesController extends Controller
         return $this->render('@MediaConch/Default/checks.html.twig', [ 'items' => $items ]);
     }
     
-    /**
-     * @Route("/{severityId}", name="severities_1")
-     * @Template()
-     */
+    #[Route('/{severityId}', name: 'severities_1')]
+    #[Template('@MediaConch/Severities/severity1.html.twig')]
     public function severity1Action($severityId, Severities $severities)
     {
         $items = $severities->listSeverityInfo($severityId);

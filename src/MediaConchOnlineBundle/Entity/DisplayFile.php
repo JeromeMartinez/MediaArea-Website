@@ -5,56 +5,44 @@ namespace MediaConchOnlineBundle\Entity;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\HttpFoundation\File\File;
-use Vich\UploaderBundle\Mapping\Annotation as Vich;
+use Vich\UploaderBundle\Mapping\Attribute as Vich;
 use UserBundle\Entity\User;
 
-/**
- * @ORM\Entity
- * @ORM\Entity(repositoryClass="MediaConchOnlineBundle\Repository\DisplayFileRepository")
- * @Vich\Uploadable
- */
+#[Vich\Uploadable]
+#[ORM\Entity(repositoryClass: \MediaConchOnlineBundle\Repository\DisplayFileRepository::class)]
 class DisplayFile
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=50)
-     * @Assert\NotBlank()
-     */
+    #[ORM\Column(type: 'string', length: 50)]
+    #[Assert\NotBlank]
     protected $displayName;
 
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      *
-     * @Vich\UploadableField(mapping="display", fileNameProperty="displayFilename")
-     * @Assert\File(maxSize="1000000")
-     *
      * @var File
      */
+    #[Vich\UploadableField(mapping: 'display', fileNameProperty: 'displayFilename')]
+    #[Assert\File(maxSize: 1000000)]
     private $displayFile;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     *
      * @var string
      */
+    #[ORM\Column(type: 'string', length: 255)]
     private $displayFilename;
 
     /**
-     * @ORM\Column(type="datetime")
-     *
      * @var \DateTime
      */
+    #[ORM\Column(type: 'datetime')]
     private $updatedAt;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="display", cascade={"persist"})
-     */
+    #[ORM\ManyToOne(targetEntity: \UserBundle\Entity\User::class, inversedBy: 'display', cascade: ['persist'])]
     protected $user;
 
     /**
@@ -100,7 +88,7 @@ class DisplayFile
      *
      * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile $image
      */
-    public function setDisplayFile(File $displayFile = null)
+    public function setDisplayFile(?File $displayFile = null)
     {
         $this->displayFile = $displayFile;
 
@@ -174,7 +162,7 @@ class DisplayFile
      *
      * @return DisplayFile
      */
-    public function setUser(User $user = null)
+    public function setUser(?User $user = null)
     {
         $this->user = $user;
 

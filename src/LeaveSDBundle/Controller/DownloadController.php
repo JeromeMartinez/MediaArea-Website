@@ -2,43 +2,31 @@
 
 namespace LeaveSDBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 
 /**
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  */
-class DownloadController extends Controller
+class DownloadController extends AbstractController
 {
-    /**
-     * @Route("/LeaveSD/Download", name="leavesd_download")
-     * @Template()
-     */
+    #[Route('/LeaveSD/Download', name: 'leavesd_download')]
+    #[Template('@LeaveSD/Download/index.html.twig')]
     public function indexAction()
     {
         return array();
     }
 
-    /**
-     * @Route(
-     *     "/LeaveSD/Download/Windows",
-     *     name="leavesd_download_windows"
-     * )
-     * @Template()
-     */
+    #[Route('/LeaveSD/Download/Windows', name: 'leavesd_download_windows')]
+    #[Template('@LeaveSD/Download/windows.html.twig')]
     public function windowsAction()
     {
         return array();
     }
 
-    /**
-     * @Route(
-     *     "/LeaveSD/Download/Source",
-     *     name="leavesd_download_source"
-     * )
-     * @Template()
-     */
+    #[Route('/LeaveSD/Download/Source', name: 'leavesd_download_source')]
+    #[Template('@LeaveSD/Download/source.html.twig')]
     public function sourceAction()
     {
         return array();

@@ -6,59 +6,40 @@ use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use MediaBinBundle\Model\BinInterface;
 
-/**
- * @ORM\Entity(repositoryClass="MediaBinBundle\Repository\BinRepository")
- * @ORM\Table(name="bin", indexes={@ORM\Index(name="visibility_idx", columns={"visibility"})})
- */
+#[ORM\Table(name: 'bin')]
+#[ORM\Index(name: 'visibility_idx', columns: ['visibility'])]
+#[ORM\Entity(repositoryClass: \MediaBinBundle\Repository\BinRepository::class)]
 class Bin implements BinInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id")
-     */
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
+    #[ORM\ManyToOne(targetEntity: \UserBundle\Entity\User::class)]
     protected $user;
 
-    /**
-     * @ORM\Column(type="string", length=8, unique=true)
-     */
+    #[ORM\Column(type: 'string', length: 8, unique: true)]
     protected $hash;
 
-    /**
-     * @ORM\Column(type="string", length=100)
-     */
+    #[ORM\Column(type: 'string', length: 100)]
     protected $title;
 
-    /**
-     * @ORM\Column(type="smallint", options={"default":0, "unsigned":true})
-     */
+    #[ORM\Column(type: 'smallint', options: ['default' => 0, 'unsigned' => true])]
     protected $format = 0;
 
-    /**
-     * @ORM\Column(type="smallint", options={"default":0, "unsigned":true})
-     */
+    #[ORM\Column(type: 'smallint', options: ['default' => 0, 'unsigned' => true])]
     protected $anonymize = 0;
 
-    /**
-     * @ORM\Column(type="smallint", options={"default":0, "unsigned":true})
-     */
+    #[ORM\Column(type: 'smallint', options: ['default' => 0, 'unsigned' => true])]
     protected $visibility = 0;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     protected $expireAt;
 
-    /**
-     * @Gedmo\Timestampable(on="create")
-     * @ORM\Column(type="datetime")
-     */
+    #[Gedmo\Timestampable(on: 'create')]
+    #[ORM\Column(type: 'datetime')]
     protected $createdAt;
 
     /**
@@ -276,7 +257,7 @@ class Bin implements BinInterface
      *
      * @return Bin
      */
-    public function setUser(\UserBundle\Entity\User $user = null)
+    public function setUser(?\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
 

@@ -20,6 +20,9 @@ class MediaInfoCLI
         return $this->success;
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     */
     protected function run($file, $anonymous = 0, $compress = 0)
     {
         $params = '--Input_Compressed=zlib ';
@@ -33,7 +36,7 @@ class MediaInfoCLI
 
         $cmd = $this->mediainfo." $params $file";
 
-        $process = new Process($cmd);
+        $process = Process::fromShellCommandline($cmd);
 
         $process->run();
 

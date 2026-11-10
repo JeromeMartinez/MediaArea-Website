@@ -4,6 +4,9 @@ namespace MediaBinBundle\Lib\File;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Mailer\Exception\TransportExceptionInterface;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 
 class File
 {
@@ -17,7 +20,7 @@ class File
         ExternalFile $externalFile,
         LocalFile $localFile,
         RequestStack $requestStack,
-        \Swift_Mailer $mailer,
+        MailerInterface $mailer,
         LoggerInterface $logger
     ) {
         $this->externalFile = $externalFile;
@@ -43,19 +46,22 @@ class File
                 // Log error
                 $this->logger->error('Unable to store XML to external storage', ['MediaBin hash' => $binHash]);
                 // Send mail
-                $message = (new \Swift_Message())
-                    ->setSubject('[MediaBin] Unable to store XML to external storage')
-                    ->setFrom('info@mediaarea.net')
-                    ->setTo('guillaume@mediaarea.net')
-                    ->setBody(
+                $message = (new Email())
+                    ->subject('[MediaBin] Unable to store XML to external storage')
+                    ->from('info@mediaarea.net')
+                    ->to('guillaume@mediaarea.net')
+                    ->text(
                         sprintf(
                             "Unable to store XML to external storage\nMediaBin hash: %s\nServer: %s",
                             $binHash,
                             gethostname()
-                        ),
-                        'text/plain'
+                        )
                     );
-                $this->mailer->send($message);
+                try {
+                    $this->mailer->send($message);
+                } catch (TransportExceptionInterface $e) {
+                    $this->logger->error('Unable to send the MediaBin storage error email', ['exception' => $e]);
+                }
             }
         }
     }

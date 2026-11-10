@@ -43,7 +43,6 @@ class Client
 
         $response = curl_exec($curl);
         $responseCode = curl_getinfo($curl, CURLINFO_RESPONSE_CODE);
-        curl_close($curl);
 
         if (200 == $responseCode) {
             return json_decode($response);

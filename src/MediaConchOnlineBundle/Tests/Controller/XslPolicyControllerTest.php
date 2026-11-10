@@ -2,7 +2,7 @@
 
 namespace MediaConchOnlineBundle\Tests\Controller;
 
-class XslPolicyControllerTest extends AbstractAuthControllerTest
+class XslPolicyControllerTest extends AbstractAuthControllerTestCase
 {
     public function testOldPolicy()
     {

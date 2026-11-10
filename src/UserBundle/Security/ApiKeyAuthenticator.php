@@ -2,19 +2,33 @@
 
 namespace UserBundle\Security;
 
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Exception\AuthenticationException;
-use Symfony\Component\Security\Http\Authentication\SimplePreAuthenticatorInterface;
-use Symfony\Component\Security\Http\Authentication\AuthenticationFailureHandlerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\PreAuthenticatedToken;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\BadCredentialsException;
+use Symfony\Component\Security\Http\Authenticator\AbstractAuthenticator;
+use Symfony\Component\Security\Http\Authenticator\Passport\Badge\UserBadge;
+use Symfony\Component\Security\Http\Authenticator\Passport\Passport;
+use Symfony\Component\Security\Http\Authenticator\Passport\SelfValidatingPassport;
 
-class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface, AuthenticationFailureHandlerInterface
+/**
+ * Authenticate the requests with the key of the X-apiKey header.
+ */
+class ApiKeyAuthenticator extends AbstractAuthenticator
 {
-    public function createToken(Request $request, $providerKey)
+    /**
+     * The key is mandatory: every request is handled.
+     *
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function supports(Request $request): ?bool
+    {
+        return true;
+    }
+
+    public function authenticate(Request $request): Passport
     {
         // Get the X-apiKey header
         $apiKey = $request->headers->get('X-apiKey');
@@ -23,50 +37,22 @@ class ApiKeyAuthenticator implements SimplePreAuthenticatorInterface, Authentica
             throw new BadCredentialsException();
         }
 
-        return new PreAuthenticatedToken(
-            'anon.',
-            $apiKey,
-            $providerKey
-        );
-    }
-
-    public function supportsToken(TokenInterface $token, $providerKey)
-    {
-        return $token instanceof PreAuthenticatedToken && $token->getProviderKey() === $providerKey;
-    }
-
-    public function authenticateToken(TokenInterface $token, UserProviderInterface $userProvider, $providerKey)
-    {
-        if (!$userProvider instanceof ApiKeyUserProvider) {
-            throw new \InvalidArgumentException(
-                sprintf(
-                    'The user provider must be an instance of ApiKeyUserProvider (%s was given).',
-                    get_class($userProvider)
-                )
-            );
-        }
-
-        $apiKey = $token->getCredentials();
-        $user = $userProvider->getUserForApiKey($apiKey);
-
-        if (!$user) {
-            throw new AuthenticationException(
-                sprintf('API Key "%s" does not exist.', $apiKey)
-            );
-        }
-
-        return new PreAuthenticatedToken(
-            $user,
-            $apiKey,
-            $providerKey,
-            $user->getRoles()
-        );
+        // The user is loaded by ApiKeyUserProvider
+        return new SelfValidatingPassport(new UserBadge($apiKey));
     }
 
     /**
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
      */
-    public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
+    public function onAuthenticationSuccess(Request $request, TokenInterface $token, string $firewallName): ?Response
+    {
+        return null;
+    }
+
+    /**
+     * @SuppressWarnings(PHPMD.UnusedFormalParameter)
+     */
+    public function onAuthenticationFailure(Request $request, AuthenticationException $exception): ?Response
     {
         return new JsonResponse(['Error' => 'Authentication Failed.'], 401);
     }

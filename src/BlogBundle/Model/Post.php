@@ -2,7 +2,7 @@
 
 namespace BlogBundle\Model;
 
-use Gedmo\Sluggable\Util\Urlizer;
+use Symfony\Component\String\Slugger\AsciiSlugger;
 
 class Post
 {
@@ -49,12 +49,10 @@ class Post
         return $this->excerpt;
     }
 
-    /**
-     * @SuppressWarnings(PHPMD.StaticAccess)
-     */
     public function addTag($tag)
     {
-        $this->tags[Urlizer::urlize($tag)] = $tag;
+        $slug = (new AsciiSlugger())->slug((string) $tag)->lower()->toString();
+        $this->tags[$slug] = $tag;
 
         return $this;
     }

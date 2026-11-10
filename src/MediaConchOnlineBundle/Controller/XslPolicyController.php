@@ -2,9 +2,8 @@
 
 namespace MediaConchOnlineBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -44,19 +43,17 @@ use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicySave;
 use UserBundle\Lib\Quotas\Quotas;
 
 /**
- * @Route("/MediaConchOnline")
- *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
+#[Route('/MediaConchOnline')]
 class XslPolicyController extends BaseController
 {
     /**
      * Old policy editor page.
-     *
-     * @Route("/xslPolicyTree/")
      */
+    #[Route('/xslPolicyTree/')]
     public function xslPolicyTreeOldAction()
     {
         return $this->redirectToRoute('mco_policy_tree', [], 301);
@@ -64,10 +61,9 @@ class XslPolicyController extends BaseController
 
     /**
      * Policy editor page.
-     *
-     * @Route("/policyEditor", name="mco_policy_tree")
-     * @Template()
      */
+    #[Route('/policyEditor', name: 'mco_policy_tree')]
+    #[Template('@MediaConchOnline/XslPolicy/xslPolicyTree.html.twig')]
     public function xslPolicyTreeAction(Quotas $quotas)
     {
         // Forms
@@ -94,9 +90,8 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *              {"policiesTree":POLICIES_JSTREE_JSON}
-     *
-     * @Route("/xslPolicyTree/ajax/data", name="mco_policy_tree_data")
      */
+    #[Route('/xslPolicyTree/ajax/data', name: 'mco_policy_tree_data')]
     public function xslPolicyTreeDataAction(Request $request, XslPolicyGetPolicies $policies, InitInstanceId $init)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -122,10 +117,13 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *              {"policy":POLICY_JSTREE_JSON}
-     *
-     * @Route("/xslPolicyTree/ajax/create/{parentId}", requirements={"parentId": "(-)?\d+"}, name="mco_policy_create")
-     * @Method("GET")
      */
+    #[Route(
+        '/xslPolicyTree/ajax/create/{parentId}',
+        name: 'mco_policy_create',
+        requirements: ['parentId' => '(-)?\d+'],
+        methods: ['GET'],
+    )]
     public function xslPolicyTreeCreateAction(
         $parentId,
         Request $request,
@@ -167,10 +165,8 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *              {"policy":POLICY_JSTREE_JSON}
-     *
-     * @Route("/xslPolicyTree/ajax/import", name="mco_policy_import")
-     * @Method("POST")
      */
+    #[Route('/xslPolicyTree/ajax/import', name: 'mco_policy_import', methods: ['POST'])]
     public function xslPolicyTreeImportAction(
         Request $request,
         Quotas $quotas,
@@ -221,11 +217,9 @@ class XslPolicyController extends BaseController
      * @return json
      *              {"policy":POLICY_JSTREE_JSON}
      *
-     * @Route("/xslPolicyTree/ajax/createFromFile", name="mco_policy_create_from_file")
-     * @Method("POST")
-     *
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
+    #[Route('/xslPolicyTree/ajax/createFromFile', name: 'mco_policy_create_from_file', methods: ['POST'])]
     public function xslPolicyTreeCreateFromFileAction(
         Request $request,
         Quotas $quotas,
@@ -252,7 +246,7 @@ class XslPolicyController extends BaseController
         if ($policyCreateFromFileForm->isSubmitted() && $policyCreateFromFileForm->isValid()) {
             $data = $policyCreateFromFileForm->getData();
             if ($data['file']->isValid()) {
-                $path = $this->container->getParameter('kernel.project_dir').'/files/uploadTmp/'.$this->getUser()->getId();
+                $path = $this->getParameter('kernel.project_dir').'/files/uploadTmp/'.$this->getUser()->getId();
                 $filename = $data['file']->getClientOriginalName();
                 $file = $data['file']->move($path.'/', $filename);
 
@@ -308,10 +302,8 @@ class XslPolicyController extends BaseController
      * @param int id policy ID of the policy to export
      *
      * @return XML
-     *
-     * @Route("/xslPolicyTree/export/{id}", requirements={"id": "\d+"}, name="mco_policy_export")
-     * @Method("GET")
      */
+    #[Route('/xslPolicyTree/export/{id}', name: 'mco_policy_export', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function xslPolicyTreeExportAction($id, XslPolicyGetPolicyName $policyName, XslPolicyExport $policyExport)
     {
         try {
@@ -343,10 +335,8 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *              {"policy":POLICY_JSTREE_JSON}
-     *
-     * @Route("/xslPolicyTree/ajax/edit/{id}", requirements={"id": "\d+"}, name="mco_policy_edit")
-     * @Method("POST")
      */
+    #[Route('/xslPolicyTree/ajax/edit/{id}', name: 'mco_policy_edit', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function xslPolicyTreeEditAction(
         $id,
         Request $request,
@@ -373,7 +363,7 @@ class XslPolicyController extends BaseController
                 $policyEditType->editType($id, $data['policyType']);
 
                 // Edit policy visibility if policy is top level
-                if (1 == $data['policyTopLevel'] && $this->get('security.authorization_checker')->isGranted('ROLE_BASIC')) {
+                if (1 == $data['policyTopLevel'] && $this->isGranted('ROLE_BASIC')) {
                     $policyEditVisibility->editVisibility($id, $data['policyVisibility']);
                 }
 
@@ -400,14 +390,13 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *              {"policy":POLICY_JSTREE_JSON}
-     *
-     * @Route(
-     *     "/xslPolicyTree/ajax/duplicate/{id}/{dstPolicyId}",
-     *     requirements={"id": "\d+", "dstPolicyId": "(-)?\d+"},
-     *     name="mco_policy_duplicate"
-     * )
-     * @Method("GET")
      */
+    #[Route(
+        '/xslPolicyTree/ajax/duplicate/{id}/{dstPolicyId}',
+        name: 'mco_policy_duplicate',
+        requirements: ['id' => '\d+', 'dstPolicyId' => '(-)?\d+'],
+        methods: ['GET'],
+    )]
     public function xslPolicyTreeDuplicateAction(
         $id,
         $dstPolicyId,
@@ -453,14 +442,13 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *              {"policy":POLICY_JSTREE_JSON}
-     *
-     * @Route(
-     *     "/xslPolicyTree/ajax/move/{id}/{dstPolicyId}",
-     *     requirements={"id": "\d+", "dstPolicyId": "(-)?\d+"},
-     *     name="mco_policy_move"
-     * )
-     * @Method("GET")
      */
+    #[Route(
+        '/xslPolicyTree/ajax/move/{id}/{dstPolicyId}',
+        name: 'mco_policy_move',
+        requirements: ['id' => '\d+', 'dstPolicyId' => '(-)?\d+'],
+        methods: ['GET'],
+    )]
     public function xslPolicyTreeMoveAction(
         $id,
         $dstPolicyId,
@@ -496,10 +484,13 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *              {"policyId":ID}
-     *
-     * @Route("/xslPolicyTree/ajax/delete/{id}", requirements={"id": "\d+"}, name="mco_policy_delete")
-     * @Method("GET")
      */
+    #[Route(
+        '/xslPolicyTree/ajax/delete/{id}',
+        name: 'mco_policy_delete',
+        requirements: ['id' => '\d+'],
+        methods: ['GET'],
+    )]
     public function xslPolicyTreeDeleteAction($id, Request $request, XslPolicyDelete $policyDelete)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -523,14 +514,13 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *              {"rule":{"tracktype":TRACKTYPE, "field":FIELD, "id":RULE_ID, "name":NAME, "value":VALUE, "occurrence":OCCURENCE, "ope":OPERATOR}}
-     *
-     * @Route(
-     *     "/xslPolicyTree/ajax/ruleCreate/{policyId}",
-     *     requirements={"policyId": "\d+"},
-     *     name="mco_policy_rule_create"
-     * )
-     * @Method("GET")
      */
+    #[Route(
+        '/xslPolicyTree/ajax/ruleCreate/{policyId}',
+        name: 'mco_policy_rule_create',
+        requirements: ['policyId' => '\d+'],
+        methods: ['GET'],
+    )]
     public function xslPolicyTreeRuleCreateAction(
         $policyId,
         Request $request,
@@ -566,13 +556,13 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *              {"rule":{"tracktype":TRACKTYPE, "field":FIELD, "id":RULE_ID, "name":NAME, "value":VALUE, "occurrence":OCCURENCE, "ope":OPERATOR}}
-     *
-     * @Route(
-     *     "/xslPolicyTree/ajax/ruleEdit/{id}/{policyId}", requirements={"id": "\d+", "policyId": "\d+"},
-     *     name="mco_policy_rule_edit"
-     * )
-     * @Method("POST")
      */
+    #[Route(
+        '/xslPolicyTree/ajax/ruleEdit/{id}/{policyId}',
+        name: 'mco_policy_rule_edit',
+        requirements: ['id' => '\d+', 'policyId' => '\d+'],
+        methods: ['POST'],
+    )]
     public function xslPolicyTreeRuleEditAction(
         $id,
         $policyId,
@@ -623,14 +613,13 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *              {"id":RULE_ID}
-     *
-     * @Route(
-     *     "/xslPolicyTree/ajax/ruleDelete/{id}/{policyId}",
-     *     requirements={"id": "\d+", "policyId": "\d+"},
-     *     name="mco_policy_rule_delete"
-     * )
-     * @Method("GET")
      */
+    #[Route(
+        '/xslPolicyTree/ajax/ruleDelete/{id}/{policyId}',
+        name: 'mco_policy_rule_delete',
+        requirements: ['id' => '\d+', 'policyId' => '\d+'],
+        methods: ['GET'],
+    )]
     public function xslPolicyTreeRuleDeleteAction(
         $id,
         $policyId,
@@ -664,14 +653,13 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *              {"rule":{"tracktype":TRACKTYPE, "field":FIELD, "id":RULE_ID, "name":NAME, "value":VALUE, "occurrence":OCCURENCE, "ope":OPERATOR}}
-     *
-     * @Route(
-     *     "/xslPolicyTree/ajax/ruleDuplicate/{id}/{policyId}/{dstPolicyId}",
-     *     requirements={"id": "\d+", "policyId": "\d+", "dstPolicyId": "(-)?\d+"},
-     *     name="mco_policy_rule_duplicate"
-     * )
-     * @Method("GET")
      */
+    #[Route(
+        '/xslPolicyTree/ajax/ruleDuplicate/{id}/{policyId}/{dstPolicyId}',
+        name: 'mco_policy_rule_duplicate',
+        requirements: ['id' => '\d+', 'policyId' => '\d+', 'dstPolicyId' => '(-)?\d+'],
+        methods: ['GET'],
+    )]
     public function xslPolicyTreeRuleDuplicateAction(
         $id,
         $policyId,
@@ -710,14 +698,13 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *              {"rule":{"tracktype":TRACKTYPE, "field":FIELD, "id":RULE_ID, "name":NAME, "value":VALUE, "occurrence":OCCURENCE, "ope":OPERATOR}}
-     *
-     * @Route(
-     *     "/xslPolicyTree/ajax/ruleMove/{id}/{policyId}/{dstPolicyId}",
-     *     requirements={"id": "\d+", "policyId": "\d+", "dstPolicyId": "(-)?\d+"},
-     *     name="mco_policy_rule_move"
-     * )
-     * @Method("GET")
      */
+    #[Route(
+        '/xslPolicyTree/ajax/ruleMove/{id}/{policyId}/{dstPolicyId}',
+        name: 'mco_policy_rule_move',
+        requirements: ['id' => '\d+', 'policyId' => '\d+', 'dstPolicyId' => '(-)?\d+'],
+        methods: ['GET'],
+    )]
     public function xslPolicyTreeRuleMoveAction(
         $id,
         $policyId,
@@ -753,11 +740,9 @@ class XslPolicyController extends BaseController
      *
      * @return json
      *
-     * @Route("/xslPolicy/fieldsListRule", name="mco_policy_rule_fields_list")
-     * @Method({"POST"})
-     *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
+    #[Route('/xslPolicy/fieldsListRule', name: 'mco_policy_rule_fields_list', methods: ['POST'])]
     public function xslPolicyRuleFieldsListAction(Request $request)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -777,10 +762,8 @@ class XslPolicyController extends BaseController
      * Get list of values for a trackType and a field (POST : type, field and value).
      *
      * @return json
-     *
-     * @Route("/xslPolicyTree/ajax/valueListRule", name="mco_policy_rule_values_list")
-     * @Method({"POST"})
      */
+    #[Route('/xslPolicyTree/ajax/valueListRule', name: 'mco_policy_rule_values_list', methods: ['POST'])]
     public function xslPolicyRuleValuesListAction(Request $request, XslPolicyFormValues $valuesList)
     {
         if (!$request->isXmlHttpRequest()) {

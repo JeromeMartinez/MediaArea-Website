@@ -2,9 +2,10 @@
 
 namespace Tests\AppBundle\Controller;
 
-use UserBundle\Tests\Controller\UserAbstractControllerTest;
+use UserBundle\Tests\Controller\UserAbstractControllerTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-class DefaultControllerTest extends UserAbstractControllerTest
+class DefaultControllerTest extends UserAbstractControllerTestCase
 {
     public function testMediaInfoPageDoesNotExist()
     {
@@ -36,6 +37,7 @@ class DefaultControllerTest extends UserAbstractControllerTest
         $this->assertTrue($client->getResponse()->isRedirect('/fr/MediaInfo'));
 
         // With invalid language
+        static::ensureKernelShutdown();
         $client = static::createClient();
         $client->request('GET', '/MediaInfo', array(), array(), array('HTTP_ACCEPT_LANGUAGE' => 'zz'));
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
@@ -44,9 +46,7 @@ class DefaultControllerTest extends UserAbstractControllerTest
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    /**
-     * @dataProvider urlProvider
-     */
+    #[DataProvider('urlProvider')]
     public function testResponse200($url)
     {
         $client = static::createClient();
@@ -55,7 +55,7 @@ class DefaultControllerTest extends UserAbstractControllerTest
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    public function urlProvider()
+    public static function urlProvider()
     {
         return [
             ['/'],

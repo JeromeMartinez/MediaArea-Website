@@ -2,149 +2,673 @@
 
 namespace UserBundle\Entity;
 
-use FOS\UserBundle\Model\User as BaseUser;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\LegacyPasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Entity
- * @ORM\Table(name="users")
- * @ORM\HasLifecycleCallbacks
  * @SuppressWarnings(PHPMD.TooManyFields)
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * @SuppressWarnings(PHPMD.ExcessivePublicCount)
+ * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
+ * @SuppressWarnings(PHPMD.ExcessiveClassLength)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class User extends BaseUser
+#[ORM\Table(name: 'users')]
+#[ORM\Entity]
+#[ORM\HasLifecycleCallbacks]
+#[UniqueEntity(
+    fields: 'usernameCanonical',
+    errorPath: 'username',
+    message: 'fos_user.username.already_used',
+    groups: ['UserRegistration', 'UserProfile'],
+)]
+#[UniqueEntity(
+    fields: 'emailCanonical',
+    errorPath: 'email',
+    message: 'fos_user.email.already_used',
+    groups: ['UserRegistration', 'UserProfile'],
+)]
+class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface, EquatableInterface
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    const ROLE_DEFAULT = 'ROLE_USER';
+
+    const ROLE_SUPER_ADMIN = 'ROLE_SUPER_ADMIN';
+
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
+    #[ORM\Column(type: 'string', length: 180)]
+    #[Assert\Length(
+        min: 2,
+        max: 180,
+        minMessage: 'fos_user.username.short',
+        maxMessage: 'fos_user.username.long',
+        groups: ['UserRegistration', 'UserProfile'],
+    )]
+    protected $username;
+
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    protected $usernameCanonical;
+
+    #[ORM\Column(type: 'string', length: 180)]
+    #[Assert\NotBlank(message: 'fos_user.email.blank', groups: ['UserRegistration', 'UserProfile'])]
+    #[Assert\Length(
+        min: 2,
+        max: 180,
+        minMessage: 'fos_user.email.short',
+        maxMessage: 'fos_user.email.long',
+        groups: ['UserRegistration', 'UserProfile'],
+    )]
+    #[Assert\Email(message: 'fos_user.email.invalid', groups: ['UserRegistration', 'UserProfile'])]
+    protected $email;
+
+    #[ORM\Column(type: 'string', length: 180, unique: true)]
+    protected $emailCanonical;
+
+    #[ORM\Column(type: 'boolean')]
+    protected $enabled = false;
+
     /**
-     * @ORM\OneToMany(targetEntity="MediaConchOnlineBundle\Entity\DisplayFile", mappedBy="user", cascade={"persist", "remove"})
-     * @Assert\Valid()
+     * The salt of the password, for the accounts which do not use a self salted hash.
      */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    protected $salt;
+
+    /**
+     * Hashed password.
+     */
+    #[ORM\Column(type: 'string', length: 255)]
+    protected $password;
+
+    /**
+     * Plain password, used for model validation: it is not persisted.
+     */
+    #[Assert\NotBlank(
+        message: 'fos_user.password.blank',
+        groups: ['UserRegistration', 'ResetPassword', 'ChangePassword'],
+    )]
+    #[Assert\Length(
+        min: 6,
+        max: 4096,
+        minMessage: 'fos_user.password.short',
+        groups: ['UserRegistration', 'UserProfile', 'ResetPassword', 'ChangePassword'],
+    )]
+    protected $plainPassword;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    protected $lastLogin;
+
+    /**
+     * Random string sent to the user email address in order to verify it.
+     */
+    #[ORM\Column(type: 'string', length: 180, unique: true, nullable: true)]
+    protected $confirmationToken;
+
+    #[ORM\Column(type: 'datetime', nullable: true)]
+    protected $passwordRequestedAt;
+
+    /**
+     * Stored as a serialized PHP array.
+     */
+    #[ORM\Column(type: 'array')]
+    protected $roles = [];
+
+    #[ORM\OneToMany(
+        targetEntity: \MediaConchOnlineBundle\Entity\DisplayFile::class,
+        mappedBy: 'user',
+        cascade: ['persist', 'remove'],
+    )]
+    #[Assert\Valid]
     protected $display;
 
-    /**
-     * @ORM\OneToOne(targetEntity="UserQuotas", mappedBy="user", cascade={"persist", "remove"})
-     * @Assert\Valid()
-     */
+    #[ORM\OneToOne(targetEntity: UserQuotas::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     protected $quotas;
 
-    /**
-     * @ORM\OneToOne(targetEntity="UserQuotasDefault", mappedBy="user", cascade={"persist", "remove"})
-     * @Assert\Valid()
-     */
+    #[ORM\OneToOne(targetEntity: UserQuotasDefault::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     protected $quotasDefault;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Settings", mappedBy="user", cascade={"persist", "remove"})
-     * @Assert\Valid()
-     */
+    #[ORM\OneToMany(targetEntity: Settings::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     protected $settings;
 
-    /**
-     * @ORM\OneToOne(targetEntity="GuestToken", mappedBy="user", cascade={"persist", "remove"})
-     * @Assert\Valid()
-     */
+    #[ORM\OneToOne(targetEntity: GuestToken::class, mappedBy: 'user', cascade: ['persist', 'remove'])]
+    #[Assert\Valid]
     protected $guestToken;
 
-    /**
-     * @ORM\OneToMany(targetEntity="ApiKey", mappedBy="user", cascade={"persist", "remove"}, fetch="EXTRA_LAZY")
-     * @Assert\Valid()
-     */
+    #[ORM\OneToMany(
+        targetEntity: ApiKey::class,
+        mappedBy: 'user',
+        cascade: ['persist', 'remove'],
+        fetch: 'EXTRA_LAZY',
+    )]
+    #[Assert\Valid]
     protected $apiKey;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @Assert\Length(
-     *     min=2,
-     *     max=255,
-     *     maxMessage="Your name is too short (min 2).",
-     *     maxMessage="Your name is too long (max 255).",
-     *     groups={"Registration", "Profile"}
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: 'Your name is too short (min 2).',
+        maxMessage: 'Your name is too long (max 255).',
+        groups: ['Registration', 'Profile'],
+    )]
     protected $name;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: 'boolean', nullable: true)]
     protected $professional;
 
-    /**
-     * @ORM\Column(type="string", length=255, nullable=true)
-     *
-     * @Assert\Length(
-     *     min=2,
-     *     max=255,
-     *     maxMessage="The company name is too short (min 2).",
-     *     maxMessage="The company name is too long (max 255).",
-     *     groups={"Registration", "Profile"}
-     * )
-     */
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    #[Assert\Length(
+        min: 2,
+        max: 255,
+        minMessage: 'The company name is too short (min 2).',
+        maxMessage: 'The company name is too long (max 255).',
+        groups: ['Registration', 'Profile'],
+    )]
     protected $companyName;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default":1})
-     */
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => 1])]
     protected $newsletter = true;
 
-    /**
-     * @ORM\Column(type="string", length=2, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 2, nullable: true)]
     protected $country;
 
-    /**
-     * @ORM\Column(type="string", length=10, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 10, nullable: true)]
     protected $language;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false, options={"unsigned":true, "default":0})
-     */
+    #[ORM\Column(type: 'integer', nullable: false, options: ['unsigned' => true, 'default' => 0])]
     protected $totalDonated = 0;
 
-    /**
-     * @ORM\Column(type="integer", nullable=false, options={"unsigned":true, "default":0})
-     */
+    #[ORM\Column(type: 'integer', nullable: false, options: ['unsigned' => true, 'default' => 0])]
     protected $vote = 0;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default":0})
-     */
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => 0])]
     protected $displayName = false;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=false, options={"default":1})
-     */
+    #[ORM\Column(type: 'boolean', nullable: false, options: ['default' => 1])]
     protected $realUserName = true;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: 'datetime', nullable: true)]
     private $endDate;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $createdAt;
 
     public function __construct()
     {
-        parent::__construct();
+        $this->display = new ArrayCollection();
+        $this->settings = new ArrayCollection();
+        $this->apiKey = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return (string) $this->getUsername();
+    }
+
+    /**
+     * Only what is needed to refresh the user is stored in the session.
+     */
+    public function __serialize(): array
+    {
+        return [
+            'id' => $this->id,
+            'username' => $this->username,
+            'usernameCanonical' => $this->usernameCanonical,
+            'email' => $this->email,
+            'emailCanonical' => $this->emailCanonical,
+            'enabled' => $this->enabled,
+            'salt' => $this->salt,
+            // The hash itself does not have to be in the session
+            'password' => null === $this->password ? null : hash('crc32c', $this->password),
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        $this->id = $data['id'] ?? null;
+        $this->username = $data['username'] ?? null;
+        $this->usernameCanonical = $data['usernameCanonical'] ?? null;
+        $this->email = $data['email'] ?? null;
+        $this->emailCanonical = $data['emailCanonical'] ?? null;
+        $this->enabled = $data['enabled'] ?? false;
+        $this->salt = $data['salt'] ?? null;
+        $this->password = $data['password'] ?? null;
+    }
+
+    /**
+     * Check that the user of the session is still the one of the database.
+     *
+     * The roles are not compared: they are refreshed at each request instead, see RolesRefreshSubscriber.
+     */
+    public function isEqualTo(UserInterface $user): bool
+    {
+        if (!$user instanceof self || $this->id !== $user->getId()) {
+            return false;
+        }
+
+        $password = (string) $user->getPassword();
+        if ($this->password !== $password && $this->password !== hash('crc32c', $password)) {
+            return false;
+        }
+
+        return $this->salt === $user->getSalt()
+            && $this->usernameCanonical === $user->getUsernameCanonical()
+            && $this->enabled === $user->isEnabled();
+    }
+
+    /**
+     * Get id.
+     *
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->username;
+    }
+
+    /**
+     * Get username.
+     *
+     * @return string
+     */
+    public function getUsername()
+    {
+        return $this->username;
+    }
+
+    /**
+     * Set username.
+     *
+     * @param string $username
+     *
+     * @return User
+     */
+    public function setUsername($username)
+    {
+        $this->username = $username;
+
+        return $this;
+    }
+
+    /**
+     * Get usernameCanonical.
+     *
+     * @return string
+     */
+    public function getUsernameCanonical()
+    {
+        return $this->usernameCanonical;
+    }
+
+    /**
+     * Set usernameCanonical.
+     *
+     * @param string $usernameCanonical
+     *
+     * @return User
+     */
+    public function setUsernameCanonical($usernameCanonical)
+    {
+        $this->usernameCanonical = $usernameCanonical;
+
+        return $this;
+    }
+
+    /**
+     * Get email.
+     *
+     * @return string
+     */
+    public function getEmail()
+    {
+        return $this->email;
+    }
+
+    /**
+     * Set email.
+     *
+     * @param string $email
+     *
+     * @return User
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get emailCanonical.
+     *
+     * @return string
+     */
+    public function getEmailCanonical()
+    {
+        return $this->emailCanonical;
+    }
+
+    /**
+     * Set emailCanonical.
+     *
+     * @param string $emailCanonical
+     *
+     * @return User
+     */
+    public function setEmailCanonical($emailCanonical)
+    {
+        $this->emailCanonical = $emailCanonical;
+
+        return $this;
+    }
+
+    /**
+     * Is the account enabled.
+     *
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * Set enabled.
+     *
+     * @param bool $enabled
+     *
+     * @return User
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = (bool) $enabled;
+
+        return $this;
+    }
+
+    public function getSalt(): ?string
+    {
+        return $this->salt;
+    }
+
+    /**
+     * Set salt.
+     *
+     * @param string|null $salt
+     *
+     * @return User
+     */
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
+
+        return $this;
+    }
+
+    public function getPassword(): ?string
+    {
+        return $this->password;
+    }
+
+    /**
+     * Set the hashed password.
+     *
+     * @param string $password
+     *
+     * @return User
+     */
+    public function setPassword($password)
+    {
+        $this->password = $password;
+
+        return $this;
+    }
+
+    /**
+     * Get plainPassword.
+     *
+     * @return string|null
+     */
+    public function getPlainPassword()
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * Set plainPassword.
+     *
+     * @param string|null $password
+     *
+     * @return User
+     */
+    public function setPlainPassword($password)
+    {
+        $this->plainPassword = $password;
+
+        return $this;
+    }
+
+    /**
+     * Remove the sensitive data which must not be kept.
+     */
+    public function eraseCredentials(): void
+    {
+        $this->plainPassword = null;
+    }
+
+    /**
+     * Get lastLogin.
+     *
+     * @return \DateTime|null
+     */
+    public function getLastLogin()
+    {
+        return $this->lastLogin;
+    }
+
+    /**
+     * Set lastLogin.
+     *
+     * @param \DateTime|null $time
+     *
+     * @return User
+     */
+    public function setLastLogin(?\DateTime $time = null)
+    {
+        $this->lastLogin = $time;
+
+        return $this;
+    }
+
+    /**
+     * Get confirmationToken.
+     *
+     * @return string|null
+     */
+    public function getConfirmationToken()
+    {
+        return $this->confirmationToken;
+    }
+
+    /**
+     * Set confirmationToken.
+     *
+     * @param string|null $confirmationToken
+     *
+     * @return User
+     */
+    public function setConfirmationToken($confirmationToken)
+    {
+        $this->confirmationToken = $confirmationToken;
+
+        return $this;
+    }
+
+    /**
+     * Get passwordRequestedAt.
+     *
+     * @return \DateTime|null
+     */
+    public function getPasswordRequestedAt()
+    {
+        return $this->passwordRequestedAt;
+    }
+
+    /**
+     * Set passwordRequestedAt.
+     *
+     * @param \DateTime|null $date
+     *
+     * @return User
+     */
+    public function setPasswordRequestedAt(?\DateTime $date = null)
+    {
+        $this->passwordRequestedAt = $date;
+
+        return $this;
+    }
+
+    /**
+     * Is the last password request still valid.
+     *
+     * @param int $ttl Requests older than this many seconds are considered expired
+     *
+     * @return bool
+     */
+    public function isPasswordRequestNonExpired($ttl)
+    {
+        return $this->getPasswordRequestedAt() instanceof \DateTime
+            && $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
+    }
+
+    /**
+     * Get roles, always with the default one.
+     *
+     * @return string[]
+     */
+    public function getRoles(): array
+    {
+        $roles = $this->roles ?? [];
+        $roles[] = static::ROLE_DEFAULT;
+
+        return array_values(array_unique($roles));
+    }
+
+    /**
+     * Set roles.
+     *
+     * @param string[] $roles
+     *
+     * @return User
+     */
+    public function setRoles(array $roles)
+    {
+        $this->roles = [];
+
+        foreach ($roles as $role) {
+            $this->addRole($role);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Add role.
+     *
+     * @param string $role
+     *
+     * @return User
+     */
+    public function addRole($role)
+    {
+        $role = strtoupper($role);
+        if ($role === static::ROLE_DEFAULT) {
+            return $this;
+        }
+
+        if (!in_array($role, $this->roles, true)) {
+            $this->roles[] = $role;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove role.
+     *
+     * @param string $role
+     *
+     * @return User
+     */
+    public function removeRole($role)
+    {
+        if (false !== $key = array_search(strtoupper($role), $this->roles, true)) {
+            unset($this->roles[$key]);
+            $this->roles = array_values($this->roles);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Has role.
+     *
+     * @param string $role
+     *
+     * @return bool
+     */
+    public function hasRole($role)
+    {
+        return in_array(strtoupper($role), $this->getRoles(), true);
+    }
+
+    /**
+     * Is the user a super admin.
+     *
+     * @return bool
+     */
+    public function isSuperAdmin()
+    {
+        return $this->hasRole(static::ROLE_SUPER_ADMIN);
+    }
+
+    /**
+     * Set or unset the super admin role.
+     *
+     * @param bool $boolean
+     *
+     * @return User
+     */
+    public function setSuperAdmin($boolean)
+    {
+        if (true === $boolean) {
+            $this->addRole(static::ROLE_SUPER_ADMIN);
+        } else {
+            $this->removeRole(static::ROLE_SUPER_ADMIN);
+        }
+
+        return $this;
     }
 
     /**
      * Gets triggered only on insert.
-     *
-     * @ORM\PrePersist
      */
+    #[ORM\PrePersist]
     public function onPrePersist()
     {
         $this->setCreatedAt(new \DateTime());
@@ -521,7 +1045,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setQuotas(\UserBundle\Entity\UserQuotas $quotas = null)
+    public function setQuotas(?\UserBundle\Entity\UserQuotas $quotas = null)
     {
         $this->quotas = $quotas;
 
@@ -545,7 +1069,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setQuotasDefault(\UserBundle\Entity\UserQuotasDefault $quotasDefault = null)
+    public function setQuotasDefault(?\UserBundle\Entity\UserQuotasDefault $quotasDefault = null)
     {
         $this->quotasDefault = $quotasDefault;
 
@@ -605,7 +1129,7 @@ class User extends BaseUser
      *
      * @return User
      */
-    public function setGuestToken(\UserBundle\Entity\GuestToken $guestToken = null)
+    public function setGuestToken(?\UserBundle\Entity\GuestToken $guestToken = null)
     {
         $this->guestToken = $guestToken;
 

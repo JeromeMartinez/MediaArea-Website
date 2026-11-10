@@ -1,8 +1,9 @@
 services:
-#    qc_tools.example:
-#        class: QCToolsBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
-    qc.download_info:
-        class: QCToolsBundle\Lib\DownloadInfo\QCToolsDownloadInfo
-        public: true
+    QCToolsBundle\:
+        resource: '../../*'
+        exclude: '../../{Entity,Repository,Tests,Resources}'

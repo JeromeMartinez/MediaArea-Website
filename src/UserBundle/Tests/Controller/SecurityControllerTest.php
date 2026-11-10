@@ -2,7 +2,7 @@
 
 namespace UserBundle\Tests\Controller;
 
-class SecurityControllerTest extends UserAbstractControllerTest
+class SecurityControllerTest extends UserAbstractControllerTestCase
 {
     public function testLogInInNavNotConnected()
     {

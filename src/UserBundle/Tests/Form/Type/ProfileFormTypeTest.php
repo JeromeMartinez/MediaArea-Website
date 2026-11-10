@@ -2,9 +2,12 @@
 
 namespace UserBundle\Tests\Form\Type;
 
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use UserBundle\Form\Type\ProfileFormType;
 use UserBundle\Tests\TestUser;
 
+// The form test case of Symfony creates a mock of the event dispatcher
+#[AllowMockObjectsWithoutExpectations]
 class ProfileFormTypeTest extends ValidatorExtensionTypeTestCase
 {
     public function testSubmitWithoutUsername()
@@ -59,11 +62,10 @@ class ProfileFormTypeTest extends ValidatorExtensionTypeTestCase
     /**
      * @return array
      */
-    protected function getTypes()
+    protected function getTypes(): array
     {
         return array_merge(parent::getTypes(), array(
-            new ProfileFormType('UserBundle\Tests\TestUser'),
-            new \FOS\UserBundle\Form\Type\ProfileFormType('UserBundle\Tests\TestUser'),
+            new ProfileFormType(),
         ));
     }
 }

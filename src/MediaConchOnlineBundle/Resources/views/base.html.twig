@@ -5,10 +5,5 @@
 {% block keywords %}MediaConch implementation policy Matroska FFV1{% endblock %}
 
 {% block stylesheets %}
-{% stylesheets filter='cssrewrite' filter='?scssphp'
-    'bundles/mediaconchonline/css/MediaConchOnline.css'
-    output='css/MediaConchOnline.min.css'
- %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-{% endstylesheets %}
+<link rel="stylesheet" href="{{ asset('bundles/mediaconchonline/css/MediaConchOnline.css') }}" />
 {% endblock %}

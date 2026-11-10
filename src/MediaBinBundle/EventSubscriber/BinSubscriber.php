@@ -4,7 +4,7 @@ namespace MediaBinBundle\EventSubscriber;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
-use Symfony\Component\HttpKernel\Event\PostResponseEvent;
+use Symfony\Component\HttpKernel\Event\TerminateEvent;
 use MediaBinBundle\Lib\File\File;
 
 class BinSubscriber implements EventSubscriberInterface
@@ -16,14 +16,14 @@ class BinSubscriber implements EventSubscriberInterface
         $this->binFile = $binFile;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             KernelEvents::TERMINATE => 'create',
         ];
     }
 
-    public function create(PostResponseEvent $event)
+    public function create(TerminateEvent $event)
     {
         if (!$binHash = $event->getRequest()->attributes->get('mediabin.create')) {
             return;

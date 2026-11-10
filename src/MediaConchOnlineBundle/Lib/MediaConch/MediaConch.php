@@ -2,6 +2,9 @@
 
 namespace MediaConchOnlineBundle\Lib\MediaConch;
 
+/**
+ * @SuppressWarnings(PHPMD.CamelCasePropertyName)
+ */
 class MediaConch
 {
     protected $MediaConch = '/usr/bin/mediaconch';

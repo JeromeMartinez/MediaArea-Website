@@ -2,9 +2,9 @@
 
 namespace SupportUsBundle\Tests\Controller;
 
-use UserBundle\Tests\Controller\UserAbstractControllerTest;
+use UserBundle\Tests\Controller\UserAbstractControllerTestCase;
 
-class DefaultControllerTest extends UserAbstractControllerTest
+class DefaultControllerTest extends UserAbstractControllerTestCase
 {
     public function testAbout()
     {

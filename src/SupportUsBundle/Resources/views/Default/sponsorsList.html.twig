@@ -151,10 +151,5 @@
 {% endblock %}
 
 {% block stylesheets %}
-{% stylesheets
-    '@SupportUsBundle/Resources/public/css/supportUs.css'
-    filter='?scssphp' output='css/supportUs.css'
- %}
-    <link rel="stylesheet" href="{{ asset_url }}" />
-{% endstylesheets %}
+<link rel="stylesheet" href="{{ asset('bundles/supportus/css/supportUs.css') }}" />
 {% endblock %}

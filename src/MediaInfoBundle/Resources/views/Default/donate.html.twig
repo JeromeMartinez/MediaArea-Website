@@ -31,12 +31,7 @@
 {% endblock %}
 
 {% block javascripts %}
-{% javascripts
-    '@PaymentBundle/Resources/public/js/form.js'
-    filter="?jsqueeze" output='js/paymentForm.js'
- %}
-    <script src="{{ asset_url }}"></script>
-{% endjavascripts %}
+<script src="{{ asset('bundles/payment/js/form.js') }}"></script>
 
 <script>
     (function() {

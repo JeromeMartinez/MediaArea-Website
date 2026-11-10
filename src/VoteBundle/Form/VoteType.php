@@ -10,13 +10,13 @@ use Symfony\Component\Validator\Constraints\Range;
 
 class VoteType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('vote', IntegerType::class, [
             'attr' => $options['attr'],
             'constraints' => [
                 new Type('integer'),
-                new Range(['min' => $options['attr']['min'], 'max' => $options['attr']['max']]),
+                new Range(min: $options['attr']['min'], max: $options['attr']['max']),
             ],
         ]);
     }

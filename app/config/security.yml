@@ -1,11 +1,9 @@
 # To get started with security, check out the documentation:
 # https://symfony.com/doc/current/security.html
 security:
-    # Refresh authenticated user after role change
-    always_authenticate_before_granting:  true
-    # https://symfony.com/doc/current/security.html#encoding-the-user-s-password
-    encoders:
-        FOS\UserBundle\Model\UserInterface: bcrypt
+    # https://symfony.com/doc/current/security/passwords.html
+    password_hashers:
+        UserBundle\Entity\User: auto
 
     role_hierarchy:
         ROLE_BOT:         ROLE_USER
@@ -15,17 +13,17 @@ security:
         ROLE_ADMIN:       ROLE_BETA
         ROLE_SUPER_ADMIN: ROLE_ADMIN
 
-    # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
+    # https://symfony.com/doc/current/security/user_providers.html
     providers:
-        fos_userbundle:
-            id: fos_user.user_provider.username_email
+        user_bundle:
+            id: UserBundle\Security\UserProvider
         api_key_user_provider:
             id: UserBundle\Security\ApiKeyUserProvider
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
         dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            pattern: ^/(_(profiler|wdt)|assets|bundles)/
             security: false
 
         # Firewall for MCO public API
@@ -38,28 +36,33 @@ security:
         protected_api:
             pattern: ^/MediaConchOnline/api/protected/
             stateless: true
-            simple_preauth:
-                authenticator: UserBundle\Security\ApiKeyAuthenticator
             provider: api_key_user_provider
+            custom_authenticators:
+                - UserBundle\Security\ApiKeyAuthenticator
 
         main:
             pattern: ^/
+            lazy: true
+            provider: user_bundle
+            user_checker: UserBundle\Security\UserChecker
             form_login:
-                provider: fos_userbundle
-                csrf_token_generator: security.csrf.token_manager
+                login_path: fos_user_security_login
+                check_path: fos_user_security_check
+                enable_csrf: true
                 always_use_default_target_path: false
                 default_target_path: homepage
                 use_referer: true
-            logout:       true
-            anonymous:    true
+            logout:
+                path: fos_user_security_logout
             remember_me:
                 secret: '%secret%'
                 lifetime: 31536000 # 365 days in seconds
-                always_remember_me: false
+                # The cookie is set at each login, whatever the "remember me" checkbox
+                always_remember_me: true
 
     access_control:
-        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/settings, role: IS_AUTHENTICATED_REMEMBERED }
-        - { path: ^/admin/, role: ROLE_ADMIN }
+        - { path: ^/login$, roles: PUBLIC_ACCESS }
+        - { path: ^/register, roles: PUBLIC_ACCESS }
+        - { path: ^/resetting, roles: PUBLIC_ACCESS }
+        - { path: ^/settings, roles: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/admin(/|$), roles: ROLE_ADMIN }

@@ -19,7 +19,7 @@ class XslPolicyRuleFormType extends AbstractType
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('title', TextType::class, ['label' => 'Rule name', 'required' => false])
 
@@ -63,7 +63,7 @@ class XslPolicyRuleFormType extends AbstractType
         });
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'xslPolicyRule';
     }

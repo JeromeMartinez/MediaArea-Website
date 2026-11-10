@@ -2,16 +2,14 @@
 
 namespace MediaInfoBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 
-class OnlineController extends Controller
+class OnlineController extends AbstractController
 {
-    /**
-     * @Route("/MediaInfoOnline", name="mi_online")
-     * @Template()
-     */
+    #[Route('/MediaInfoOnline', name: 'mi_online')]
+    #[Template('@MediaInfo/Online/index.html.twig')]
     public function indexAction()
     {
         return [];

@@ -3,7 +3,7 @@
 namespace PaymentBundle\EventListener;
 
 use Doctrine\ORM\EntityManagerInterface;
-use FOS\UserBundle\Model\UserInterface;
+use UserBundle\Entity\User;
 use JMS\Payment\CoreBundle\PluginController\Event\PaymentStateChangeEvent;
 use JMS\Payment\CoreBundle\Model\PaymentInterface;
 use PaymentBundle\Entity\Order;
@@ -55,7 +55,7 @@ class OrdersListener
             $this->createInvoice->create($event->getPayment()->getPaymentInstruction(), $order);
 
             // Add donation to user if user is connected
-            if ($this->user instanceof UserInterface && 'individual' == $order->getType()) {
+            if ($this->user instanceof User && 'individual' == $order->getType()) {
                 $individual = new Individual();
                 $votes = $individual->amountToVotes(
                     $event->getPayment()->getPaymentInstruction()->getApprovedAmount(),

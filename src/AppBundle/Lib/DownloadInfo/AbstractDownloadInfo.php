@@ -12,7 +12,7 @@ abstract class AbstractDownloadInfo implements DownloadInfoInterface
 
     public function setUserAgent($userAgent)
     {
-        $this->userAgent = $userAgent;
+        $this->userAgent = (string) $userAgent;
     }
 
     public function getName()

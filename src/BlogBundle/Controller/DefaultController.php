@@ -3,28 +3,24 @@
 namespace BlogBundle\Controller;
 
 use LimitIterator;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use AppBundle\Lib\Paginator;
 use BlogBundle\Lib\Parser\PostParser;
 use BlogBundle\Lib\Posts;
 use BlogBundle\Lib\PostsTagFilter;
 
-/**
- * @Route("/blog")
- */
-class DefaultController extends Controller
+#[Route('/blog')]
+class DefaultController extends AbstractController
 {
     const POSTS_PER_PAGE = 10;
 
-    /**
-     * @Route("", defaults={"page" = 1}, name="ma_blog_index")
-     * @Route("/{page}", requirements={"page" = "\d+"}, name="ma_blog_index_page")
-     * @Template()
-     */
+    #[Route('', name: 'ma_blog_index', defaults: ['page' => 1])]
+    #[Route('/{page}', name: 'ma_blog_index_page', requirements: ['page' => '\d+'])]
+    #[Template('@Blog/Default/index.html.twig')]
     public function indexAction(Request $request, int $page)
     {
         $posts = new Posts($this->getParameter('blog.files.path'));
@@ -40,7 +36,7 @@ class DefaultController extends Controller
         }
 
         // Redirect paginated page 1 to index
-        if ('ma_blog_index_page' == $request->get('_route') && 1 == $page) {
+        if ('ma_blog_index_page' == $request->attributes->get('_route') && 1 == $page) {
             return $this->redirectToRoute('ma_blog_index', [], 301);
         }
 
@@ -55,10 +51,8 @@ class DefaultController extends Controller
         return ['posts' => $showPosts, 'paginator' => $paginator];
     }
 
-    /**
-     * @Route("/feed", defaults={"_format": "xml"}, name="ma_blog_feed")
-     * @Template()
-     */
+    #[Route('/feed', name: 'ma_blog_feed', defaults: ['_format' => 'xml'])]
+    #[Template('@Blog/Default/feed.xml.twig')]
     public function feedAction()
     {
         $posts = new Posts($this->getParameter('blog.files.path'));
@@ -76,11 +70,9 @@ class DefaultController extends Controller
         return ['posts' => $showPosts];
     }
 
-    /**
-     * @Route("/{tag}", defaults={"page" = 1}, requirements={"tag" = "[a-z0-9-]+"}, name="ma_blog_tag_index")
-     * @Route("/{tag}/{page}", requirements={"page" = "\d+", "tag" = "[a-z0-9-]+"}, name="ma_blog_tag_index_page")
-     * @Template()
-     */
+    #[Route('/{tag}', name: 'ma_blog_tag_index', requirements: ['tag' => '[a-z0-9-]+'], defaults: ['page' => 1])]
+    #[Route('/{tag}/{page}', name: 'ma_blog_tag_index_page', requirements: ['page' => '\d+', 'tag' => '[a-z0-9-]+'])]
+    #[Template('@Blog/Default/listingByTag.html.twig')]
     public function listingByTagAction(Request $request, int $page, $tag)
     {
         $posts = new PostsTagFilter(new Posts($this->getParameter('blog.files.path')), $tag);
@@ -96,7 +88,7 @@ class DefaultController extends Controller
         }
 
         // Redirect paginated page 1 to index
-        if ('ma_blog_tag_index_page' == $request->get('_route') && 1 == $page) {
+        if ('ma_blog_tag_index_page' == $request->attributes->get('_route') && 1 == $page) {
             return $this->redirectToRoute('ma_blog_tag_index', ['tag' => $tag], 301);
         }
 
@@ -116,15 +108,13 @@ class DefaultController extends Controller
         return ['posts' => $showPosts, 'paginator' => $paginator, 'tag' => $post->getTagBySlug($tag)];
     }
 
-    /**
-     * @Route(
-     *     "/{tag}/feed",
-     *     requirements={"tag" = "[a-z0-9-]+"},
-     *     defaults={"_format": "xml"},
-     *     name="ma_blog_tag_feed"
-     * )
-     * @Template()
-     */
+    #[Route(
+        '/{tag}/feed',
+        name: 'ma_blog_tag_feed',
+        requirements: ['tag' => '[a-z0-9-]+'],
+        defaults: ['_format' => 'xml'],
+    )]
+    #[Template('@Blog/Default/listingByTagFeed.xml.twig')]
     public function listingByTagFeedAction($tag)
     {
         $posts = new PostsTagFilter(new Posts($this->getParameter('blog.files.path')), $tag);
@@ -146,10 +136,8 @@ class DefaultController extends Controller
         return ['posts' => $showPosts, 'tag' => $post->getTagBySlug($tag)];
     }
 
-    /**
-     * @Route("/{year}/{month}/{day}/{slug}", name="ma_blog_post")
-     * @Template()
-     */
+    #[Route('/{year}/{month}/{day}/{slug}', name: 'ma_blog_post')]
+    #[Template('@Blog/Default/post.html.twig')]
     public function postAction($year, $month, $day, $slug)
     {
         try {

@@ -2,30 +2,51 @@
 
 namespace UserBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\EntityManagerInterface;
+use MediaConchOnlineBundle\Mailer\UserMailer;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Intl\Intl;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use FOS\UserBundle\Model\UserInterface;
+use UserBundle\Entity\User;
+use UserBundle\Form\Type\CountryCustomType;
+use UserBundle\Form\Type\LanguageCustomType;
 use UserBundle\Form\Type\SettingsFormType;
 use UserBundle\Form\Type\GuestRegisterFormType;
 use PaymentBundle\Entity\Invoice;
 use UserBundle\Lib\Quotas\Quotas;
 use UserBundle\Lib\Settings\SettingsManager;
+use UserBundle\Lib\TokenGenerator;
+use UserBundle\Lib\UserManager;
 use VoteBundle\Entity\Vote;
 use VoteBundle\Entity\Feature;
 
 /**
  * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class UserController extends Controller
+class UserController extends AbstractController
 {
-    /**
-     * @Route("/settings", name="user_settings")
-     * @Template()
-     */
+    private $em;
+    private $userManager;
+    private $tokenGenerator;
+    private $mailer;
+
+    public function __construct(
+        EntityManagerInterface $em,
+        UserManager $userManager,
+        TokenGenerator $tokenGenerator,
+        UserMailer $mailer
+    ) {
+        $this->em = $em;
+        $this->userManager = $userManager;
+        $this->tokenGenerator = $tokenGenerator;
+        $this->mailer = $mailer;
+    }
+
+    #[Route('/settings', name: 'user_settings')]
+    #[Template('@User/User/settings.html.twig')]
     public function settingsAction(Request $request, SettingsManager $settings)
     {
         $form = $this->createForm(SettingsFormType::class);
@@ -45,28 +66,24 @@ class UserController extends Controller
         return ['form' => $form->createView()];
     }
 
-    /**
-     * @Route("/guest", name="user_guest_help")
-     * @Template()
-     */
+    #[Route('/guest', name: 'user_guest_help')]
+    #[Template('@User/User/guestHelp.html.twig')]
     public function guestHelpAction()
     {
         return [];
     }
 
-    /**
-     * @Route("/guest/register", name="user_guest_register")
-     */
+    #[Route('/guest/register', name: 'user_guest_register')]
     public function guestRegisterAction(Request $request, Quotas $quotas)
     {
         $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface || !$user->hasRole('ROLE_GUEST')) {
+        if (!is_object($user) || !$user instanceof User || !$user->hasRole('ROLE_GUEST')) {
             throw new AccessDeniedException('You do not have access to this section.');
         }
 
         // Store referer
         if ('GET' == $request->getMethod() && $request->headers->get('referer') != $request->getUri()) {
-            $this->get('session')->set('registerRedirect', $request->headers->get('referer'));
+            $request->getSession()->set('registerRedirect', $request->headers->get('referer'));
         }
 
         $form = $this->createForm(GuestRegisterFormType::class, $user);
@@ -77,16 +94,16 @@ class UserController extends Controller
 
             $this->addFlash('success', 'You have been registered successfully');
 
-            if ($this->getParameter('fos_user.registration.confirmation.enabled')) {
-                $this->get('session')->set('fos_user_send_confirmation_email/email', $user->getEmail());
+            if ($this->getParameter('user.registration.confirmation.enabled')) {
+                $request->getSession()->set('fos_user_send_confirmation_email/email', $user->getEmail());
                 $route = 'fos_user_registration_check_email';
 
                 // Keep guest user enable to avoid redirect to login page
                 if (null === $user->getConfirmationToken()) {
-                    $user->setConfirmationToken($this->get('fos_user.util.token_generator')->generateToken());
+                    $user->setConfirmationToken($this->tokenGenerator->generateToken());
                 }
 
-                $this->get('fos_user.mailer')->sendConfirmationEmailMessage($user);
+                $this->mailer->sendConfirmationEmailMessage($user);
             } else {
                 $route = 'fos_user_registration_confirmed';
 
@@ -100,15 +117,14 @@ class UserController extends Controller
                 // Remove guest token in DB
                 $token = $user->getGuestToken();
                 $user->setGuestToken(null);
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($token);
+                $this->em->remove($token);
 
                 // Set quotas for new user with mail activation disabled
                 $quotas->resetQuotas();
             }
 
             // Update user
-            $this->get('fos_user.user_manager')->updateUser($user);
+            $this->userManager->updateUser($user);
 
             return $this->redirectToRoute($route);
         }
@@ -118,26 +134,28 @@ class UserController extends Controller
 
     /**
      * Show the user.
-     *
-     * @Route("/profile/")
-     * @Template()
+     * @SuppressWarnings(PHPMD.StaticAccess)
      */
+    #[Route('/profile/')]
+    #[Template('@User/User/showProfile.html.twig')]
     public function showProfileAction(Quotas $quotas)
     {
         $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
+        if (!is_object($user) || !$user instanceof User) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
         if ($user->getLanguage()) {
-            $language = Intl::getLanguageBundle()->getLanguageName($user->getLanguage());
+            $languages = LanguageCustomType::getNames();
+            $language = $languages[$user->getLanguage()] ?? null;
         }
 
         if ($user->getCountry()) {
-            $country = Intl::getRegionBundle()->getCountryName($user->getCountry());
+            $countries = CountryCustomType::getNames();
+            $country = $countries[$user->getCountry()] ?? null;
         }
 
-        $invoices = $this->getDoctrine()
+        $invoices = $this->em
             ->getRepository(Invoice::class)
             ->findBy(['user' => $this->getUser()], ['date' => 'DESC']);
 
@@ -156,8 +174,8 @@ class UserController extends Controller
                 'country' => '',
                 'currency' => '',
             ],
-            'userVotes' => $this->getDoctrine()->getRepository(Vote::class)->getTotalVotesByUser($user),
-            'userVotesFeatures' => $this->getDoctrine()->getRepository(Feature::class)->getFeaturesVotedByUser($user),
+            'userVotes' => $this->em->getRepository(Vote::class)->getTotalVotesByUser($user),
+            'userVotesFeatures' => $this->em->getRepository(Feature::class)->getFeaturesVotedByUser($user),
             'quotas' => $quotas->getQuotasForProfile(),
         ];
     }

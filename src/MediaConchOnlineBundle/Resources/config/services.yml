@@ -24,15 +24,12 @@ services:
 
     MediaConchOnlineBundle\Mailer\UserMailer:
         arguments:
-            - '@mailer'
-            - '@router'
-            - '@templating'
-            -
-                confirmation.template: '%fos_user.registration.confirmation.template%'
-                resetting.template: '%fos_user.resetting.email.template%'
+            $parameters:
+                confirmation.template: '@@User/Registration/email.txt.twig'
+                resetting.template: '@@User/Resetting/email.txt.twig'
                 from_email:
-                    confirmation: '%fos_user.registration.confirmation.from_email%'
-                    resetting: '%fos_user.resetting.email.from_email%'
+                    address: '%user.from_email.address%'
+                    sender_name: '%user.from_email.sender_name%'
                 absolute_url_for_mail: '%mco.mediaconch.absolute_url_for_mail%'
 
     MediaConchOnlineBundle\Lib\Api\Client:

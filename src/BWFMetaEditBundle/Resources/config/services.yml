@@ -1,8 +1,9 @@
 services:
-#    bwf_meta_edit.example:
-#        class: BWFMetaEditBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
-    bwf.download_info:
-        class: BWFMetaEditBundle\Lib\DownloadInfo\BWFMetaEditDownloadInfo
-        public: true
+    BWFMetaEditBundle\:
+        resource: '../../*'
+        exclude: '../../{Entity,Repository,Tests,Resources}'

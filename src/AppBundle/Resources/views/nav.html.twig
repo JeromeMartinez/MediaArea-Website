@@ -18,7 +18,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     {% if app.user and is_granted("IS_AUTHENTICATED_REMEMBERED") %}
-                        <a href="{{ path('fos_user_profile_show') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ 'layout.logged_in_as'|trans({'%username%': app.user.namefordisplay | truncate(30, false, '…')}, 'FOSUserBundle') }} <span class="caret"></span></a>
+                        <a href="{{ path('fos_user_profile_show') }}" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{ 'layout.logged_in_as'|trans({'%username%': app.user.namefordisplay|u.truncate(31, '…')}, 'FOSUserBundle') }} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             {% if is_granted('ROLE_GUEST') %}
                                 <li><a href="{{ path('fos_user_security_login') }}">{{ 'layout.login'|trans({}, 'FOSUserBundle') }}</a></li>
@@ -42,7 +42,7 @@
                         </ul>
                     {% endif %}
                 </li>
-                {% if app.request.get('_locale') %}
+                {% if app.request.attributes.get('_locale') %}
                     {{ include('@App/languageSwitcher.html.twig') }}
                 {% endif %}
             </ul>

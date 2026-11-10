@@ -1,64 +1,77 @@
 {
-    "name": "symfony/framework-standard-edition",
+    "name": "mediaarea/mediaarea-website",
     "license": "MIT",
     "type": "project",
-    "description": "The \"Symfony Standard Edition\" distribution",
+    "description": "MediaArea website",
     "autoload": {
-        "psr-4": { "": "src/" },
-        "classmap": [ "app/AppKernel.php", "app/AppCache.php" ]
-    },
-    "autoload-dev": {
-        "psr-4": { "Tests\\": "tests/" },
-        "files": [ "vendor/symfony/symfony/src/Symfony/Component/VarDumper/Resources/functions/dump.php" ]
+        "psr-4": { "": ["src/", "lib/"] },
+        "classmap": [ "app/AppKernel.php" ]
     },
     "require": {
-        "php": ">=5.5.9",
-        "doctrine/doctrine-bundle": "^1.6",
-        "doctrine/doctrine-migrations-bundle": "^1.0",
-        "doctrine/orm": "^2.5",
-        "easycorp/easyadmin-bundle": "^1.17.13",
-        "erusev/parsedown": "^1.6",
-        "excelwebzone/recaptcha-bundle": "^1.5",
-        "friendsofsymfony/jsrouting-bundle": "^2.0",
-        "friendsofsymfony/user-bundle": "~2.0",
-        "geoip2/geoip2": "^2.6",
-        "incenteev/composer-parameter-handler": "^2.0",
-        "jms/payment-paypal-bundle": "^1.1",
-        "knplabs/knp-menu-bundle": "^2.0",
-        "leafo/scssphp": "^0.7",
-        "mediaarea/kj-payment-stripe-bundle": "dev-dependencies",
-        "monolog/monolog": "^1.25.0",
-        "nelmio/cors-bundle": "^1.5",
-        "patchwork/jsqueeze": "^2.0",
-        "php-opencloud/openstack": "^3.0",
-        "piwik/device-detector": "^3.7",
-        "sensio/distribution-bundle": "^5.0.19",
-        "sensio/framework-extra-bundle": "^3.0.2",
-        "stof/doctrine-extensions-bundle": "^1.2",
-        "symfony/assetic-bundle": "^2.8",
-        "symfony/monolog-bundle": "^3.1.0",
-        "symfony/polyfill-apcu": "^1.0",
-        "symfony/swiftmailer-bundle": "^3.0",
-        "symfony/symfony": "^3.4.37",
-        "tfox/mpdf-port-bundle": "^2.0",
-        "twig/extensions": "^1.5",
-        "twig/twig": "^2.0",
-        "vich/uploader-bundle": "^1.7"
+        "php": ">=8.4",
+        "ext-ctype": "*",
+        "ext-curl": "*",
+        "ext-dom": "*",
+        "ext-iconv": "*",
+        "ext-intl": "*",
+        "ext-mbstring": "*",
+        "ext-pdo_mysql": "*",
+        "ext-simplexml": "*",
+        "defuse/php-encryption": "^2.4",
+        "doctrine/dbal": "^4.5",
+        "doctrine/doctrine-bundle": "^3.3",
+        "doctrine/doctrine-migrations-bundle": "^4.0",
+        "doctrine/orm": "^3.7",
+        "easycorp/easyadmin-bundle": "^5.9",
+        "erusev/parsedown": "^1.8",
+        "friendsofsymfony/jsrouting-bundle": "^3.6",
+        "geoip2/geoip2": "^3.4",
+        "google/recaptcha": "^2.1",
+        "incenteev/composer-parameter-handler": "^2.3",
+        "knplabs/knp-menu-bundle": "^3.8",
+        "matomo/device-detector": "^6.5",
+        "mpdf/mpdf": "^8.3",
+        "nelmio/cors-bundle": "^2.6",
+        "php-opencloud/openstack": "^3.17",
+        "stof/doctrine-extensions-bundle": "^1.15",
+        "stripe/stripe-php": "^22.1",
+        "symfony/asset": "^8.1",
+        "symfony/asset-mapper": "^8.1",
+        "symfony/console": "^8.1",
+        "symfony/doctrine-bridge": "^8.1",
+        "symfony/finder": "^8.1",
+        "symfony/form": "^8.1",
+        "symfony/framework-bundle": "^8.1",
+        "symfony/intl": "^8.1",
+        "symfony/mailer": "^8.1",
+        "symfony/monolog-bundle": "^4.1",
+        "symfony/process": "^8.1",
+        "symfony/security-bundle": "^8.1",
+        "symfony/translation": "^8.1",
+        "symfony/twig-bundle": "^8.1",
+        "symfony/validator": "^8.1",
+        "symfony/web-link": "^8.1",
+        "symfony/yaml": "^8.1",
+        "twig/extra-bundle": "^3.29",
+        "twig/string-extra": "^3.24",
+        "twig/twig": "^3.30",
+        "vich/uploader-bundle": "^3.0"
     },
     "require-dev": {
-        "doctrine/doctrine-fixtures-bundle": "^2.4",
-        "sensio/generator-bundle": "^3.0",
-        "symfony/phpunit-bridge": "^3.0",
-        "phpunit/phpunit": "^6.5"
+        "doctrine/doctrine-fixtures-bundle": "^4.3",
+        "phpunit/phpunit": "^13.4",
+        "symfony/browser-kit": "^8.1",
+        "symfony/css-selector": "^8.1",
+        "symfony/debug-bundle": "^8.1",
+        "symfony/maker-bundle": "^1.68",
+        "symfony/stopwatch": "^8.1",
+        "symfony/web-profiler-bundle": "^8.1"
     },
     "scripts": {
         "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::buildBootstrap",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::clearCache",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installAssets",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::installRequirementsFile",
-            "Sensio\\Bundle\\DistributionBundle\\Composer\\ScriptHandler::prepareDeploymentTarget"
+            "@php bin/console cache:clear --no-warmup",
+            "@php bin/console assets:install web"
         ],
         "post-install-cmd": [
             "@symfony-scripts"
@@ -71,18 +84,9 @@
         "sort-packages": true
     },
     "extra": {
-        "symfony-app-dir": "app",
-        "symfony-bin-dir": "bin",
-        "symfony-var-dir": "var",
-        "symfony-web-dir": "web",
-        "symfony-tests-dir": "tests",
-        "symfony-assets-install": "relative",
+        "public-dir": "web",
         "incenteev-parameters": {
             "file": "app/config/parameters.yml"
-        },
-        "branch-alias": null,
-	"symfony": {
-	    "require": "3.4.*"
-	}
+        }
     }
 }

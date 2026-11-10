@@ -2,18 +2,29 @@
 
 namespace MediaConchOnlineBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Style\SymfonyStyle;
+use UserBundle\Entity\User;
 
-class CleanGuestUsersCommand extends ContainerAwareCommand
+class CleanGuestUsersCommand extends Command
 {
+    protected $em;
+
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->em = $entityManager;
+
+        parent::__construct();
+    }
+
     /**
      * @see Command
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             ->setName('mco:guest:clean')
@@ -30,7 +41,7 @@ EOT
     /**
      * @see Command
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $io->title('Remove inactive guest users');
@@ -44,9 +55,8 @@ EOT
         // Set date for search query
         $date = new \DateTime(date('Y-m-d', strtotime('-'.$days.' days')));
 
-        $em = $this->getContainer()->get('doctrine.orm.entity_manager');
-        $query = $em->createQueryBuilder()->select('u')
-            ->from('UserBundle:User', 'u')
+        $query = $this->em->createQueryBuilder()->select('u')
+            ->from(User::class, 'u')
             ->where('u.lastLogin < :date')
             ->setParameter('date', $date)
             ->getQuery();
@@ -55,14 +65,16 @@ EOT
 
         foreach ($query->getResult() as $user) {
             if ($user->hasRole('ROLE_GUEST')) {
-                $em->remove($user);
+                $this->em->remove($user);
                 ++$deletedUsers;
             }
         }
 
         // Delete users in DB
-        $em->flush();
+        $this->em->flush();
 
         $io->success($deletedUsers.' deleted users');
+
+        return Command::SUCCESS;
     }
 }

@@ -2,21 +2,17 @@
 
 namespace MediaConchBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 use MediaConchBundle\Lib\Checks\Checks;
 
-/**
- * @Route("/MoreInfo")
- */
-class MoreInfoController extends Controller
+#[Route('/MoreInfo')]
+class MoreInfoController extends AbstractController
 {
-    /**
-     * @Route("", name="moreinfo_home")
-     * @Template()
-     */
+    #[Route('', name: 'moreinfo_home')]
+    #[Template('@MediaConch/MoreInfo/analyze.html.twig')]
     public function analyzeAction(Request $request, Checks $checks)
     {
         header('X-Robots-Tag: none');

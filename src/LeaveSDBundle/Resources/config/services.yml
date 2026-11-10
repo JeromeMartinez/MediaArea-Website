@@ -1,8 +1,9 @@
 services:
-#    leavesd.example:
-#        class: LeaveSDBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
 
-    leavesd.download_info:
-        class: LeaveSDBundle\Lib\DownloadInfo\LeaveSDDownloadInfo
-        public: true
+    LeaveSDBundle\:
+        resource: '../../*'
+        exclude: '../../{Entity,Repository,Tests,Resources}'

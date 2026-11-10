@@ -2,7 +2,7 @@
 
 namespace UserBundle\Tests\Controller;
 
-class ProfileControllerTest extends UserAbstractControllerTest
+class ProfileControllerTest extends UserAbstractControllerTestCase
 {
     public function testProfileNotConnected()
     {

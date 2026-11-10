@@ -20,8 +20,8 @@ class FeatureRepository extends EntityRepository
     {
         return $this->getEntityManager()->createQuery('
             SELECT f, SUM(v.points) as totalPoints
-            FROM VoteBundle:Feature f
-            LEFT JOIN VoteBundle:Vote v WITH v.feature = f.id AND v.user = :user
+            FROM VoteBundle\Entity\Feature f
+            LEFT JOIN VoteBundle\Entity\Vote v WITH v.feature = f.id AND v.user = :user
             WHERE f.status >= :status
             GROUP BY f.id
             ')
@@ -34,8 +34,8 @@ class FeatureRepository extends EntityRepository
     {
         return $this->getEntityManager()->createQuery('
             SELECT f.id, f.slug, f.title
-            FROM VoteBundle:Feature f
-            LEFT JOIN VoteBundle:Vote v WITH v.feature = f.id AND v.user = :user
+            FROM VoteBundle\Entity\Feature f
+            LEFT JOIN VoteBundle\Entity\Vote v WITH v.feature = f.id AND v.user = :user
             WHERE f.status >= :status
             GROUP BY f.id
             HAVING SUM(v.points) > 0

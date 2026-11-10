@@ -115,25 +115,11 @@
 {% endblock %}
 
 {% block stylesheets %}
-{% stylesheets
-    '@MediaInfoBundle/Resources/public/css/highlight.css'
-    '@MediaInfoBundle/Resources/public/css/mediainfoonline.css'
-    filter='?scssphp' output='css/mediainfoonline.css'
- %}
-    <link rel="stylesheet" href="{{ preload(asset_url, { as: 'style', nopush: true }) }}" />
-{% endstylesheets %}
+<link rel="stylesheet" href="{{ preload(asset('bundles/mediainfo/css/mediainfoonline.bundle.css'), { as: 'style', nopush: true }) }}" />
 {% endblock %}
 
 {% block javascripts %}
-{% javascripts
-    '@MediaInfoBundle/Resources/public/js/mediainfoonline.js'
-    '@MediaInfoBundle/Resources/public/js/FileSaver.min.js'
-    '@MediaInfoBundle/Resources/public/js/highlight.pack.js'
-    '@MediaInfoBundle/Resources/public/js/clipboard.min.js'
-    filter='?jsqueeze' output='js/mediainfoonline.js'
- %}
-<script type="text/javascript" src="{{ preload(asset_url, { as: 'script', nopush: true }) }}"></script>
-{% endjavascripts %}
+<script type="text/javascript" src="{{ preload(asset('bundles/mediainfo/js/mediainfoonline.bundle.js'), { as: 'script', nopush: true }) }}"></script>
 <script>
 if (('WebAssembly' in window) && (typeof Promise !== 'undefined')) {
     var mediainfoSrc = '{{ MIWASM }}.js';

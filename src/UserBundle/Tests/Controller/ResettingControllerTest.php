@@ -2,7 +2,7 @@
 
 namespace UserBundle\Tests\Controller;
 
-class ResettingControllerTest extends UserAbstractControllerTest
+class ResettingControllerTest extends UserAbstractControllerTestCase
 {
     public function testReset()
     {

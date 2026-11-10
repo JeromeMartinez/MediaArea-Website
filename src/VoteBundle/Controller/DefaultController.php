@@ -2,26 +2,35 @@
 
 namespace VoteBundle\Controller;
 
-use FOS\UserBundle\Model\UserInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use UserBundle\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 use VoteBundle\Entity\Feature;
 use VoteBundle\Entity\Vote;
 use VoteBundle\Form\VoteType;
 use VoteBundle\Model\FeatureInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\Persistence\ManagerRegistry;
 
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
-    /**
-     * @Route("/Vote", name="vote_list_features")
-     * @Template()
-     */
+    private $doctrine;
+    private $translator;
+
+    public function __construct(ManagerRegistry $doctrine, TranslatorInterface $translator)
+    {
+        $this->doctrine = $doctrine;
+        $this->translator = $translator;
+    }
+
+    #[Route('/Vote', name: 'vote_list_features')]
+    #[Template('@Vote/Default/index.html.twig')]
     public function indexAction()
     {
-        $featureRepository = $this->getDoctrine()->getRepository(Feature::class);
-        if (is_object($this->getUser()) && $this->getUser() instanceof UserInterface) {
+        $featureRepository = $this->doctrine->getRepository(Feature::class);
+        if (is_object($this->getUser()) && $this->getUser() instanceof User) {
             return [
                 'features' => $featureRepository->getOpenFeaturesWithUserVotes($this->getUser()),
             ];
@@ -30,10 +39,8 @@ class DefaultController extends Controller
         return ['features' => $featureRepository->getOpenFeatures()];
     }
 
-    /**
-     * @Route("/Vote/{slug}-{id}", requirements={"slug": "[a-zA-Z0-9\-]+", "id": "\d+"}, name="vote_show_feature")
-     * @Template()
-     */
+    #[Route('/Vote/{slug}-{id}', name: 'vote_show_feature', requirements: ['slug' => '[a-zA-Z0-9\-]+', 'id' => '\d+'])]
+    #[Template('@Vote/Default/show.html.twig')]
     public function showAction($slug, Feature $feature, Request $request)
     {
         // Check slug
@@ -46,7 +53,7 @@ class DefaultController extends Controller
 
         // Users cannot display closed features
         if (FeatureInterface::STATUS_CLOSE === $feature->getStatus()) {
-            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, $this->get('translator')->trans('vote.feature.close'));
+            $this->denyAccessUnlessGranted('ROLE_ADMIN', null, $this->translator->trans('vote.feature.close'));
         }
 
         $user = $this->getUser();
@@ -54,7 +61,7 @@ class DefaultController extends Controller
         $userVotesFeature = 0;
         $voteMax = 0;
         if ($user) {
-            $userVotesFeature = $this->getDoctrine()->getRepository(Vote::class)
+            $userVotesFeature = $this->doctrine->getRepository(Vote::class)
                 ->getTotalVotesByUserAndFeature($user, $feature);
 
             $voteMax = $userVotesFeature + $user->getVote();
@@ -79,7 +86,7 @@ class DefaultController extends Controller
 
     protected function featureFormHandler(FeatureInterface $feature, $user, $formDatas, $userVotesFeature)
     {
-        $trans = $this->get('translator');
+        $trans = $this->translator;
         if (FeatureInterface::STATUS_OPEN !== $feature->getStatus()) {
             return $this->redirectToFeatureWithFlash('danger', $trans->trans('vote.feature.vote.close'), $feature);
         }
@@ -94,7 +101,7 @@ class DefaultController extends Controller
             );
         }
 
-        if (!is_object($user) || !$user instanceof UserInterface) {
+        if (!is_object($user) || !$user instanceof User) {
             return $this->redirectToFeatureWithFlash(
                 'danger',
                 $trans->trans('vote.feature.vote.login', ['%login%' => $this->generateUrl('fos_user_security_login')]),
@@ -112,7 +119,7 @@ class DefaultController extends Controller
             return $this->redirectToFeatureWithFlash('danger', $trans->trans('vote.feature.vote.remove'), $feature);
         }
 
-        $em = $this->getDoctrine()->getManager();
+        $em = $this->doctrine->getManager();
 
         // Add vote
         $vote = new Vote();

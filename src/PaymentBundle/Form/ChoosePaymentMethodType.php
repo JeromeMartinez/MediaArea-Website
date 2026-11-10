@@ -24,7 +24,7 @@ class ChoosePaymentMethodType extends BaseType
         $this->request = $requestStack->getCurrentRequest();
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $ipToCurrency = new IpToCurrency($this->request->getClientIp());
         if ('text' == $options['amount_field_type']) {
@@ -43,7 +43,7 @@ class ChoosePaymentMethodType extends BaseType
         parent::buildForm($builder, $options);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'amount_field_type' => 'list',
@@ -52,7 +52,7 @@ class ChoosePaymentMethodType extends BaseType
         parent::configureOptions($resolver);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'ma_choose_payment_method';
     }

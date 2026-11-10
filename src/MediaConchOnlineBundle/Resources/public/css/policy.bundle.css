@@ -1,0 +1,4 @@
+/* Stylesheets served as a single file, see AppBundle\AssetMapper\BundleAssetCompiler */
+/* @include "bundles/app/css/jstree.css" */
+/* @include "bundles/app/css/select2.css" */
+/* @include "bundles/app/css/select2-bootstrap.min.css" */

@@ -75,7 +75,7 @@ class MenuBuilder
             ->addChild(
                 'menu.mediainfo.mediabin.show',
                 ['route' => 'mediabin_show', 'routeParameters' => [
-                    'hash' => $this->request->get('hash', '00000000'),
+                    'hash' => $this->request->attributes->get('hash', '00000000'),
                     ]]
             );
         $menu['menu.mediainfo']
@@ -457,26 +457,26 @@ class MenuBuilder
             ->setDisplayChildren(false)
             ->addChild(
                 'menu.mediaarea.blog.pagination',
-                ['route' => 'ma_blog_index_page', 'routeParameters' => ['page' => $this->request->get('page', 0)]]
+                ['route' => 'ma_blog_index_page', 'routeParameters' => ['page' => $this->request->attributes->get('page', 0)]]
             )
             ->addChild(
                 'menu.mediaarea.blog.tag',
-                ['route' => 'ma_blog_tag_index', 'routeParameters' => ['tag' => $this->request->get('tag', 'zzz')]]
+                ['route' => 'ma_blog_tag_index', 'routeParameters' => ['tag' => $this->request->attributes->get('tag', 'zzz')]]
             )
             ->addChild(
                 'menu.mediaarea.blog.tag.pagination',
                 ['route' => 'ma_blog_tag_index_page', 'routeParameters' => [
-                    'tag' => $this->request->get('tag', 'zzz'),
-                    'page' => $this->request->get('page', 0),
+                    'tag' => $this->request->attributes->get('tag', 'zzz'),
+                    'page' => $this->request->attributes->get('page', 0),
                 ]]
             )
             ->addChild(
                 'menu.mediaarea.blog.post',
                 ['route' => 'ma_blog_post', 'routeParameters' => [
-                    'year' => $this->request->get('year', '0000'),
-                    'month' => $this->request->get('month', '00'),
-                    'day' => $this->request->get('day', '00'),
-                    'slug' => $this->request->get('slug', 'zzz'),
+                    'year' => $this->request->attributes->get('year', '0000'),
+                    'month' => $this->request->attributes->get('month', '00'),
+                    'day' => $this->request->attributes->get('day', '00'),
+                    'slug' => $this->request->attributes->get('slug', 'zzz'),
                 ]]
             );
         $menu['menu.mediaarea']->addChild('menu.mediaarea.conduct', ['route' => 'ma_conduct']);

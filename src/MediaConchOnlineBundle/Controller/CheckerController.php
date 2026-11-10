@@ -2,8 +2,8 @@
 
 namespace MediaConchOnlineBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -27,20 +27,27 @@ use MediaConchOnlineBundle\Lib\XslPolicy\XslPolicySave;
 use MediaConchOnlineBundle\Lib\MediaConch\MediaConchServerException;
 use UserBundle\Lib\Quotas\Quotas;
 use UserBundle\Lib\Settings\SettingsManager;
+use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpKernel\Profiler\Profiler;
+use Vich\UploaderBundle\Storage\StorageInterface;
 
 /**
- * @Route("/MediaConchOnline/checker")
- *
  * @SuppressWarnings(PHPMD.ExcessiveClassComplexity)
  * @SuppressWarnings(PHPMD.TooManyPublicMethods)
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
+#[Route('/MediaConchOnline/checker')]
 class CheckerController extends BaseController
 {
-    /**
-     * @Route("", name="mco_checker")
-     * @Template()
-     */
+    private $doctrine;
+
+    public function __construct(ManagerRegistry $doctrine)
+    {
+        $this->doctrine = $doctrine;
+    }
+
+    #[Route('', name: 'mco_checker')]
+    #[Template('@MediaConchOnline/Checker/checker.html.twig')]
     public function checkerAction(Quotas $quotas, InitInstanceId $init)
     {
         // Init MediaConch-Server-ID
@@ -68,9 +75,7 @@ class CheckerController extends BaseController
         ];
     }
 
-    /**
-     * @Route("/status", name="mco_checker_status")
-     */
+    #[Route('/status', name: 'mco_checker_status')]
     public function checkerStatusAction(Request $request, CheckerStatus $status)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -78,7 +83,7 @@ class CheckerController extends BaseController
         }
 
         // Get the list of IDs
-        $ids = $request->request->get('ids');
+        $ids = $request->request->all()['ids'] ?? null;
 
         if (is_array($ids) && count($ids) > 0) {
             try {
@@ -93,9 +98,7 @@ class CheckerController extends BaseController
         return new JsonResponse(['message' => 'Error'], 400);
     }
 
-    /**
-     * @Route("/reportStatus/{id}/{reportType}", requirements={"id": "\d+"}, name="mco_checker_report_status")
-     */
+    #[Route('/reportStatus/{id}/{reportType}', name: 'mco_checker_report_status', requirements: ['id' => '\d+'])]
     public function checkerReportStatusAction($id, $reportType, Request $request, CheckerValidate $validate)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -111,9 +114,7 @@ class CheckerController extends BaseController
         }
     }
 
-    /**
-     * @Route("/policyStatus/{id}", requirements={"id": "\d+"}, name="mco_checker_policy_status")
-     */
+    #[Route('/policyStatus/{id}', name: 'mco_checker_policy_status', requirements: ['id' => '\d+'])]
     public function checkerPolicyStatusAction($id, Request $request, CheckerValidate $validate)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -129,9 +130,7 @@ class CheckerController extends BaseController
         }
     }
 
-    /**
-     * @Route("/reportStatusMulti", name="mco_checker_report_status_multi")
-     */
+    #[Route('/reportStatusMulti', name: 'mco_checker_report_status_multi')]
     public function statusReportsMultiAction(Request $request, CheckerValidate $validate)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -139,7 +138,7 @@ class CheckerController extends BaseController
         }
 
         // Reports list
-        $reports = $request->request->get('reports');
+        $reports = $request->request->all()['reports'] ?? null;
         if (is_array($reports) && count($reports) > 0) {
             try {
                 $response = [];
@@ -164,16 +163,15 @@ class CheckerController extends BaseController
         return new JsonResponse(['message' => 'Error'], 400);
     }
 
-    /**
-     * @Route("/report/{id}/{reportType}/{displayName}", requirements={"id": "\d+"}, name="mco_checker_report")
-     */
+    #[Route('/report/{id}/{reportType}/{displayName}', name: 'mco_checker_report', requirements: ['id' => '\d+'])]
     public function checkerReportAction(
         $id,
         $reportType,
         $displayName,
         Request $request,
         CheckerReport $report,
-        CheckerFilename $file
+        CheckerFilename $file,
+        StorageInterface $storage
     ) {
         if (!$request->isXmlHttpRequest()) {
             throw new NotFoundHttpException();
@@ -181,12 +179,11 @@ class CheckerController extends BaseController
 
         $displayFile = null;
         if (ctype_digit($request->query->get('display'))) {
-            $display = $this->getDoctrine()
-                ->getRepository('MediaConchOnlineBundle:DisplayFile')
+            $display = $this->doctrine
+                ->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)
                 ->findOneByUserOrSystem($request->query->get('display'), $this->getUser());
             if ($display) {
-                $helper = $this->get('vich_uploader.storage');
-                $displayFile = $helper->resolvePath($display, 'displayFile');
+                $displayFile = $storage->resolvePath($display, 'displayFile');
             }
         }
 
@@ -207,9 +204,7 @@ class CheckerController extends BaseController
         }
     }
 
-    /**
-     * @Route("/createPolicy/{id}", requirements={"id": "\d+"}, name="mco_checker_create_policy")
-     */
+    #[Route('/createPolicy/{id}', name: 'mco_checker_create_policy', requirements: ['id' => '\d+'])]
     public function checkerCreatePolicyAction(
         $id,
         Request $request,
@@ -234,33 +229,32 @@ class CheckerController extends BaseController
         }
     }
 
-    /**
-     * @Route(
-     *     "/downloadReport/{id}/{reportType}/{displayName}",
-     *     requirements={"id": "\d+"},
-     *     name="mco_checker_report_download"
-     * )
-     */
+    #[Route(
+        '/downloadReport/{id}/{reportType}/{displayName}',
+        name: 'mco_checker_report_download',
+        requirements: ['id' => '\d+'],
+    )]
     public function checkerDownloadReportAction(
         $id,
         $reportType,
         $displayName,
         Request $request,
         CheckerReport $report,
-        CheckerFilename $file
+        CheckerFilename $file,
+        StorageInterface $storage,
+        ?Profiler $profiler = null
     ) {
-        if ($this->has('profiler')) {
-            $this->get('profiler')->disable();
+        if (null !== $profiler) {
+            $profiler->disable();
         }
 
         $displayFile = null;
         if (ctype_digit($request->query->get('display'))) {
-            $display = $this->getDoctrine()
-                ->getRepository('MediaConchOnlineBundle:DisplayFile')
+            $display = $this->doctrine
+                ->getRepository(\MediaConchOnlineBundle\Entity\DisplayFile::class)
                 ->findOneByUserOrSystem($request->query->get('display'), $this->getUser());
             if ($display) {
-                $helper = $this->get('vich_uploader.storage');
-                $displayFile = $helper->resolvePath($display, 'displayFile');
+                $displayFile = $storage->resolvePath($display, 'displayFile');
             }
         }
 
@@ -287,9 +281,7 @@ class CheckerController extends BaseController
         }
     }
 
-    /**
-     * @Route("/ajaxForm", name="mco_checker_ajaxform")
-     */
+    #[Route('/ajaxForm', name: 'mco_checker_ajaxform')]
     public function checkerAjaxFormAction(
         Request $request,
         Quotas $quotas,
@@ -449,9 +441,7 @@ class CheckerController extends BaseController
         return new JsonResponse(['message' => 'Error'], 400);
     }
 
-    /**
-     * @Route("/forceAnalyze/{id}", requirements={"id": "\d+"}, name="mco_checker_force_analyze")
-     */
+    #[Route('/forceAnalyze/{id}', name: 'mco_checker_force_analyze', requirements: ['id' => '\d+'])]
     public function checkerForceAnalyzeAction($id, Request $request, CheckerFilename $file, CheckerAnalyze $checks)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -472,9 +462,7 @@ class CheckerController extends BaseController
         }
     }
 
-    /**
-     * @Route("/mediaInfoOutputList", name="mco_checker_mediainfo_outputlist")
-     */
+    #[Route('/mediaInfoOutputList', name: 'mco_checker_mediainfo_outputlist')]
     public function checkerMediaInfoOutputListAction(Request $request, CheckerMediaInfoOutputList $list)
     {
         if (!$request->isXmlHttpRequest()) {

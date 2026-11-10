@@ -28,6 +28,9 @@ $GLOBALS['dbGroups'] =
     ),
 ];
 
+/**
+ * @SuppressWarnings(PHPMD.UndefinedVariable)
+ */
 class Groups
 {
     public static function listGroups()

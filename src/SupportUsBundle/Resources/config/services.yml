@@ -1,4 +1,9 @@
 services:
-#    contact_us.example:
-#        class: SupportUsBundle\Example
-#        arguments: ["@service_id", "plain_value", "%parameter%"]
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    SupportUsBundle\:
+        resource: '../../*'
+        exclude: '../../{Entity,Repository,Tests,Resources}'

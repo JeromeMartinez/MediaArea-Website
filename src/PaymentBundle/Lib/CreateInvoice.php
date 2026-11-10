@@ -2,8 +2,8 @@
 
 namespace PaymentBundle\Lib;
 
-use Doctrine\ORM\EntityManager;
-use FOS\UserBundle\Model\UserInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use UserBundle\Entity\User;
 use JMS\Payment\CoreBundle\Model\PaymentInstructionInterface;
 use PaymentBundle\Entity\Invoice;
 use PaymentBundle\Entity\Order;
@@ -18,12 +18,12 @@ class CreateInvoice
 
     /**
      * @param TokenStorageInterface $tokenStorage
-     * @param EntityManager         $entityManager
+     * @param EntityManagerInterface         $entityManager
      * @param RequestStack          $requestStack
      */
     public function __construct(
         TokenStorageInterface $tokenStorage,
-        EntityManager $entityManager,
+        EntityManagerInterface $entityManager,
         RequestStack $requestStack
     ) {
         $this->user = $tokenStorage->getToken() ? $tokenStorage->getToken()->getUser() : null;
@@ -39,7 +39,7 @@ class CreateInvoice
     public function create(PaymentInstructionInterface $paymentInstruction, Order $order)
     {
         // Check if user is connected
-        if (!$this->user instanceof UserInterface) {
+        if (!$this->user instanceof User) {
             $this->user = null;
         }
 

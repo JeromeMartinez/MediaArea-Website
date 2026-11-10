@@ -102,32 +102,10 @@ MediaConch checker
 {% block javascripts %}
     <script src="{{ asset('bundles/fosjsrouting/js/router.min.js') }}"></script>
     <script src="{{ path('fos_js_routing_js', {'callback': 'fos.Router.setData'}) }}"></script>
-    {% javascripts filter='?jsqueeze' output='js/checker.js'
-        '@MediaConchOnlineBundle/Resources/public/js/checker/base.js'
-        '@MediaConchOnlineBundle/Resources/public/js/checker/table.js'
-        '@MediaConchOnlineBundle/Resources/public/js/checker/cellStatus.js'
-        '@MediaConchOnlineBundle/Resources/public/js/checker/cellImplementation.js'
-        '@MediaConchOnlineBundle/Resources/public/js/checker/cellPolicy.js'
-        '@MediaConchOnlineBundle/Resources/public/js/checker/cellMediaInfo.js'
-        '@MediaConchOnlineBundle/Resources/public/js/checker/cellMediaTrace.js'
-        '@MediaConchOnlineBundle/Resources/public/js/checker/ajax.js'
-        '@AppBundle/Resources/public/js/jstree.min.js'
-        '@MediaConchOnlineBundle/Resources/public/js/jstreegrid.js'
-        '@VoteBundle/Resources/public/js/datatables.min.js'
-        '@MediaConchOnlineBundle/Resources/public/js/utils/size.js'
-        '@MediaConchOnlineBundle/Resources/public/js/utils/text.js'
-        '@MediaConchOnlineBundle/Resources/public/js/message.js'
-    %}
-        <script type="text/javascript" src="{{ asset_url }}"></script>
-    {% endjavascripts %}
+    <script type="text/javascript" src="{{ asset('bundles/mediaconchonline/js/checker.bundle.js') }}"></script>
 {% endblock %}
 
 {% block stylesheets %}
     {{ parent() }}
-    {% stylesheets filter='cssrewrite' filter='?scssphp' output='css/checker.css'
-        'bundles/app/css/jstree.css'
-        '@VoteBundle/Resources/public/css/datatables.min.css'
-    %}
-        <link rel="stylesheet" type="text/css" href="{{ asset_url }}"/>
-    {% endstylesheets %}
+    <link rel="stylesheet" type="text/css" href="{{ asset('bundles/mediaconchonline/css/checker.bundle.css') }}"/>
 {% endblock %}

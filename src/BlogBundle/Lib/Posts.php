@@ -28,32 +28,32 @@ class Posts implements Countable, Iterator
         $this->posts = array_reverse($posts);
     }
 
-    public function count()
+    public function count(): int
     {
         return count($this->posts);
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->position = 0;
     }
 
-    public function current()
+    public function current(): mixed
     {
         return $this->posts[$this->position];
     }
 
-    public function key()
+    public function key(): mixed
     {
         return $this->position;
     }
 
-    public function next()
+    public function next(): void
     {
         ++$this->position;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return array_key_exists($this->position, $this->posts);
     }

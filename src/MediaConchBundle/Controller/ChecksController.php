@@ -2,29 +2,23 @@
 
 namespace MediaConchBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 use MediaConchBundle\Lib\Checks\Checks;
 
-/**
- * @Route("/Checks")
- */
-class ChecksController extends Controller
+#[Route('/Checks')]
+class ChecksController extends AbstractController
 {
-    /**
-     * @Route("", name="checks_home")
-     * @Template()
-     */
+    #[Route('', name: 'checks_home')]
+    #[Template('@MediaConch/Checks/checks.html.twig')]
     public function checksAction(Checks $checks)
     {
         return $this->render('@MediaConch/Default/checks.html.twig', [ 'items' => $checks->listChecks() ]);
     }
     
-    /**
-     * @Route("/{checkId}", name="checks_1")
-     * @Template()
-     */
+    #[Route('/{checkId}', name: 'checks_1')]
+    #[Template('@MediaConch/Checks/checks1.html.twig')]
     public function checks1Action($checkId, Checks $checks)
     {
         header('X-Robots-Tag: none');

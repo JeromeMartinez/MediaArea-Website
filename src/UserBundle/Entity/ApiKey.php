@@ -4,41 +4,27 @@ namespace UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- */
+#[ORM\Entity]
 class ApiKey
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User", inversedBy="apiKey")
-     */
+    #[ORM\ManyToOne(targetEntity: \UserBundle\Entity\User::class, inversedBy: 'apiKey')]
     protected $user;
 
-    /**
-     * @ORM\Column(type="string", length=64, unique=true)
-     */
+    #[ORM\Column(type: 'string', length: 64, unique: true)]
     protected $token;
 
-    /**
-     * @ORM\Column(type="string", length=32, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 32, nullable: true)]
     protected $app;
 
-    /**
-     * @ORM\Column(type="string", length=16, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 16, nullable: true)]
     protected $version;
 
-    /**
-     * @ORM\Column(type="string", length=48, nullable=true)
-     */
+    #[ORM\Column(type: 'string', length: 48, nullable: true)]
     protected $ip;
 
     /**
@@ -154,7 +140,7 @@ class ApiKey
      *
      * @return ApiKey
      */
-    public function setUser(\UserBundle\Entity\User $user = null)
+    public function setUser(?\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
 

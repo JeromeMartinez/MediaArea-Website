@@ -4,58 +4,38 @@ namespace PaymentBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="invoice")
- * @ORM\Entity
- */
+#[ORM\Table(name: 'invoice')]
+#[ORM\Entity]
 class Invoice
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="UserBundle\Entity\User")
-     * @ORM\JoinColumn(name="user_id", referencedColumnName="id", nullable=true)
-     */
+    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id', nullable: true)]
+    #[ORM\ManyToOne(targetEntity: \UserBundle\Entity\User::class)]
     private $user;
 
-    /**
-     * @ORM\OneToOne(targetEntity="JMS\Payment\CoreBundle\Entity\PaymentInstruction")
-     */
+    #[ORM\OneToOne(targetEntity: \JMS\Payment\CoreBundle\Entity\PaymentInstruction::class)]
     private $paymentInstruction;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=5)
-     */
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 5)]
     private $amount;
 
-    /**
-     * @ORM\Column(type="decimal", precision=10, scale=5)
-     */
+    #[ORM\Column(type: 'decimal', precision: 10, scale: 5)]
     private $vat;
 
-    /**
-     * @ORM\Column(type="string", length=3)
-     */
+    #[ORM\Column(type: 'string', length: 3)]
     protected $currency;
 
-    /**
-     * @ORM\Column(type="string", length=45)
-     */
+    #[ORM\Column(type: 'string', length: 45)]
     protected $ipAddress;
 
-    /**
-     * @ORM\Column(type="string", length=2)
-     */
+    #[ORM\Column(type: 'string', length: 2)]
     protected $country;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: 'datetime')]
     private $date;
 
     public function __construct()
@@ -223,7 +203,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setUser(\UserBundle\Entity\User $user = null)
+    public function setUser(?\UserBundle\Entity\User $user = null)
     {
         $this->user = $user;
 
@@ -247,7 +227,7 @@ class Invoice
      *
      * @return Invoice
      */
-    public function setPaymentInstruction(\JMS\Payment\CoreBundle\Entity\PaymentInstruction $paymentInstruction = null)
+    public function setPaymentInstruction(?\JMS\Payment\CoreBundle\Entity\PaymentInstruction $paymentInstruction = null)
     {
         $this->paymentInstruction = $paymentInstruction;
 
@@ -284,10 +264,10 @@ class Invoice
         switch ($this->paymentInstruction->getPaymentSystemName()) {
             case 'paypal_express_checkout':
                 return 'Paypal';
-            break;
+                break;
             case 'stripe_credit_card':
                 return 'Stripe';
-            break;
+                break;
             default:
                 return $this->paymentInstruction->getPaymentSystemName();
         }

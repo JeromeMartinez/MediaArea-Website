@@ -2,9 +2,9 @@
 
 namespace SupportUsBundle\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bridge\Twig\Attribute\Template;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -15,25 +15,32 @@ use PaymentBundle\Lib\IpToCurrency;
 use PaymentBundle\Lib\VatCalculator;
 use SupportUsBundle\Lib\Corporate;
 use SupportUsBundle\Lib\Individual;
+use Doctrine\Persistence\ManagerRegistry;
+use JMS\Payment\CoreBundle\PluginController\PluginControllerInterface;
 
 /**
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
-class DefaultController extends Controller
+class DefaultController extends AbstractController
 {
-    /**
-     * @Route("/SupportUs", name="supportUs_about")
-     * @Template()
-     */
+    private $doctrine;
+    private $ppc;
+
+    public function __construct(ManagerRegistry $doctrine, PluginControllerInterface $ppc)
+    {
+        $this->doctrine = $doctrine;
+        $this->ppc = $ppc;
+    }
+
+    #[Route('/SupportUs', name: 'supportUs_about')]
+    #[Template('@SupportUs/Default/about.html.twig')]
     public function aboutAction()
     {
         return ['noAds' => true];
     }
 
-    /**
-     * @Route("/SupportUs/Individual", name="supportUs_individual")
-     * @Template()
-     */
+    #[Route('/SupportUs/Individual', name: 'supportUs_individual')]
+    #[Template('@SupportUs/Default/individual.html.twig')]
     public function individualAction(Request $request)
     {
         $ipToCurrency = new IpToCurrency($request->getClientIp());
@@ -63,10 +70,8 @@ class DefaultController extends Controller
         ];
     }
 
-    /**
-     * @Route("/SupportUs/Corporate", name="supportUs_corporate")
-     * @Template()
-     */
+    #[Route('/SupportUs/Corporate', name: 'supportUs_corporate')]
+    #[Template('@SupportUs/Default/corporate.html.twig')]
     public function corporateAction(Request $request)
     {
         $ipToCurrency = new IpToCurrency($request->getClientIp());
@@ -97,28 +102,26 @@ class DefaultController extends Controller
         ];
     }
 
-    /**
-     * @Route("/SupportUs/Custom", name="supportUs_custom")
-     * @Template()
-     */
+    #[Route('/SupportUs/Custom', name: 'supportUs_custom')]
+    #[Template('@SupportUs/Default/custom.html.twig')]
     public function customAction(Request $request)
     {
         $ipToCountry = new IpToCountry($request->getClientIp());
 
-        if (!in_array($request->get('currency'), ['AUD', 'CAD', 'EUR', 'GBP', 'JPY', 'USD'])) {
+        if (!in_array($request->query->get('currency'), ['AUD', 'CAD', 'EUR', 'GBP', 'JPY', 'USD'])) {
             $this->addFlash('danger', 'Currency error');
         } else {
-            if (!$request->get('amount') || 1 > (int) $request->get('amount')) {
+            if (!$request->query->get('amount') || 1 > (int) $request->query->get('amount')) {
                 $this->addFlash('danger', 'Amount error');
             } else {
                 $form = $this->paymentForm(
                     $request,
                     'payment_orders_paymentcreatecustom',
                     'supportUs_custom',
-                    $request->get('currency'),
+                    $request->query->get('currency'),
                     'custom',
-                    ['amount' => (int) $request->get('amount'), 'currency' => $request->get('currency')],
-                    (int) $request->get('amount')
+                    ['amount' => (int) $request->query->get('amount'), 'currency' => $request->query->get('currency')],
+                    (int) $request->query->get('amount')
                 );
 
                 if ($form instanceof RedirectResponse) {
@@ -130,16 +133,14 @@ class DefaultController extends Controller
         return [
             'noAds' => true,
             'country' => $ipToCountry,
-            'currency' => $request->get('currency'),
-            'amount' => $request->get('amount'),
+            'currency' => $request->query->get('currency'),
+            'amount' => $request->query->get('amount'),
             'form' => isset($form) ? $form->createView() : false,
         ];
     }
 
-    /**
-     * @Route("/SupportUs/NoTimeToWait", name="supportUs_notimetowait")
-     * @Template()
-     */
+    #[Route('/SupportUs/NoTimeToWait', name: 'supportUs_notimetowait')]
+    #[Template('@SupportUs/Default/noTimeToWait.html.twig')]
     public function noTimeToWaitAction(Request $request)
     {
         $ipToCurrency = new IpToCurrency($request->getClientIp());
@@ -182,17 +183,17 @@ class DefaultController extends Controller
         int $amount = 1
     ) {
         if ('POST' === $request->getMethod() &&
-            null !== $payment = $request->request->get('ma_choose_payment_method')) {
+            null !== $payment = ($request->request->all()['ma_choose_payment_method'] ?? null)) {
             $amount = $payment['amount'];
             if (!is_numeric($amount) || $amount < 1) {
                 throw new \Exception('Error Processing Request', 1);
             }
 
-            $em = $this->getDoctrine()->getManager();
+            $em = $this->doctrine->getManager();
             $order = new Order($amount);
             $order->setType($type);
             $em->persist($order);
-            $em->flush($order);
+            $em->flush();
 
             $returnUrl = $this->generateUrl(
                 $returnRoute,
@@ -238,12 +239,12 @@ class DefaultController extends Controller
         $form->handleRequest($request);
 
         if ('POST' === $request->getMethod() && $form->isSubmitted() && $form->isValid()) {
-            $ppc = $this->get('payment.plugin_controller');
+            $ppc = $this->ppc;
             $ppc->createPaymentInstruction($instruction = $form->getData());
 
             $order->setPaymentInstruction($instruction);
             $em->persist($order);
-            $em->flush($order);
+            $em->flush();
 
             return $this->redirect(
                 $this->generateUrl($returnRoute, ['id' => $order->getId(), 'routeParams' => $cancelRouteParams])
@@ -253,28 +254,22 @@ class DefaultController extends Controller
         return $form;
     }
 
-    /**
-     * @Route("/SupportUs/FAQ", name="supportUs_faq")
-     * @Template()
-     */
+    #[Route('/SupportUs/FAQ', name: 'supportUs_faq')]
+    #[Template('@SupportUs/Default/faq.html.twig')]
     public function faqAction()
     {
         return ['noAds' => true];
     }
 
-    /**
-     * @Route("/SupportUs/Sponsors", name="supportUs_sponsors_list")
-     * @Template()
-     */
+    #[Route('/SupportUs/Sponsors', name: 'supportUs_sponsors_list')]
+    #[Template('@SupportUs/Default/sponsorsList.html.twig')]
     public function sponsorsListAction()
     {
         return ['noAds' => true];
     }
 
-    /**
-     * @Route("/SupportUs/Supporters", name="supportUs_supporters_list")
-     * @Template()
-     */
+    #[Route('/SupportUs/Supporters', name: 'supportUs_supporters_list')]
+    #[Template('@SupportUs/Default/supportersList.html.twig')]
     public function supportersListAction()
     {
         return ['noAds' => true];

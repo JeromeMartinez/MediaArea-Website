@@ -2,7 +2,6 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-    - { resource: admin.yml }
     - { resource: "@UserBundle/Resources/config/services.yml" }
     - { resource: "@MediaTraceBundle/Resources/config/services.yml" }
     - { resource: "@BWFMetaEditBundle/Resources/config/services.yml" }
@@ -26,24 +25,33 @@ imports:
     - { resource: "@EmbARCBundle/Resources/config/services.yml" }
 
 # Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+# https://symfony.com/doc/current/best_practices.html#configuration
 parameters:
     locale: en
     app.locales: be|bg|ca|de|en|es|fa|fr|hr|hu|it|ja|ka|ko|lt|nl|pl|pt|pt-BR|ru|sq|sv|th|uk|zh-CN|zh-HK|zh-TW
 
+    # User accounts
+    user.firewall_name: main
+    user.from_email.address: info@mediaarea.net
+    user.from_email.sender_name: MediaArea
+    user.registration.confirmation.enabled: false
+    # Delay before a new password reset email can be requested, in seconds
+    user.resetting.retry_ttl: 7200
+    # Lifetime of the link of the password reset email, in seconds
+    user.resetting.token_ttl: 86400
+
 framework:
     #esi: ~
-    translator: { fallbacks: ['%locale%'] }
+    translator:
+        fallbacks: ['%locale%']
+        default_path: '%kernel.project_dir%/app/Resources/translations'
     secret: '%secret%'
     router:
         resource: '%kernel.project_dir%/app/config/routing.yml'
         strict_requirements: ~
     form: ~
     csrf_protection: ~
-    validation: { enable_annotations: true }
-    #serializer: { enable_annotations: true }
-    templating:
-        engines: ['twig']
+    validation: ~
     default_locale: '%locale%'
     trusted_hosts: ~
     session:
@@ -53,16 +61,46 @@ framework:
     fragments: ~
     http_method_override: true
     assets: ~
+    asset_mapper:
+        # The assets are the Resources/public directories of the bundles
+        paths: []
     php_errors:
-        log: true
+        # Notices and warnings of PHP are logged as warnings, the current versions of Symfony log them
+        # as errors by default: they would be written by the "fingers_crossed" log handler of production
+        log:
+            !php/const E_DEPRECATED: info
+            !php/const E_USER_DEPRECATED: info
+            !php/const E_NOTICE: warning
+            !php/const E_USER_NOTICE: warning
+            !php/const E_WARNING: warning
+            !php/const E_USER_WARNING: warning
+            !php/const E_COMPILE_WARNING: warning
+            !php/const E_CORE_WARNING: warning
+            !php/const E_USER_ERROR: critical
+            !php/const E_RECOVERABLE_ERROR: critical
+            !php/const E_COMPILE_ERROR: critical
+            !php/const E_PARSE: critical
+            !php/const E_ERROR: critical
+            !php/const E_CORE_ERROR: critical
     web_link:
         enabled: true
+    mailer:
+        # Built from the mailer_* parameters, see AppKernel
+        dsn: '%mailer_dsn%'
 
 # Twig Configuration
 twig:
+    default_path: '%kernel.project_dir%/app/Resources/views'
     debug: '%kernel.debug%'
     strict_variables: '%kernel.debug%'
-    form_themes: ['bootstrap_3_horizontal_layout.html.twig']
+    form_themes:
+        - 'bootstrap_3_horizontal_layout.html.twig'
+        - '@App/Form/recaptcha_widget.html.twig'
+
+# Twig components, used by EasyAdmin
+twig_component:
+    anonymous_template_directory: 'components/'
+    defaults: {}
 
 # Doctrine Configuration
 doctrine:
@@ -73,28 +111,26 @@ doctrine:
         dbname: '%database_name%'
         user: '%database_user%'
         password: '%database_password%'
-        charset: UTF8
+        charset: utf8mb4
         default_table_options:
             charset: utf8mb4
-            collate: utf8mb4_unicode_ci
-        # if using pdo_sqlite as your database driver:
-        #   1. add the path in parameters.yml
-        #     e.g. database_path: "%kernel.project_dir%/var/data/data.sqlite"
-        #   2. Uncomment database_path in parameters.yml.dist
-        #   3. Uncomment next line:
-        #path: '%database_path%'
+            collation: utf8mb4_unicode_ci
+        types:
+            # Type of the existing database which is not part of Doctrine DBAL any more
+            array: AppBundle\Doctrine\Type\ArrayType
 
     orm:
-        auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
         auto_mapping: true
 
 # Doctrine migrations
 doctrine_migrations:
-    dir_name: "%kernel.root_dir%/DoctrineMigrations"
-    namespace: Application\Migrations
-    table_name: migration_versions
-    name: Application Migrations
+    migrations_paths:
+        'Application\Migrations': '%kernel.project_dir%/app/DoctrineMigrations'
+    storage:
+        table_storage:
+            table_name: migration_versions
+    enable_profiler: false
 
 # Stof doctrine extensions
 stof_doctrine_extensions:
@@ -103,51 +139,9 @@ stof_doctrine_extensions:
             sluggable: true
             timestampable: true
 
-# Swiftmailer Configuration
-swiftmailer:
-    transport: '%mailer_transport%'
-    host: '%mailer_host%'
-    username: '%mailer_user%'
-    password: '%mailer_password%'
-    spool: { type: memory }
-
-assetic:
-    debug:          '%kernel.debug%'
-    use_controller: '%kernel.debug%'
-    workers:
-        cache_busting:
-            enabled: true
-    filters:
-        cssrewrite: ~
-        jsqueeze: ~
-        scssphp:
-            formatter: 'Leafo\ScssPhp\Formatter\Compressed'
-
 knp_menu:
     providers:
         builder_alias: false
-        builder_service: true
-        container_aware: false
-
-fos_user:
-    db_driver: orm # other valid values are 'mongodb' and 'couchdb'
-    firewall_name: main
-    user_class: UserBundle\Entity\User
-    from_email:
-        address: info@mediaarea.net
-        sender_name: MediaArea
-    registration:
-        form:
-            type: UserBundle\Form\Type\RegistrationFormType
-            validation_groups: [UserRegistration]
-        confirmation:
-            enabled:    false
-    profile:
-        form:
-            type: UserBundle\Form\Type\ProfileFormType
-            validation_groups: [UserProfile]
-    service:
-        mailer: MediaConchOnlineBundle\Mailer\UserMailer
 
 fos_js_routing:
     routes_to_expose:
@@ -236,15 +230,13 @@ nelmio_cors:
 
 vich_uploader:
     db_driver: orm
+    metadata:
+        type: attribute
     mappings:
         display:
             upload_destination: "%kernel.project_dir%/files/display"
-            namer:              "vich_uploader.namer_origname"
+            namer:              Vich\UploaderBundle\Naming\OrignameNamer
             directory_namer:    "mco.directory_namer.policy"
-
-ewz_recaptcha:
-    public_key:  "%recaptcha_public%"
-    private_key: "%recaptcha_private%"
 
 blog:
     post_files_path: "%kernel.project_dir%/src/BlogBundle/Posts/"

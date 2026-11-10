@@ -2,24 +2,31 @@
 
 namespace PaymentBundle\Controller;
 
-use FOS\UserBundle\Model\UserInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\EntityManagerInterface;
+use UserBundle\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use JMS\Payment\CoreBundle\Plugin\Exception\Action\VisitUrl;
 use JMS\Payment\CoreBundle\Plugin\Exception\ActionRequiredException;
+use JMS\Payment\CoreBundle\PluginController\PluginControllerInterface;
 use JMS\Payment\CoreBundle\PluginController\Result;
 use PaymentBundle\Entity\Order;
 use PaymentBundle\Lib\IpToCurrency;
 
-/**
- * @Route("/orders")
- */
-class OrdersController extends Controller
+#[Route('/orders')]
+class OrdersController extends AbstractController
 {
-    /**
-     * @Route("/{id}/payment/create")
-     */
+    private $ppc;
+    private $em;
+
+    public function __construct(PluginControllerInterface $ppc, EntityManagerInterface $em)
+    {
+        $this->ppc = $ppc;
+        $this->em = $em;
+    }
+
+    #[Route('/{id}/payment/create')]
     public function paymentCreateAction(Order $order)
     {
         return $this->paymentCreate(
@@ -29,9 +36,7 @@ class OrdersController extends Controller
         );
     }
 
-    /**
-     * @Route("/{id}/payment/create/individual")
-     */
+    #[Route('/{id}/payment/create/individual')]
     public function paymentCreateIndividualAction(Order $order)
     {
         return $this->paymentCreate(
@@ -41,9 +46,7 @@ class OrdersController extends Controller
         );
     }
 
-    /**
-     * @Route("/{id}/payment/create/corporate")
-     */
+    #[Route('/{id}/payment/create/corporate')]
     public function paymentCreateCorporateAction(Order $order)
     {
         return $this->paymentCreate(
@@ -53,18 +56,16 @@ class OrdersController extends Controller
         );
     }
 
-    /**
-     * @Route("/{id}/payment/create/custom")
-     */
+    #[Route('/{id}/payment/create/custom')]
     public function paymentCreateCustomAction(Order $order, Request $request)
     {
         return $this->paymentCreate(
             $order,
             $this->generateUrl(
                 'payment_orders_paymentcompletecustom',
-                ['id' => $order->getId(), 'routeParams' => $request->get('routeParams', [])]
+                ['id' => $order->getId(), 'routeParams' => $request->query->all('routeParams')]
             ),
-            $this->generateUrl('supportUs_custom', $request->get('routeParams', []))
+            $this->generateUrl('supportUs_custom', $request->query->all('routeParams'))
         );
     }
 
@@ -72,8 +73,7 @@ class OrdersController extends Controller
     {
         $payment = $this->createPayment($order);
 
-        $ppc = $this->get('payment.plugin_controller');
-        $result = $ppc->approveAndDeposit($payment->getId(), $payment->getTargetAmount());
+        $result = $this->ppc->approveAndDeposit($payment->getId(), $payment->getTargetAmount());
 
         if (Result::STATUS_SUCCESS === $result->getStatus()) {
             return $this->redirect($paymentCompleteUrl);
@@ -130,39 +130,31 @@ class OrdersController extends Controller
         return $this->redirect($paymentErrorReturnUrl);
     }
 
-    /**
-     * @Route("/{id}/payment/complete")
-     */
+    #[Route('/{id}/payment/complete')]
     public function paymentCompleteAction(Request $request, Order $order)
     {
         return $this->paymentComplete($request, $order, $this->generateUrl('mi_donate'));
     }
 
-    /**
-     * @Route("/{id}/payment/complete/individual")
-     */
+    #[Route('/{id}/payment/complete/individual')]
     public function paymentCompleteIndividualAction(Request $request, Order $order)
     {
         return $this->paymentComplete($request, $order, $this->generateUrl('supportUs_individual'));
     }
 
-    /**
-     * @Route("/{id}/payment/complete/corporate")
-     */
+    #[Route('/{id}/payment/complete/corporate')]
     public function paymentCompleteCorporateAction(Request $request, Order $order)
     {
         return $this->paymentComplete($request, $order, $this->generateUrl('supportUs_corporate'));
     }
 
-    /**
-     * @Route("/{id}/payment/complete/custom")
-     */
+    #[Route('/{id}/payment/complete/custom')]
     public function paymentCompleteCustomAction(Request $request, Order $order)
     {
         return $this->paymentComplete(
             $request,
             $order,
-            $this->generateUrl('supportUs_custom', $request->get('routeParams', []))
+            $this->generateUrl('supportUs_custom', $request->query->all('routeParams'))
         );
     }
 
@@ -184,9 +176,8 @@ class OrdersController extends Controller
 
         // Set order completed
         $order->setStatus(Order::STATUS_COMPLETED);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($order);
-        $em->flush($order);
+        $this->em->persist($order);
+        $this->em->flush();
 
         // Add flash message
         $ipToCurrency = new IpToCurrency($request->getClientIp());
@@ -200,7 +191,7 @@ class OrdersController extends Controller
         $this->addFlash('success', $message);
 
         // Redirect connected users to profile page
-        if ($this->getUser() instanceof UserInterface) {
+        if ($this->getUser() instanceof User) {
             return $this->redirectToRoute('fos_user_profile_show');
         }
 
@@ -217,9 +208,8 @@ class OrdersController extends Controller
             return $pendingTransaction->getPayment();
         }
 
-        $ppc = $this->get('payment.plugin_controller');
         $amount = $instruction->getAmount() - $instruction->getDepositedAmount();
 
-        return $ppc->createPayment($instruction->getId(), $amount);
+        return $this->ppc->createPayment($instruction->getId(), $amount);
     }
 }

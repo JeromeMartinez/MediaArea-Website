@@ -22,8 +22,8 @@ class PostParserTest extends TestCase
             'day' => '22',
             'slug' => 'interview-with-julia-kim',
         ], $post->getUrlParams());
-        $this->assertContains('# Interview with Julia Kim', $post->getContent());
-        $this->assertContains('<h1>Interview with Julia Kim</h1>', $post->getHtmlContent());
+        $this->assertStringContainsString('# Interview with Julia Kim', $post->getContent());
+        $this->assertStringContainsString('<h1>Interview with Julia Kim</h1>', $post->getHtmlContent());
     }
 
     public function testPostParserNypl()
@@ -41,8 +41,8 @@ class PostParserTest extends TestCase
             'day' => '07',
             'slug' => 'interview-with-ben-turkus-genevieve-havemeyer-king-nypl',
         ], $post->getUrlParams());
-        $this->assertContains('# Interview with Ben Turkus and Genevieve Havemeyer-King of NYPL', $post->getContent());
-        $this->assertContains(
+        $this->assertStringContainsString('# Interview with Ben Turkus and Genevieve Havemeyer-King of NYPL', $post->getContent());
+        $this->assertStringContainsString(
             '<h1>Interview with Ben Turkus and Genevieve Havemeyer-King of NYPL</h1>',
             $post->getHtmlContent()
         );

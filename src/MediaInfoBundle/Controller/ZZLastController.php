@@ -2,17 +2,17 @@
 
 namespace MediaInfoBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class ZZLastController extends Controller
+class ZZLastController extends AbstractController
 {
-    /**
-     * @Route("/MediaInfo/{url}", name="mi_locale_redirect", defaults={"url": null}, requirements={"url"=".+"})
-     * @Route("/MediaInfo/")
-     */
+    // An empty url is accepted in the routes of this class, else the router redirects first
+    // the URLs with a trailing slash (/MediaInfo/) to the URL without it
+    #[Route('/MediaInfo/{url}', name: 'mi_locale_redirect', requirements: ['url' => '.*'], defaults: ['url' => null])]
+    #[Route('/MediaInfo/')]
     public function localeRedirectAction(Request $request)
     {
         $pathInfo = $request->getPathInfo();
@@ -29,13 +29,8 @@ class ZZLastController extends Controller
         return $this->redirect($url, 302);
     }
 
-    /**
-     * @Route("/{_locale}/MediaInfo/{url}",
-     *     name="mi_unknown",
-     *     requirements={"url" = ".+"},
-     *     defaults={"url": null})
-     * @Route("/{_locale}/MediaInfo/")
-     */
+    #[Route('/{_locale}/MediaInfo/{url}', name: 'mi_unknown', requirements: ['url' => '.*'], defaults: ['url' => null])]
+    #[Route('/{_locale}/MediaInfo/')]
     public function unknownLocaleRedirectAction(Request $request)
     {
         // Throw a 404 error if locale exists in conf (keep 302 to MI home for now)
@@ -64,10 +59,8 @@ class ZZLastController extends Controller
         return $this->redirect($url, 301);
     }
 
-    /**
-     * @Route("/MI/{url}", name="old_mi_redirect", defaults={"url": null}, requirements={"url"=".+"})
-     * @Route("/MI/")
-     */
+    #[Route('/MI/{url}', name: 'old_mi_redirect', requirements: ['url' => '.*'], defaults: ['url' => null])]
+    #[Route('/MI/')]
     public function oldMIUrlAction(Request $request)
     {
         $pathInfo = $request->getPathInfo();
@@ -87,12 +80,13 @@ class ZZLastController extends Controller
         return $this->redirect($url, 302);
     }
 
-    /**
-     * @Route("/{_locale}/MI/{url}", name="old_mi_locale_redirect",
-     *     defaults={"url": null},
-     *     requirements={"_locale": "%app.locales%", "url"=".+"})
-     * @Route("{_locale}/MI/", requirements={"_locale": "%app.locales%"})
-     */
+    #[Route(
+        '/{_locale}/MI/{url}',
+        name: 'old_mi_locale_redirect',
+        requirements: ['_locale' => '%app.locales%', 'url' => '.*'],
+        defaults: ['url' => null],
+    )]
+    #[Route('{_locale}/MI/', requirements: ['_locale' => '%app.locales%'])]
     public function oldMIUrlLocaleAction(Request $request)
     {
         $requestUri = $request->getRequestUri();
@@ -108,10 +102,7 @@ class ZZLastController extends Controller
         return $this->redirect($url, 302);
     }
 
-    /**
-     * @Route("/{url}", name="remove_trailing_slash",
-     *     requirements={"url" = ".*\/$"}, methods={"GET"})
-     */
+    #[Route('/{url}', name: 'remove_trailing_slash', requirements: ['url' => '.*\/$'], methods: ['GET'])]
     public function removeTrailingSlashAction(Request $request)
     {
         $pathInfo = $request->getPathInfo();
@@ -126,10 +117,7 @@ class ZZLastController extends Controller
         }
     }
 
-    /**
-     * @Route("/{url}", name="last_chance",
-     *     requirements={"url" = ".+"}, methods={"GET"})
-     */
+    #[Route('/{url}', name: 'last_chance', requirements: ['url' => '.+'], methods: ['GET'])]
     public function lastChanceAction(Request $request)
     {
         return $this->redirectToRoute('mi_home', array('_locale' => $request->getLocale()), 302);

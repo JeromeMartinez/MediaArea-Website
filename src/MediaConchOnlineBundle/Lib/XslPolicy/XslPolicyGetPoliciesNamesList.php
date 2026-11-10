@@ -9,6 +9,9 @@ class XslPolicyGetPoliciesNamesList extends XslPolicyBase
         $this->response = $this->mc->policyGetPoliciesNamesList($this->user->getId());
     }
 
+    /**
+     * @SuppressWarnings(PHPMD.IfStatementWithoutLogic)
+     */
     public function getListForChoiceForm()
     {
         $policyList = [];

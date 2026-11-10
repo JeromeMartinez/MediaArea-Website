@@ -3,24 +3,46 @@
 namespace UserBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Security\Core\Validator\Constraints\UserPassword;
+use Symfony\Component\Validator\Constraints\NotBlank;
+use UserBundle\Entity\User;
 
 class ProfileFormType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->remove('username')
-            ->add('username', null, array(
+        $builder
+            ->add('email', EmailType::class, ['label' => 'form.email', 'translation_domain' => 'FOSUserBundle'])
+            ->add('current_password', PasswordType::class, [
+                'label' => 'form.current_password',
+                'translation_domain' => 'FOSUserBundle',
+                'mapped' => false,
+                'constraints' => [
+                    new NotBlank(),
+                    new UserPassword(
+                        message: 'fos_user.current_password.invalid',
+                        groups: empty($options['validation_groups']) ? null : [reset($options['validation_groups'])],
+                    ),
+                ],
+                'attr' => [
+                    'autocomplete' => 'current-password',
+                ],
+            ])
+            ->add('username', null, [
                 'label' => 'form.username',
                 'translation_domain' => 'FOSUserBundle',
                 'required' => false,
-            ))
+            ])
             ->add('name')
             ->add('country', CountryCustomType::class)
             ->add('language', LanguageCustomType::class)
@@ -33,7 +55,7 @@ class ProfileFormType extends AbstractType
             $form = $event->getForm();
 
             if (null !== $user && 0 == $user->getRealUserName()) {
-                $form->add('oldname', HiddenType::class, array('mapped' => false, 'data' => $user->getUsername()));
+                $form->add('oldname', HiddenType::class, ['mapped' => false, 'data' => $user->getUsername()]);
                 $user->setUsername(null);
                 $event->setData($user);
             }
@@ -53,19 +75,20 @@ class ProfileFormType extends AbstractType
                         // User have fill his username
                         $user->setRealUserName(1);
                     }
-                    $event->setData($user);
                 } elseif (null === $user->getUsername()) {
                     // User have remove his username
                     $user->setUsername(uniqid());
                     $user->setRealUserName(0);
-                    $event->setData($user);
                 }
             }
         });
     }
 
-    public function getParent()
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        return 'FOS\UserBundle\Form\Type\ProfileFormType';
+        $resolver->setDefaults([
+            'data_class' => User::class,
+            'csrf_token_id' => 'profile',
+        ]);
     }
 }

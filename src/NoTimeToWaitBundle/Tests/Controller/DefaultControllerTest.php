@@ -3,6 +3,7 @@
 namespace NoTimeToWaitBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 class DefaultControllerTest extends WebTestCase
 {
@@ -16,9 +17,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals('No Time To Wait', $crawler->filter('h1')->text());
     }
 
-    /**
-     * @dataProvider urlProvider
-     */
+    #[DataProvider('urlProvider')]
     public function testResponse200($url)
     {
         $client = static::createClient();
@@ -27,7 +26,7 @@ class DefaultControllerTest extends WebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
     }
 
-    public function urlProvider()
+    public static function urlProvider()
     {
         return [
             ['/NoTimeToWait'],

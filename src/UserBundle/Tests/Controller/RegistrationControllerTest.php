@@ -3,6 +3,8 @@
 namespace UserBundle\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
+use UserBundle\Lib\TokenGenerator;
+use UserBundle\Lib\UserManager;
 
 class RegistrationControllerTest extends WebTestCase
 {
@@ -23,8 +25,8 @@ class RegistrationControllerTest extends WebTestCase
         $form = $crawler->selectButton('Register')->form();
 
         $email = 'usertest@mediaarea.net';
-        $pass = static::$kernel->getContainer()->get('fos_user.util.token_generator')->generateToken();
-        $userManager = static::$kernel->getContainer()->get('fos_user.user_manager');
+        $pass = static::getContainer()->get(TokenGenerator::class)->generateToken();
+        $userManager = static::getContainer()->get(UserManager::class);
 
         $form->setValues(array(
             'fos_user_registration_form[email]' => $email,
@@ -52,8 +54,8 @@ class RegistrationControllerTest extends WebTestCase
 
         $email = 'usertest@mediaarea.net';
         $username = 'usertest';
-        $pass = static::$kernel->getContainer()->get('fos_user.util.token_generator')->generateToken();
-        $userManager = static::$kernel->getContainer()->get('fos_user.user_manager');
+        $pass = static::getContainer()->get(TokenGenerator::class)->generateToken();
+        $userManager = static::getContainer()->get(UserManager::class);
 
         $form->setValues(array(
             'fos_user_registration_form[email]' => $email,

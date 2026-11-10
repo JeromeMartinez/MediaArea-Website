@@ -3,13 +3,13 @@
 namespace VoteBundle\DataFixtures\ORM;
 
 use Doctrine\Bundle\FixturesBundle\Fixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use VoteBundle\Entity\Feature;
 use VoteBundle\Model\FeatureInterface;
 
 class Features extends Fixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $feature = new Feature();
         $feature->setId(1)->setTitle('A super feature title')

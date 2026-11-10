@@ -2,12 +2,13 @@
 
 namespace UserBundle\Tests\Form\Type;
 
-use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
-use EWZ\Bundle\RecaptchaBundle\Locale\LocaleResolver;
-use Symfony\Component\HttpFoundation\RequestStack;
+use AppBundle\Form\Type\RecaptchaType;
+use PHPUnit\Framework\Attributes\AllowMockObjectsWithoutExpectations;
 use UserBundle\Form\Type\RegistrationFormType;
 use UserBundle\Tests\TestUser;
 
+// The form test case of Symfony creates a mock of the event dispatcher
+#[AllowMockObjectsWithoutExpectations]
 class RegistrationFormTypeTest extends ValidatorExtensionTypeTestCase
 {
     public function testSubmitWithoutUsername(): void
@@ -92,14 +93,11 @@ class RegistrationFormTypeTest extends ValidatorExtensionTypeTestCase
     /**
      * @return array
      */
-    protected function getTypes()
+    protected function getTypes(): array
     {
-        $localeResolver = new LocaleResolver('en', false, new RequestStack());
-
         return \array_merge(parent::getTypes(), [
-            new RegistrationFormType('UserBundle\Tests\TestUser'),
-            new \FOS\UserBundle\Form\Type\RegistrationFormType('UserBundle\Tests\TestUser'),
-            new EWZRecaptchaType('test-key', false, false, $localeResolver),
+            new RegistrationFormType(),
+            new RecaptchaType('test-key', 'en'),
         ]);
     }
 }

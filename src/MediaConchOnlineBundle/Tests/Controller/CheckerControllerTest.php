@@ -2,7 +2,7 @@
 
 namespace MediaConchOnlineBundle\Tests\Controller;
 
-class CheckerControllerTest extends AbstractAuthControllerTest
+class CheckerControllerTest extends AbstractAuthControllerTestCase
 {
     public function testChecker()
     {

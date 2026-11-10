@@ -3,15 +3,15 @@
 namespace AppBundle\EventListener;
 
 use Symfony\Component\HttpFoundation\Cookie;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 
 class CookiesListener
 {
     /**
-     * @param GetResponseEvent $event
+     * @param RequestEvent $event
      */
-    public function handleCookies(GetResponseEvent $event)
+    public function handleCookies(RequestEvent $event)
     {
         $request = $event->getRequest();
         if (null !== $request->cookies->get('Donated')) {
@@ -20,9 +20,9 @@ class CookiesListener
     }
 
     /**
-     * @param FilterResponseEvent $event
+     * @param ResponseEvent $event
      */
-    public function setCookies(FilterResponseEvent $event)
+    public function setCookies(ResponseEvent $event)
     {
         // Check if donated cookie attribute has been set and add cookie to response
         if (null !== $cookie = $event->getRequest()->attributes->get('setDonatedCookie')) {

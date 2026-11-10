@@ -2,23 +2,30 @@
 
 namespace PaymentBundle\Controller;
 
-use FOS\UserBundle\Model\UserInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Doctrine\ORM\EntityManagerInterface;
+use Mpdf\Mpdf;
+use Mpdf\Output\Destination;
+use UserBundle\Entity\User;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use TFox\MpdfPortBundle\Response\PDFResponse;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use PaymentBundle\Entity\Invoice;
 
-/**
- * @Route("/invoice")
- */
-class InvoiceController extends Controller
+#[Route('/invoice')]
+class InvoiceController extends AbstractController
 {
-    /**
-     * @Route("/ajax/modal/{id}", name="invoice_ajax_modal_data", requirements={"id": "\d+"})
-     */
+    private $em;
+
+    public function __construct(EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
+
+    #[Route('/ajax/modal/{id}', name: 'invoice_ajax_modal_data', requirements: ['id' => '\d+'])]
     public function modalDataAction(Request $request, $id)
     {
         if (!$request->isXmlHttpRequest()) {
@@ -26,20 +33,18 @@ class InvoiceController extends Controller
         }
 
         $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
+        if (!is_object($user) || !$user instanceof User) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
         return new JsonResponse($this->getInvoiceDatas($id, $user), 200);
     }
 
-    /**
-     * @Route("/pdf/{id}", name="invoice_download_pdf", requirements={"id": "\d+"})
-     */
+    #[Route('/pdf/{id}', name: 'invoice_download_pdf', requirements: ['id' => '\d+'])]
     public function downloadPdfAction($id)
     {
         $user = $this->getUser();
-        if (!is_object($user) || !$user instanceof UserInterface) {
+        if (!is_object($user) || !$user instanceof User) {
             throw new AccessDeniedException('This user does not have access to this section.');
         }
 
@@ -48,24 +53,32 @@ class InvoiceController extends Controller
         // Get html for pdf rendering
         $html = $this->renderView('@Payment/Invoice/pdf.html.twig', ['data' => $data]);
 
-        return new PDFResponse(
-            $this->get('t_fox_mpdf_port.pdf')->generatePdf($html),
-            $data['date'].'-MediaArea-Invoice-'.$id.'.pdf'
-        );
+        $mpdf = new Mpdf([
+            'mode' => 'utf-8',
+            'format' => 'A4',
+            'tempDir' => $this->getParameter('kernel.cache_dir'),
+        ]);
+        $mpdf->WriteHTML($html);
+
+        return new Response($mpdf->Output('', Destination::STRING_RETURN), 200, [
+            'Content-Type' => 'application/pdf',
+            'Content-Disposition' => sprintf('attachment; filename="%s"', $data['date'].'-MediaArea-Invoice-'.$id.'.pdf'),
+        ]);
     }
 
     /**
      * Get invoices data for display.
      *
-     * @param int           $id   Invoice ID
-     * @param UserInterface $user
+     * @param int  $id   Invoice ID
+     * @param User $user
      *
      * @return array Datas
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
+     * @SuppressWarnings(PHPMD.UndefinedVariable)
      */
     protected function getInvoiceDatas($id, $user)
     {
-        $invoice = $this->getDoctrine()
+        $invoice = $this->em
             ->getRepository(Invoice::class)
             ->findOneBy(['id' => $id, 'user' => $user]);
 

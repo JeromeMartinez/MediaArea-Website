@@ -13,14 +13,14 @@ class DisplayImportFormType extends AbstractType
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('displayName', TextType::class, ['label' => 'Display name'])
             ->add('displayFile', FileType::class, ['attr' => ['accept' => '.xsl,.xml'], 'label' => 'Display file'])
             ->add('ImportDisplay', SubmitType::class, ['attr' => ['class' => 'btn-warning']]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'displayImport';
     }

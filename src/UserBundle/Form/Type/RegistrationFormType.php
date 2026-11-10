@@ -2,16 +2,24 @@
 
 namespace UserBundle\Form\Type;
 
-use EWZ\Bundle\RecaptchaBundle\Form\Type\EWZRecaptchaType;
-use EWZ\Bundle\RecaptchaBundle\Validator\Constraints\IsTrue as RecaptchaTrue;
+use AppBundle\Form\Type\RecaptchaType;
+use AppBundle\Validator\Constraints\Recaptcha;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\HiddenType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use UserBundle\Entity\User;
 
+/**
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+ */
 class RegistrationFormType extends AbstractType
 {
     /**
@@ -19,7 +27,20 @@ class RegistrationFormType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->remove('username')
+        $builder
+            ->add('email', EmailType::class, ['label' => 'form.email', 'translation_domain' => 'FOSUserBundle'])
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'options' => [
+                    'translation_domain' => 'FOSUserBundle',
+                    'attr' => [
+                        'autocomplete' => 'new-password',
+                    ],
+                ],
+                'first_options' => ['label' => 'form.password'],
+                'second_options' => ['label' => 'form.password_confirmation'],
+                'invalid_message' => 'fos_user.password.mismatch',
+            ])
             ->add('username', null, [
                 'label' => 'form.username',
                 'translation_domain' => 'FOSUserBundle',
@@ -33,7 +54,7 @@ class RegistrationFormType extends AbstractType
             ->add('companyName')
             ->add('newsletter')
             ->add('realUserName', HiddenType::class)
-            ->add('recaptcha', EWZRecaptchaType::class, [
+            ->add('recaptcha', RecaptchaType::class, [
                 'attr' => [
                     'options' => [
                         'theme' => 'light',
@@ -45,7 +66,7 @@ class RegistrationFormType extends AbstractType
                 'label' => false,
                 'mapped' => false,
                 'constraints' => [
-                    new RecaptchaTrue(),
+                    new Recaptcha(),
                 ],
             ]);
 
@@ -65,13 +86,15 @@ class RegistrationFormType extends AbstractType
             if ($form->isValid() && null !== $user && null === $user->getUsername()) {
                 $user->setUsername(\uniqid());
                 $user->setRealUserName(0);
-                $event->setData($user);
             }
         });
     }
 
-    public function getParent()
+    public function configureOptions(OptionsResolver $resolver): void
     {
-        return 'FOS\UserBundle\Form\Type\RegistrationFormType';
+        $resolver->setDefaults([
+            'data_class' => User::class,
+            'csrf_token_id' => 'registration',
+        ]);
     }
 }
