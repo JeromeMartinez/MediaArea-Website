@@ -106,15 +106,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface, E
     protected $lastLogin;
 
     /**
-     * Random string sent to the user email address in order to verify it.
-     */
-    #[ORM\Column(type: 'string', length: 180, unique: true, nullable: true)]
-    protected $confirmationToken;
-
-    #[ORM\Column(type: 'datetime', nullable: true)]
-    protected $passwordRequestedAt;
-
-    /**
      * Stored as a serialized PHP array.
      */
     #[ORM\Column(type: 'array')]
@@ -493,67 +484,6 @@ class User implements UserInterface, LegacyPasswordAuthenticatedUserInterface, E
         $this->lastLogin = $time;
 
         return $this;
-    }
-
-    /**
-     * Get confirmationToken.
-     *
-     * @return string|null
-     */
-    public function getConfirmationToken()
-    {
-        return $this->confirmationToken;
-    }
-
-    /**
-     * Set confirmationToken.
-     *
-     * @param string|null $confirmationToken
-     *
-     * @return User
-     */
-    public function setConfirmationToken($confirmationToken)
-    {
-        $this->confirmationToken = $confirmationToken;
-
-        return $this;
-    }
-
-    /**
-     * Get passwordRequestedAt.
-     *
-     * @return \DateTime|null
-     */
-    public function getPasswordRequestedAt()
-    {
-        return $this->passwordRequestedAt;
-    }
-
-    /**
-     * Set passwordRequestedAt.
-     *
-     * @param \DateTime|null $date
-     *
-     * @return User
-     */
-    public function setPasswordRequestedAt(?\DateTime $date = null)
-    {
-        $this->passwordRequestedAt = $date;
-
-        return $this;
-    }
-
-    /**
-     * Is the last password request still valid.
-     *
-     * @param int $ttl Requests older than this many seconds are considered expired
-     *
-     * @return bool
-     */
-    public function isPasswordRequestNonExpired($ttl)
-    {
-        return $this->getPasswordRequestedAt() instanceof \DateTime
-            && $this->getPasswordRequestedAt()->getTimestamp() + $ttl > time();
     }
 
     /**

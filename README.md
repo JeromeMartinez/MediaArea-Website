@@ -130,6 +130,13 @@ Translations are stored is XML format [here](https://github.com/MediaArea/MediaA
 
 Templates are in twig format, they are available [here](https://github.com/MediaArea/MediaArea-Website/tree/master/src/AppBundle/Resources/views)
 
+## User accounts
+
+The user accounts are handled by UserBundle, whose code is derived from FOSUserBundle (it has no version for Symfony 8), with two maintained bundles:
+
+* [SymfonyCastsResetPasswordBundle](https://github.com/SymfonyCasts/reset-password-bundle) for the reset of the password: the link of the email is valid for one day, and a new email can be requested after two hours (`user.resetting.*` parameters of `app/config/config.yml`);
+* [SymfonyCastsVerifyEmailBundle](https://github.com/SymfonyCasts/verify-email-bundle) for the link which confirms the email address of a new user. This confirmation is disabled (`user.registration.confirmation.enabled` parameter). When it is enabled, the link is signed for its whole URL: the website has to see the scheme and the host that the user sees, so the proxies in front of it have to be declared as trusted.
+
 ## Payments
 
 The payments are made with Paypal Express Checkout, through the gateway of [Payum](https://github.com/Payum/Payum) for the NVP API of Paypal: its credentials are the `paypal_username`, `paypal_password` and `paypal_signature` parameters.

@@ -34,7 +34,11 @@ parameters:
     user.firewall_name: main
     user.from_email.address: info@mediaarea.net
     user.from_email.sender_name: MediaArea
+    # true: a new user has to confirm his email address with the link of an email. The link is signed for its
+    # whole URL: the website must see the scheme and the host the user sees (trusted proxies)
     user.registration.confirmation.enabled: false
+    # Lifetime of the link of the confirmation email, in seconds
+    user.registration.confirmation.ttl: 604800
     # Delay before a new password reset email can be requested, in seconds
     user.resetting.retry_ttl: 7200
     # Lifetime of the link of the password reset email, in seconds
@@ -141,6 +145,16 @@ doctrine_migrations:
         table_storage:
             table_name: migration_versions
     enable_profiler: false
+
+# Password reset requests of the users
+symfonycasts_reset_password:
+    request_password_repository: UserBundle\Repository\ResetPasswordRequestRepository
+    lifetime: '%user.resetting.token_ttl%'
+    throttle_limit: '%user.resetting.retry_ttl%'
+
+# Signed links of the emails which confirm the address of the new users
+symfonycasts_verify_email:
+    lifetime: '%user.registration.confirmation.ttl%'
 
 # Stof doctrine extensions
 stof_doctrine_extensions:

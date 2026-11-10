@@ -26,6 +26,8 @@ class AppKernel extends Kernel
             new Stof\DoctrineExtensionsBundle\StofDoctrineExtensionsBundle(),
             new Nelmio\CorsBundle\NelmioCorsBundle(),
             new Vich\UploaderBundle\VichUploaderBundle(),
+            new SymfonyCasts\Bundle\ResetPassword\SymfonyCastsResetPasswordBundle(),
+            new SymfonyCasts\Bundle\VerifyEmail\SymfonyCastsVerifyEmailBundle(),
             new MediaTraceBundle\MediaTraceBundle(),
             new BWFMetaEditBundle\BWFMetaEditBundle(),
             new QCToolsBundle\QCToolsBundle(),
