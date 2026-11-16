@@ -66,3 +66,74 @@ jobs:
       - name: Test
         run: |
           vendor/bin/phpunit
+
+  # The other database servers: MySQL 5.7 and later (Percona XtraDB Cluster 5.7 is the one of the website),
+  # MariaDB 10.6 and later
+  Databases:
+    name: ${{ matrix.database }}
+    runs-on: ubuntu-26.04
+    strategy:
+      fail-fast: false
+      matrix:
+        database:
+          # A node of a cluster, in strict mode
+          - percona/percona-xtradb-cluster:5.7
+          - mysql:8.0
+          - mysql:8.4
+          - mariadb:10.6
+          - mariadb:11.8
+    services:
+      mysql:
+        image: ${{ matrix.database }}
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: ci
+          MARIADB_ALLOW_EMPTY_ROOT_PASSWORD: yes
+          MARIADB_DATABASE: ci
+          CLUSTER_NAME: ci
+        ports:
+          - 3306:3306
+        # The image of Percona XtraDB Cluster has only the mysql client, the ones of MariaDB 11 only the mariadb one
+        options: >-
+          --health-cmd="mysqladmin ping || mariadb-admin ping || mysql -h 127.0.0.1 -uroot -e status"
+          --health-interval=10s --health-timeout=5s --health-retries=12 --health-start-period=30s
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 1
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.5
+          extensions: gd, intl
+          ini-values: memory_limit=-1
+          tools: composer:2.11
+          coverage: none
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+      - name: Cache dependencies
+        uses: actions/cache@v6
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: ${{ runner.os }}-composer-
+      - name: Prepare
+        run: |
+          cp app/config/parameters.yml.ci app/config/parameters.yml
+      - name: Install dependencies
+        run: |
+          composer install --no-progress --prefer-dist --ansi
+      - name: Configure
+        run: |
+          php bin/console doctrine:migrations:migrate --no-interaction
+          php bin/console doctrine:schema:validate
+          php bin/console doctrine:fixtures:load --env=test --no-interaction
+          php bin/console mediaarea:user:donor test@mediaarea.net 1
+          php bin/console mediaarea:user:create beta beta@mediaarea.net betaCI
+          php bin/console mediaarea:user:promote beta ROLE_BETA
+          php bin/console mediaarea:user:donor beta@mediaarea.net 30
+      - name: Test
+        run: |
+          vendor/bin/phpunit

@@ -8,11 +8,11 @@
 
 * A web server (tested on Apache 2.4)
     * mod_rewrite is recommended
-* PHP >= 8.4 (tested on version 8.5)
+* PHP >= 8.5
     * Mandatory packages for Debian-like distributions : `sudo apt-get install libapache2-mod-php8.5 php8.5-cli php8.5-intl php8.5-curl php8.5-mysql php8.5-mbstring php8.5-xml php8.5-gd`
     * Mandatory packages for RedHat-like distributions : `sudo dnf install php php-cli php-intl php-mbstring php-pdo php-process php-xml php-gd php-mysqlnd`
     * date.timezone parameter should be set in your php.ini (both cli and apache module)
-* MySQL >= 8.0 or MariaDB >= 10.6 (tested on MySQL 9.7 and MariaDB 10.6)
+* MySQL >= 5.7 or MariaDB >= 10.6 (tested on Percona XtraDB Cluster 5.7, MySQL 8.0, 8.4 and 9.7, MariaDB 10.6 and 11.8)
 * [Composer](https://getcomposer.org/download/) 2
 
 ## Get sourcecode
@@ -42,6 +42,8 @@ cd YOUR_PATH/MediaArea-Website/
 composer install
 ```
 You'll get some configuration questions, you can use [these fake values](blob/master/app/config/parameters.yml.ci) if you don't care about the payments, or [simulate them](#payments).
+
+The website uses Symfony 8.2, which is not released yet: `composer.json` accepts its beta versions (`"minimum-stability": "beta"`). Once Symfony 8.2.0 is released, remove this option and run `composer update "symfony/*"`.
 
 ### SQL tables and assets
 

@@ -8,7 +8,7 @@
         "classmap": [ "app/AppKernel.php" ]
     },
     "require": {
-        "php": ">=8.4",
+        "php": ">=8.5",
         "ext-ctype": "*",
         "ext-curl": "*",
         "ext-dom": "*",
@@ -38,24 +38,24 @@
         "php-http/message-factory": "^1.1",
         "php-opencloud/openstack": "^3.17",
         "stof/doctrine-extensions-bundle": "^1.15",
-        "symfony/asset": "^8.1",
-        "symfony/asset-mapper": "^8.1",
-        "symfony/console": "^8.1",
-        "symfony/doctrine-bridge": "^8.1",
-        "symfony/finder": "^8.1",
-        "symfony/form": "^8.1",
-        "symfony/framework-bundle": "^8.1",
-        "symfony/http-client": "^8.1",
-        "symfony/intl": "^8.1",
-        "symfony/mailer": "^8.1",
+        "symfony/asset": "^8.2",
+        "symfony/asset-mapper": "^8.2",
+        "symfony/console": "^8.2",
+        "symfony/doctrine-bridge": "^8.2",
+        "symfony/finder": "^8.2",
+        "symfony/form": "^8.2",
+        "symfony/framework-bundle": "^8.2",
+        "symfony/http-client": "^8.2",
+        "symfony/intl": "^8.2",
+        "symfony/mailer": "^8.2",
         "symfony/monolog-bundle": "^4.1",
-        "symfony/process": "^8.1",
-        "symfony/security-bundle": "^8.1",
-        "symfony/translation": "^8.1",
-        "symfony/twig-bundle": "^8.1",
-        "symfony/validator": "^8.1",
-        "symfony/web-link": "^8.1",
-        "symfony/yaml": "^8.1",
+        "symfony/process": "^8.2",
+        "symfony/security-bundle": "^8.2",
+        "symfony/translation": "^8.2",
+        "symfony/twig-bundle": "^8.2",
+        "symfony/validator": "^8.2",
+        "symfony/web-link": "^8.2",
+        "symfony/yaml": "^8.2",
         "symfonycasts/reset-password-bundle": "^1.24",
         "symfonycasts/verify-email-bundle": "^1.18",
         "twig/extra-bundle": "^3.29",
@@ -66,12 +66,12 @@
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^4.3",
         "phpunit/phpunit": "^13.4",
-        "symfony/browser-kit": "^8.1",
-        "symfony/css-selector": "^8.1",
-        "symfony/debug-bundle": "^8.1",
+        "symfony/browser-kit": "^8.2",
+        "symfony/css-selector": "^8.2",
+        "symfony/debug-bundle": "^8.2",
         "symfony/maker-bundle": "^1.68",
-        "symfony/stopwatch": "^8.1",
-        "symfony/web-profiler-bundle": "^8.1"
+        "symfony/stopwatch": "^8.2",
+        "symfony/web-profiler-bundle": "^8.2"
     },
     "scripts": {
         "symfony-scripts": [
@@ -100,5 +100,7 @@
                 "payment_secret": "jms_payment_core_secret"
             }
         }
-    }
+    },
+    "minimum-stability": "beta",
+    "prefer-stable": true
 }
